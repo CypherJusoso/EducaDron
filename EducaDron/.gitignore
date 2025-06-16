@@ -1,0 +1,97 @@
+
+
+### Unity ###
+#########################################
+# UNITY - ARCHIVOS QUE DEBEN IGNORARSE #
+#########################################
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+MemoryCaptures/
+UserSettings/
+
+# Archivos generados por compilación
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity Collaborate / Plastic SCM (si no se usa)
+.plastic/
+.plasticignore
+*.plastic*
+
+############################################
+# EDITORES Y ENTORNOS DE DESARROLLO (IDE)  #
+############################################
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# JetBrains Rider
+.idea/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# MonoDevelop
+*.userprefs
+
+################################################
+# ARCHIVOS DEL SISTEMA OPERATIVO / TEMPORALES #
+################################################
+
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*
+*~
+
+###########################################
+# ARCHIVOS DE BUILD POR PLATAFORMA       #
+###########################################
+
+*.apk
+*.aab
+*.ipa
+*.exe
+*.app
+
+###########################################
+# GIT LFS (opcional, si lo usás)         #
+###########################################
+# Descomentar si usás Git LFS
+# *.fbx
+# *.psd
+# *.png
+# *.jpg
+# *.wav
+# *.mp4
+
+#############################################################
+# EXCEPCIONES — ASEGURAR QUE ESTAS CARPETAS SE VERSIONEN    #
+#############################################################
+
+!Assets/
+!ProjectSettings/
+!Packages/
+
