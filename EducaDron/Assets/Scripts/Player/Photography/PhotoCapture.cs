@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,9 +8,9 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] Image photoDisplayArea;
     [SerializeField] GameObject photoContainer;
     [SerializeField] GameObject cameraUI;
-    [SerializeField] Camera firstPersonCamera;
+   // [SerializeField] Camera firstPersonCamera;
 
-    [SerializeField] GameObject cameraFlash;
+   // [SerializeField] GameObject cameraFlash;
     [SerializeField] float flashTime;
 
     [SerializeField] Animator fadingAnimation;
@@ -18,13 +19,18 @@ public class PhotoCapture : MonoBehaviour
 
     Texture2D screenCapture;
 
+    Camera mainCam;
+
     bool viewingPhoto;
     bool isPhotoMode = false;
 
     private void Start()
     {
+     //   firstPersonCamera.enabled = false;
         screenCapture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
         cameraUI.SetActive(false);
+        mainCam = FindFirstObjectByType<CinemachineBrain>().OutputCamera;
+
     }
 
     private void Update()
@@ -75,7 +81,7 @@ public class PhotoCapture : MonoBehaviour
             photoDisplayArea.sprite = photoSprite;
 
             photoContainer.SetActive(true);
-            StartCoroutine(CameraFlashEffect());
+           // StartCoroutine(CameraFlashEffect());
 
             fadingAnimation.Play("PhotoFade");
         }
@@ -84,7 +90,7 @@ public class PhotoCapture : MonoBehaviour
     private void DetectTargetHit()
     {
         //Lanza una "linea" invisible desde mi camara hasta el centro de la pantalla
-        Ray ray = firstPersonCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
         //Guarda la info de si la linea choca con algo
         RaycastHit hit;
@@ -95,6 +101,7 @@ public class PhotoCapture : MonoBehaviour
             if (hit.collider.CompareTag("Target"))
             {
                 Debug.Log("Target hit! " + hit.collider.name);
+                MissionManager.instance.OnTargetPhotographed(hit.collider.gameObject);
             }
             else
             {
@@ -109,13 +116,14 @@ public class PhotoCapture : MonoBehaviour
     }
 
     //No consigue el efecto deseado todavía, honestamente no hace falta y podemos removerlo.
-    IEnumerator CameraFlashEffect()
-    {
-        cameraAudio.Play();
-        cameraFlash.SetActive(true);
-        yield return new WaitForSeconds(flashTime);
-        cameraFlash.SetActive(false);
-    }
+    /*IEnumerator CameraFlashEffect()
+     {
+         cameraAudio.Play();
+         cameraFlash.SetActive(true);
+         yield return new WaitForSeconds(flashTime);
+         cameraFlash.SetActive(false);
+     }
+    */
     void RemovePhoto()
     {
         viewingPhoto = false;
@@ -123,5 +131,3 @@ public class PhotoCapture : MonoBehaviour
         cameraUI.SetActive(true);
     }
 }
-//Cosas a tener en cuenta importantes son el feedback visual para el user, de momento solo sabemos que sucede con la foto por la consola, despues deberíamos implementar algo
-//Ya sea un sonido de éxito, que te aparezca la misión como completa de una, que la UI de la cámara se vuelva verde al apuntar al objeto correcto, etc.

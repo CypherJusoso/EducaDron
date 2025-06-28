@@ -13,7 +13,7 @@ public class DroneStatusAndCollision : MonoBehaviour
     [SerializeField] GameObject smallSmokeVFX;
     [SerializeField] GameObject largeSmokeVFX;
 
-    PlayerMover2 playerMover;
+    PlayerMover3 playerMover;
 
     float timer;
 
@@ -23,7 +23,7 @@ public class DroneStatusAndCollision : MonoBehaviour
     private void Start()
     {
         gameSceneManager = FindFirstObjectByType<GameSceneManager>();
-        playerMover = GetComponent<PlayerMover2>();
+        playerMover = GetComponent<PlayerMover3>();
     }
     private void OnCollisionEnter(Collision collision)
     {

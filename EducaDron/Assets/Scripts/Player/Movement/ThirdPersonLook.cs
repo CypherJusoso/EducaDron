@@ -19,6 +19,8 @@ public class ThirdPersonLook : MonoBehaviour
     float targetZoom;
     float currentZoom;
 
+    public bool controlsEnabled = true;
+
     void Start()
     {
         droneController = new DroneController();
@@ -33,11 +35,12 @@ public class ThirdPersonLook : MonoBehaviour
     private void HandleMouseScroll(InputAction.CallbackContext context)
     {
         scrollDelta = context.ReadValue<Vector2>();
-        Debug.Log($"Mouse is scrolling. Value: {scrollDelta}");
     }
 
     void Update()
     {
+        if (!controlsEnabled) { return; }
+
         if (scrollDelta.y != 0) 
         {
             if (orbital != null) 
