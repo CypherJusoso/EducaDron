@@ -1,6 +1,6 @@
 using System.Collections;
 using Unity.Cinemachine;
-using UnityEditor.Rendering;
+//using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 public class PhotoCapture : MonoBehaviour
