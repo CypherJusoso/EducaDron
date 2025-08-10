@@ -10,7 +10,7 @@ public class ThirdPersonLook : MonoBehaviour
     [SerializeField] float minDistance = 3f;
     [SerializeField] float maxDistance = 15f;
 
-    DroneController droneController;
+    InputActions droneController;
 
     CinemachineCamera cam;
     CinemachineOrbitalFollow orbital;
@@ -23,7 +23,7 @@ public class ThirdPersonLook : MonoBehaviour
 
     void Start()
     {
-        droneController = new DroneController();
+        droneController = new InputActions();
         droneController.Enable();
         droneController.Camera.Zoom.performed += HandleMouseScroll;
         cam = GetComponent<CinemachineCamera>();
@@ -50,7 +50,8 @@ public class ThirdPersonLook : MonoBehaviour
             }
         }
 
-        float bumperDelta = droneController.Camera.Zoom.ReadValue<float>();
+        Vector2 bumperDeltaVector = droneController.Camera.Zoom.ReadValue<Vector2>();
+        float bumperDelta = bumperDeltaVector.y;
         if (bumperDelta != 0)
         {
             targetZoom = Mathf.Clamp(orbital.Radius - bumperDelta * zoomSpeed, minDistance, maxDistance);

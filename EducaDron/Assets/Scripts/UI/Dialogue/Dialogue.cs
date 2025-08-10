@@ -12,7 +12,7 @@ public class Dialogue : MonoBehaviour
     [SerializeField] float textSpeed;
     [SerializeField] ThirdPersonLook thirdPersonLook;
     [SerializeField] CinemachineInputAxisController inputProvider;
-
+    [SerializeField] InputHandler inputHandler;
     int index;
 
 
@@ -20,7 +20,7 @@ public class Dialogue : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         textComponent.text = string.Empty;
-        playerMover.GetInputActions().Disable();
+        inputHandler.DisableInputs();
         thirdPersonLook.controlsEnabled = false;
         inputProvider.enabled = false;
         StartDialogue();
@@ -71,7 +71,7 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            playerMover.GetInputActions().Enable();
+            inputHandler.EnableInputs();
             thirdPersonLook.controlsEnabled = true;
             inputProvider.enabled = true;
             gameObject.SetActive(false);
