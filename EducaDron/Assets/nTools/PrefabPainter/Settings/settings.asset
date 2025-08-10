@@ -1984,8 +1984,8 @@ MonoBehaviour:
     brushes:
     - name: TFP_Corn_01A_Open
       settings:
-        brushRadius: 1.1
-        brushSpacing: 0.93
+        brushRadius: 2.5
+        brushSpacing: 0.73
         brushOverlapCheckMode: 0
         brushOverlapDistance: 0.5
         brushOverlapCheckObjects: 1
@@ -2609,13 +2609,13 @@ MonoBehaviour:
       - gameObject: {fileID: 0}
       - gameObject: {fileID: 0}
       selectedSlot: 0
-      selected: 1
+      selected: 0
       colorTag: 0
       customPreviewImage: {fileID: 0}
     - name: TFP_Sunflower_01A_Open
       settings:
-        brushRadius: 1
-        brushSpacing: 1.29
+        brushRadius: 2
+        brushSpacing: 0.5
         brushOverlapCheckMode: 0
         brushOverlapDistance: 0.5
         brushOverlapCheckObjects: 1
@@ -2627,9 +2627,9 @@ MonoBehaviour:
         orientationMode: 0
         alongBrushStroke: 0
         rotation: {x: 0, y: 0, z: 0}
-        randomizeOrientationX: 0
+        randomizeOrientationX: 25
         randomizeOrientationY: 0
-        randomizeOrientationZ: 0
+        randomizeOrientationZ: 25
         scaleTransformMode: 0
         scaleMode: 0
         scaleUniformMin: 1
@@ -2924,7 +2924,7 @@ MonoBehaviour:
       - gameObject: {fileID: 0}
       - gameObject: {fileID: 0}
       selectedSlot: 0
-      selected: 0
+      selected: 1
       colorTag: 0
       customPreviewImage: {fileID: 0}
     - name: TFP_Sunflower_02A_Open
@@ -3874,8 +3874,8 @@ MonoBehaviour:
       customPreviewImage: {fileID: 0}
     - name: TFP_Orchard_Tree_03A_Stage_3A
       settings:
-        brushRadius: 1
-        brushSpacing: 4.06
+        brushRadius: 0.01
+        brushSpacing: 3.41
         brushOverlapCheckMode: 0
         brushOverlapDistance: 0.5
         brushOverlapCheckObjects: 1
@@ -4209,7 +4209,7 @@ MonoBehaviour:
   pinSnapScale: 0
   placeAngleStep: 15
   placeScaleStep: 0.1
-  eraseBrushRadius: 0.01
+  eraseBrushRadius: 1
   eraseByLayer: 0
   eraseLayers:
     serializedVersion: 2
