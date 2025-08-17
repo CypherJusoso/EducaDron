@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 680510eac81a4c240bbade3b65320d4c
+timeCreated: 1530040332
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119995
+  packageName: Agriculture Drone
+  packageVersion: 5.3.4f1
+  assetPath: Assets/AgricultureDrone_VR_AR_GameReady/FBX/Materials/Drone_Hand_Baked.mat
+  uploadId: 253058

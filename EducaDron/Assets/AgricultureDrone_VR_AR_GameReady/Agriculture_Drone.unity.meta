@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6dd92771926f147408bb1f02011a164d
+timeCreated: 1527495687
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119995
+  packageName: Agriculture Drone
+  packageVersion: 5.3.4f1
+  assetPath: Assets/AgricultureDrone_VR_AR_GameReady/Agriculture_Drone.unity
+  uploadId: 253058
