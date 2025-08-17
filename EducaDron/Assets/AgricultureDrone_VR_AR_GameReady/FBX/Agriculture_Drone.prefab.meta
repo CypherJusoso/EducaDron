@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 69959bac854e644419b117c5a228343e
+timeCreated: 1530040944
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119995
+  packageName: Agriculture Drone
+  packageVersion: 5.3.4f1
+  assetPath: Assets/AgricultureDrone_VR_AR_GameReady/FBX/Agriculture_Drone.prefab
+  uploadId: 253058

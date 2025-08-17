@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a3de005094cb7134580ad16312536be3
+timeCreated: 1530040331
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119995
+  packageName: Agriculture Drone
+  packageVersion: 5.3.4f1
+  assetPath: Assets/AgricultureDrone_VR_AR_GameReady/FBX/Materials/Drone_Camera_Baked.mat
+  uploadId: 253058
