@@ -50,7 +50,8 @@ public class ThirdPersonLook : MonoBehaviour
             }
         }
 
-        float bumperDelta = droneController.Camera.Zoom.ReadValue<float>();
+        Vector2 bumperDeltaVec = droneController.Camera.Zoom.ReadValue<Vector2>();
+        float bumperDelta = bumperDeltaVec.y; // Usamos solo el eje Y para zoom
         if (bumperDelta != 0)
         {
             targetZoom = Mathf.Clamp(orbital.Radius - bumperDelta * zoomSpeed, minDistance, maxDistance);
