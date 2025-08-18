@@ -1,9 +1,23 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LandingZone : MonoBehaviour
 {
     bool stopSpam = false;
     bool isLandingZone = false;
+
+    string userId;
+    int levelNumber = 1;
+    string newStatus = "completado";
+
+    [SerializeField] ProgressUpdateApi progressApi;
+    [SerializeField] GameObject successPanel;
+    [SerializeField] InputHandler inputHandler;
+
+    private void Start()
+    {
+         userId = DataManager.instance.userId;
+    }
     private void OnTriggerStay(Collider other)
     {
         if (stopSpam) { return; }
@@ -12,6 +26,10 @@ public class LandingZone : MonoBehaviour
         {
             Debug.Log("Nivel Terminado");
             stopSpam = true;
+            progressApi.SendUpdate(userId, levelNumber, newStatus);
+            inputHandler.DisableInputs();
+            successPanel.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 
@@ -33,5 +51,10 @@ public class LandingZone : MonoBehaviour
             isLandingZone = false;
         }
         Debug.Log("isLanding: " + isLandingZone);
+    }
+
+    void VolverAlMenuPrincipal()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

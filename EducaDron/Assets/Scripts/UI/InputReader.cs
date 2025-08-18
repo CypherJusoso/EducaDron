@@ -1,40 +1,51 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Windows;
-using AASave;
+using UnityEngine.UI;
 public class InputReader : MonoBehaviour
 {
-    public NameApi nameApi;
+    public RegisterApi registerApi;
 
-    public SaveManager saveManager;
-    
-    /*  public void ReadStringInput(string name)
+    [SerializeField] TMP_InputField nameInput;
+    [SerializeField] TMP_InputField emailInput;
+    [SerializeField] TMP_InputField passwordInput;
+    [SerializeField] TMP_InputField confirmPasswordInput;
+
+    public void ReadInputField()
+    {
+        string name = nameInput.text;
+        string email = emailInput.text;
+        string password = passwordInput.text;
+        string confirmPassword = confirmPasswordInput.text;
+
+        ReadStringInput(name, email, password, confirmPassword);
+    }
+      public void ReadStringInput(string name, string email, string password, string confirmPassword)
       {
 
-          //Si el input no esta vacío le asigno el string al data manager para que lo pase a la siguiente escena
-          if (!string.IsNullOrEmpty(name))
+        //Si el input no esta vacío le asigno el string al data manager para que lo pase a la siguiente escena
+        if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(confirmPassword))
           {
-              DataManager.instance.username = name;
-              //Llamada POST a la api
-              nameApi.SendName(name);
-              //Ir a la siguiente escena
-              SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            if(password != confirmPassword)
+            {
+                Debug.LogWarning("Las contraseñas no coinciden");
+            }
+            else
+            {
+                //Llamada POST a la api
+                registerApi.SendDto(name, email, password, confirmPassword);
+            }
+               
           }
           else
           {
-              Debug.LogWarning("El nombre esta vacío");
+              Debug.LogWarning("Debes completar todos los campos.");
           }
-
       }
-    */
 
-    public void ConfirmName(string name)
+    public void GoToLogin()
     {
-        DataManager.instance.username = name;
-        DataManager.instance.currentLvl = 2;
-
-        saveManager.SaveGame();
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //Ir a la siguiente escena
+        SceneManager.LoadScene("LoginScene");
     }
 }
