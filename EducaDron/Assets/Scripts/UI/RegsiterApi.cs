@@ -2,20 +2,23 @@ using System.Collections;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-public class NameApi : MonoBehaviour
+public class RegisterApi : MonoBehaviour
 {
-    private string URL = "http://localhost:5000/api/clients";
+    string URL = "http://localhost:5062/api/users/register";
 
-    public void SendName(string name)
+    [SerializeField] GameObject successPanel;
+
+    public void SendDto(string name, string email, string password, string confirmPassword)
     {
-        StartCoroutine(PostName(name));
+        StartCoroutine(RegisterPost(name, email, password, confirmPassword));
     }
 
-    IEnumerator PostName(string name)
+    IEnumerator RegisterPost(string name, string email, string password, string confirmPassword)
     {
-        //Crea el objeto namedata y lo pasa a json
-        string jsonBody = JsonUtility.ToJson(new NameData(name));
+        //Crea el objeto RegisterDto y lo pasa a json
+        string jsonBody = JsonUtility.ToJson(new RegisterDto(name, email, password, confirmPassword));
         UnityWebRequest req = new UnityWebRequest(URL, "POST");
         
         //Convierte el string json a bytes 
@@ -37,17 +40,24 @@ public class NameApi : MonoBehaviour
         {
             //No devuelve nada por algun motivo, no se si es porque cambia de escena pero lo dudo
             Debug.Log("Respuesta del servidor: " + req.downloadHandler.text);
+            successPanel.SetActive(true);
         }
     }
 
     [System.Serializable]
-    public class NameData
+    public class RegisterDto
     {
         public string name;
+        public string email;
+        public string password;
+        public string confirmPassword;
 
-        public NameData(string name)
+        public RegisterDto(string name, string email, string password, string confirmPassword)
         {
             this.name = name;
+            this.email = email;
+            this.password = password;
+            this.confirmPassword = confirmPassword;
         }
     }
 }

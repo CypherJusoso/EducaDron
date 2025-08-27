@@ -1,18 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using AASave;
 using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
-    public SaveSystem saveSystem;
-    public SaveManager saveManager;
-    [SerializeField] Button loadButton;
+    [SerializeField] Button SelectButton;
 
     private void Start()
     {
-        if (!saveSystem.DoesDataExists("playerName"))
+        SelectButton.interactable = false;
+
+        if (!string.IsNullOrEmpty(DataManager.instance.userId))
         {
-            loadButton.interactable = false;
+            SelectButton.interactable = true;
         }
     }
     public void Play()
@@ -20,15 +19,19 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void Load()
+    public void SelectLevel()
     {
-        saveManager.LoadGame();
-        SceneManager.LoadScene(DataManager.instance.currentLvl);
+        SceneManager.LoadScene("ChooseLevel");
     }
 
     public void Quit()
     {
         Application.Quit();
         Debug.Log("Player Has Quit The Game");
+    }
+
+    public void Login()
+    {
+        SceneManager.LoadScene("LoginScene");
     }
 }
