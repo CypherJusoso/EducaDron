@@ -8,6 +8,7 @@ public class LoginInputReader : MonoBehaviour
 
     [SerializeField] TMP_InputField usernameInput;
     [SerializeField] TMP_InputField passwordInput;
+    [SerializeField] TextMeshProUGUI errorText;
 
     public void ReadInputField()
     {
@@ -19,9 +20,12 @@ public class LoginInputReader : MonoBehaviour
 
     public void ReadStringInput(string username, string password)
     {
-        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) 
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password)) 
         {
-            Debug.LogWarning("Debes completar todos los campos");
+            Debug.Log("Error activado: " + errorText.text);
+            errorText.text = "Error: Todos los campos deben estar completos";
+            errorText.gameObject.SetActive(true);
+            return;
         }
         else
         {
@@ -32,5 +36,10 @@ public class LoginInputReader : MonoBehaviour
     public void GoToChooseLevel()
     {
         SceneManager.LoadScene("ChooseLevel");
+    }
+
+    public void GoBack()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

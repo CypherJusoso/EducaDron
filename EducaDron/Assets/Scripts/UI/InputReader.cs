@@ -10,6 +10,7 @@ public class InputReader : MonoBehaviour
     [SerializeField] TMP_InputField emailInput;
     [SerializeField] TMP_InputField passwordInput;
     [SerializeField] TMP_InputField confirmPasswordInput;
+    [SerializeField] TextMeshProUGUI errorText;
 
     public void ReadInputField()
     {
@@ -23,29 +24,34 @@ public class InputReader : MonoBehaviour
       public void ReadStringInput(string name, string email, string password, string confirmPassword)
       {
 
-        //Si el input no esta vacío le asigno el string al data manager para que lo pase a la siguiente escena
-        if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(confirmPassword))
-          {
-            if(password != confirmPassword)
-            {
-                Debug.LogWarning("Las contraseñas no coinciden");
-            }
-            else
-            {
-                //Llamada POST a la api
-                registerApi.SendDto(name, email, password, confirmPassword);
-            }
-               
-          }
-          else
-          {
-              Debug.LogWarning("Debes completar todos los campos.");
-          }
-      }
 
-    public void GoToLogin()
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
+        {
+            Debug.Log("Error activado: " + errorText.text);
+            errorText.text = "Error: Todos los campos deben estar completos";
+            errorText.gameObject.SetActive(true);
+            return;
+        }
+        if (password != confirmPassword)
+        {
+        Debug.LogError("Error activado: " + errorText.text);
+        errorText.text = "Error: Las contraseñas no coinciden";
+        errorText.gameObject.SetActive(true);
+        return;
+        }
+
+        errorText.gameObject.SetActive(false);
+        registerApi.SendDto(name, email, password, confirmPassword);
+    }
+
+public void GoToLogin()
     {
         //Ir a la siguiente escena
         SceneManager.LoadScene("LoginScene");
+    }
+
+    public void GoBack()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

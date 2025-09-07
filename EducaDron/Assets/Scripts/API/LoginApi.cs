@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -8,6 +9,7 @@ public class LoginApi : MonoBehaviour
     string URL = "http://localhost:5062/api/users/login";
 
     [SerializeField] GameObject successPanel;
+    [SerializeField] TextMeshProUGUI errorText;
 
     public void SendDto(string username, string password)
     {
@@ -28,13 +30,24 @@ public class LoginApi : MonoBehaviour
 
         yield return req.SendWebRequest();
 
+        string jsonResponse = req.downloadHandler.text;
+        Debug.Log("jsonResponse: " + jsonResponse);
+
         if (req.result != UnityWebRequest.Result.Success)
         {
+            ErrorResponse errorResponse = JsonUtility.FromJson<ErrorResponse>(jsonResponse);
+            if (errorResponse.errors.Length > 0)
+            {
+                errorText.text = errorResponse.errors[0];
+                errorText.gameObject.SetActive(true);
+            }
+
             Debug.LogError("Error: " + req.error);
+
         }
         else
         {
-            string jsonResponse = req.downloadHandler.text;
+            jsonResponse = req.downloadHandler.text;
             Debug.Log("Respuesta del servidor: " + jsonResponse);
 
             LoginResponse loginResponse = JsonUtility.FromJson<LoginResponse>(jsonResponse);
@@ -63,5 +76,13 @@ public class LoginApi : MonoBehaviour
     {
         public string userId;
         public string userName;
+    }
+
+    [System.Serializable]
+    public class ErrorResponse
+    {
+        public string title;
+        public int status;
+        public string[] errors;
     }
 }

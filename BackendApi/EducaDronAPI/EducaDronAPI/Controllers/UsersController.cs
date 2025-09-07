@@ -79,13 +79,9 @@ namespace EducaDronAPI.Controllers
                 else
                 {
 
-                    foreach(var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                    var validation = new ValidationProblemDetails(ModelState);
+                    var errorList = result.Errors.Select(e => e.Description).ToArray();
 
-                    return BadRequest(validation);
+                    return BadRequest(new { errors = errorList});
                 }
             }
             return BadRequest(model);
@@ -110,9 +106,10 @@ namespace EducaDronAPI.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "El email o la contraseña son incorrectos.");
-                    var validation = new ValidationProblemDetails(ModelState);
-                    return BadRequest(validation);
+                    return BadRequest( new
+                    {
+                        errors = new[] { "El email o la contraseña son incorrectos." }
+                    });
                 }
             }
             return BadRequest(model);
