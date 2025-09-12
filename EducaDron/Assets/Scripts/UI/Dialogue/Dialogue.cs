@@ -13,6 +13,7 @@ public class Dialogue : MonoBehaviour
     [SerializeField] ThirdPersonLook thirdPersonLook;
     [SerializeField] CinemachineInputAxisController inputProvider;
     [SerializeField] InputHandler inputHandler;
+    [SerializeField] Timer timer;
     int index;
 
 
@@ -76,6 +77,7 @@ public class Dialogue : MonoBehaviour
             inputProvider.enabled = true;
             gameObject.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
+            timer.StartTimer();
 
         }
     }

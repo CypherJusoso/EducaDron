@@ -1,9 +1,12 @@
+using Microlight.MicroBar;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class DroneStatusAndCollision : MonoBehaviour
 {
+    const float MAX_HP = 100f;
+
     [SerializeField] float droneLife = 100f;
     [SerializeField] float damageCounter = 2f;
     [SerializeField] float minimumDamageValue = 10f;
@@ -12,6 +15,8 @@ public class DroneStatusAndCollision : MonoBehaviour
     [SerializeField] float bounce = 50f;
     [SerializeField] GameObject smallSmokeVFX;
     [SerializeField] GameObject largeSmokeVFX;
+    [SerializeField] MicroBar punch_MicroBar;
+
 
     PlayerMover3 playerMover;
 
@@ -24,6 +29,8 @@ public class DroneStatusAndCollision : MonoBehaviour
     {
         gameSceneManager = FindFirstObjectByType<GameSceneManager>();
         playerMover = GetComponent<PlayerMover3>();
+        if (punch_MicroBar != null) punch_MicroBar.Initialize(MAX_HP);
+
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -52,14 +59,23 @@ public class DroneStatusAndCollision : MonoBehaviour
         Debug.Log($"Dron sufre {damage} de daño, vida = {droneLife}");
         if (damage >0 && damage < 10)
         {
-            //Instancia el smallSmokeVFX
             isCollided = true;
+
+            if (punch_MicroBar != null) 
+            {
+                punch_MicroBar.UpdateBar(droneLife, false, UpdateAnim.Damage);
+            }
+
             Instantiate(smallSmokeVFX, transform.position, Quaternion.identity);
         }
         else if (damage >= 10) 
         {
             isCollided = true;
-            //Instancia el largeSmokeVFX
+            if (punch_MicroBar != null)
+            {
+                punch_MicroBar.UpdateBar(droneLife, false, UpdateAnim.Damage);
+            }
+
             Instantiate(largeSmokeVFX, transform.position, Quaternion.identity);
         }
         if (droneLife <= 0)
