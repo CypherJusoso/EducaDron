@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ public class RegisterApi : MonoBehaviour
     string URL = "http://localhost:5062/api/users/register";
 
     [SerializeField] GameObject successPanel;
+    [SerializeField] TextMeshProUGUI errorText;
 
     public void SendDto(string name, string email, string password, string confirmPassword)
     {
@@ -35,10 +37,17 @@ public class RegisterApi : MonoBehaviour
         if (req.result != UnityWebRequest.Result.Success)
         {
             Debug.LogError("Error: " + req.error);
+            
+            ErrorResponse errorResponse = JsonUtility.FromJson<ErrorResponse>(req.downloadHandler.text);
+
+            if (errorResponse != null && errorResponse.errors != null && errorResponse.errors.Length > 0)
+            {
+                errorText.text = string.Join("\n", errorResponse.errors);
+                errorText.gameObject.SetActive(true);
+            }
         }
         else
         {
-            //No devuelve nada por algun motivo, no se si es porque cambia de escena pero lo dudo
             Debug.Log("Respuesta del servidor: " + req.downloadHandler.text);
             successPanel.SetActive(true);
         }
@@ -59,5 +68,11 @@ public class RegisterApi : MonoBehaviour
             this.password = password;
             this.confirmPassword = confirmPassword;
         }
+    }
+
+    [System.Serializable]
+    public class ErrorResponse
+    {
+        public string[] errors;
     }
 }
