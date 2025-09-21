@@ -2,12 +2,12 @@ using System.Collections;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class ProgressUpdateApi : MonoBehaviour
 {
 
     string URLPut = "http://localhost:5062/api/progress/";
-
     public void SendUpdate(string userId, int levelNumber, string newStatus)
     {
         StartCoroutine(UpdateProgress(userId, levelNumber, newStatus));

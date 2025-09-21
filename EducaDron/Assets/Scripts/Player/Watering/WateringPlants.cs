@@ -1,21 +1,28 @@
+using Microlight.MicroBar;
 using UnityEngine;
-using UnityEngine.UI; // Si usas UI para mostrar el agua restante
+using UnityEngine.UI;
 
 public class Riego : MonoBehaviour
 {
     [Header("Tanque de Agua")]
-    public float capacidadAgua = 100f;
-    public float aguaActual = 100f;
+    public const float WATER_CAPACITY = 50f;
+    public float aguaActual = 50f;
     public float velocidadRiego = 10f; // Litros por segundo
+
 
     [Header("Riego")]
     public ParticleSystem particulasRiego; // Sistema de partículas de agua
     public KeyCode teclaRiego = KeyCode.R;
 
     [Header("UI")]
-    public Slider barraAgua; // Para mostrar visualmente el agua restante
+    [SerializeField] MicroBar waterMicroBar;
 
     private bool estaRegando = false;
+
+    private void Start()
+    {
+        if (waterMicroBar != null) waterMicroBar.Initialize(WATER_CAPACITY);
+    }
 
     void Update()
     {
@@ -30,9 +37,9 @@ public class Riego : MonoBehaviour
         }
 
         // Actualizar barra de agua si existe
-        if (barraAgua != null)
+       if (waterMicroBar != null)
         {
-            barraAgua.value = aguaActual / capacidadAgua;
+            waterMicroBar.UpdateBar(aguaActual, false, UpdateAnim.Damage);
         }
 
         // Verificar si se quedó sin agua
