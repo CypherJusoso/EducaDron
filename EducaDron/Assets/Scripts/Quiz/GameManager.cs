@@ -285,11 +285,11 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     /// <summary>
-    /// Function that is called to quit the application.
+    /// Function that is called to go back to MainMenu.
     /// </summary>
     public void QuitGame()
     {
-        Application.Quit();
+        SceneManager.LoadScene("MainMenu");
     }
 
     /// <summary>

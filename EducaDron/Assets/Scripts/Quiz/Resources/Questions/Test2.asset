@@ -23,6 +23,6 @@ MonoBehaviour:
   - _info: Ninguna de las anteriores
     _isCorrect: 0
   _useTimer: 1
-  _timer: 5
+  _timer: 30
   _answerType: 0
   _addScore: 10
