@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e60fe115117c9147827b15692eb18ea, type: 3}
+  m_Name: Test1
+  m_EditorClassIdentifier: 
+  _info: "Para realizar un mapeo multiespectral de un cultivo, \xBFqu\xE9 dron deber\xEDas
+    usar?"
+  _answers:
+  - _info: AGRAS T40
+    _isCorrect: 0
+  - _info: Phantom 4 Multispectral
+    _isCorrect: 1
+  - _info: Ambos
+    _isCorrect: 0
+  - _info: Ninguno
+    _isCorrect: 0
+  _useTimer: 1
+  _timer: 5
+  _answerType: 0
+  _addScore: 10
