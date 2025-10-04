@@ -269,11 +269,34 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     void LoadQuestions()
     {
-        Object[] objs = Resources.LoadAll("Questions", typeof(Question));
-        _questions = new Question[objs.Length];
-        for (int i = 0; i < objs.Length; i++)
+        var dm = DataManager.instance;
+        if (dm == null)
         {
-            _questions[i] = (Question)objs[i];
+            Debug.LogError("DataManager no encontrado en la escena. Asegúrate de que existe un objeto con DataManager antes de cargar preguntas.");
+            _questions = new Question[0];
+            return;
+        }
+
+        int currentLevel = dm.currentLvl;
+
+        Object[] objs = Resources.LoadAll("Questions", typeof(Question));
+        List<Question> filtered = new List<Question>(objs.Length);
+
+        foreach (var o in objs)
+        {
+            var q = o as Question;
+            if (q == null) continue;
+            if (q.LevelQuestion == currentLevel)
+            {
+                filtered.Add(q);
+            }
+        }
+
+        _questions = filtered.ToArray();
+
+        if (_questions.Length == 0)
+        {
+            Debug.LogWarning($"No se encontraron Questions para el nivel {currentLevel}. Revisa el campo _levelQuestion en tus assets Question.");
         }
     }
 

@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e60fe115117c9147827b15692eb18ea, type: 3}
-  m_Name: Test1
+  m_Name: Q5_1D
   m_EditorClassIdentifier: 
-  _info: "Para realizar un mapeo multiespectral de un cultivo, \xBFqu\xE9 dron deber\xEDas
-    usar?"
+  _info: "\xBFCu\xE1l es el objetivo principal al hacer uso de dron Multispectral?"
   _answers:
-  - _info: AGRAS T40
-    _isCorrect: 0
-  - _info: Phantom 4 Multispectral
+  - _info: "Recopilar informaci\xF3n"
     _isCorrect: 1
-  - _info: Ambos
+  - _info: "Realizar aplicaci\xF3nes al cultivo"
     _isCorrect: 0
-  - _info: Ninguno
+  - _info: Ninguna de las anteriores
+    _isCorrect: 0
+  - _info: Todas son correctas
     _isCorrect: 0
   _useTimer: 1
   _timer: 30
   _answerType: 0
   _addScore: 10
+  _levelQuestion: 1

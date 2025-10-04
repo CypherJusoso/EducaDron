@@ -17,6 +17,7 @@ public class LandingZone : MonoBehaviour
     private void Start()
     {
          userId = DataManager.instance.userId;
+        DataManager.instance.currentLvl = levelNumber;
     }
     private void OnTriggerStay(Collider other)
     {
