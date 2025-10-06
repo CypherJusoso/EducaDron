@@ -4,22 +4,33 @@ public class PlantColour : MonoBehaviour
 {
     [SerializeField] private Color dryColor = Color.gray;
 
-    [SerializeField] private Color wetColor = Color.yellow;
+    private Color originalWetColor;
 
     private MeshRenderer[] allRenderers;
     private bool isWatered = false;
+
+    private const string BASE_COLOR_PROPERTY = "_BaseColor";
 
     void Start()
     {
         allRenderers = GetComponentsInChildren<MeshRenderer>();
 
-     
         if (allRenderers.Length > 0)
         {
+ 
+            if (allRenderers[0].material.HasProperty(BASE_COLOR_PROPERTY))
+            {
+                originalWetColor = allRenderers[0].material.GetColor(BASE_COLOR_PROPERTY);
+            }
+            else 
+            {
+                originalWetColor = allRenderers[0].material.color;
+            }
+
             foreach (var renderer in allRenderers)
             {
-             
-                renderer.material.color = dryColor;
+                renderer.material.SetColor(BASE_COLOR_PROPERTY, dryColor);
+                renderer.material.SetColor("_Color", dryColor); 
             }
         }
         else
@@ -44,7 +55,8 @@ public class PlantColour : MonoBehaviour
         {
             foreach (var renderer in allRenderers)
             {
-                renderer.material.color = wetColor;
+                renderer.material.SetColor(BASE_COLOR_PROPERTY, originalWetColor);
+                renderer.material.SetColor("_Color", originalWetColor);
             }
         }
 
