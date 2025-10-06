@@ -13,6 +13,7 @@ public class LandingZone : MonoBehaviour
     [SerializeField] ProgressUpdateApi progressApi;
     [SerializeField] GameObject successPanel;
     [SerializeField] InputHandler inputHandler;
+    [SerializeField] LevelPointsManager levelPointsManager;
 
     private void Start()
     {
@@ -31,6 +32,7 @@ public class LandingZone : MonoBehaviour
             inputHandler.DisableInputs();
             successPanel.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
+            levelPointsManager.CalculatePointsLevel1();
         }
     }
 

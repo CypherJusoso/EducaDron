@@ -7,6 +7,9 @@ public class DataManager : MonoBehaviour
     public string email;
 
     public int currentLvl;
+    public int levelPoints;
+    public int quizPoints;
+    public int TotalPoints => levelPoints + quizPoints;
 
     public static DataManager instance;
     private void Awake()
@@ -20,5 +23,11 @@ public class DataManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void ResetPoints()
+    {
+        levelPoints = 0;
+        quizPoints = 0;
     }
 }

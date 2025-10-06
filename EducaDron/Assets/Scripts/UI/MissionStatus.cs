@@ -12,6 +12,10 @@ public class MissionStatus : MonoBehaviour
     void Update()
     {
         remainingPhotos = 10 - photoCapture.actualPhotos;
+        if (remainingPhotos < 0) 
+        {
+            remainingPhotos = 0;
+        }
         PressTab();
     }
 

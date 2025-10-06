@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]    GameEvents          events                  = null;
 
+    [SerializeField]    SendPointsApi       pointsApi;
+
     [SerializeField]    Animator            timerAnimtor            = null;
     [SerializeField]    TextMeshProUGUI     timerText               = null;
     [SerializeField]    Color               timerHalfWayOutColor    = Color.yellow;
@@ -305,6 +307,7 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public void RestartGame()
     {
+        DataManager.instance.quizPoints = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     /// <summary>
@@ -312,9 +315,17 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public void QuitGame()
     {
+        StartCoroutine(QuitWhenApiCallEnds());
+    }
+    IEnumerator QuitWhenApiCallEnds()
+    {
+        Debug.Log("Max Points " + DataManager.instance.TotalPoints);
+        string id = DataManager.instance.userId;
+        int currentLvl = DataManager.instance.currentLvl;
+        int points = DataManager.instance.TotalPoints;
+       yield return pointsApi.UpdatePoints(id, currentLvl, points);
         SceneManager.LoadScene("MainMenu");
     }
-
     /// <summary>
     /// Function that is called to set new highscore if game score is higher.
     /// </summary>
@@ -333,10 +344,19 @@ public class GameManager : MonoBehaviour {
     {
         events.CurrentFinalScore += add;
 
+        if (add > 0)
+        {
+            DataManager.instance.quizPoints += 10;
+        }
+        else
+        {
+            DataManager.instance.quizPoints -= 10;
+        }
         if (events.ScoreUpdated != null)
         {
             events.ScoreUpdated();
         }
+        Debug.Log("Points: " + DataManager.instance.quizPoints);
     }
 
     #region Getters
