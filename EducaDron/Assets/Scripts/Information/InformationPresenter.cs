@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InformationPresenter : MonoBehaviour
@@ -18,8 +19,8 @@ public class InformationPresenter : MonoBehaviour
 
     [Header("Data")]
     [SerializeField] private List<TeoricoSO> teoricos = new();
-    [SerializeField] private bool useDataManager = true;
-    [SerializeField] private int debugLevel = 1;
+    [SerializeField] private bool useDataManager;
+    [SerializeField] private int debugLevel;
 
     private void Start()
     {
@@ -59,22 +60,23 @@ public class InformationPresenter : MonoBehaviour
 
     private int GetCurrentLevel()
     {
-        if (!useDataManager) return debugLevel;
-        try
-        {
-            var t = typeof(DataManager);
-            var f = t.GetField("currentLevel");
-            if (f != null && f.IsStatic) return (int)f.GetValue(null);
 
-            var pI = t.GetProperty("Instance");
-            if (pI != null)
-            {
-                var inst = pI.GetValue(null);
-                var pL = t.GetProperty("CurrentLevel") ?? t.GetProperty("currentLevel");
-                if (pL != null) return (int)pL.GetValue(inst);
-            }
+        if (!useDataManager)
+        {
+            Debug.LogWarning($"Nivel Seleccionado (debug): {debugLevel}");
+            return debugLevel;
         }
-        catch { }
-        return debugLevel;
+
+        var dm = DataManager.instance; // Puede ser null si aún no inicializado
+        int lvl = dm != null ? dm.currentLvl : debugLevel;
+
+        Debug.LogWarning($"Nivel Seleccionado: {lvl}");
+        return lvl;
+    }
+
+    public void IrAlDesafio()
+    {
+        int level = GetCurrentLevel();
+        SceneManager.LoadScene("Level" + level);
     }
 }
