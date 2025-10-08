@@ -310,6 +310,13 @@ public class GameManager : MonoBehaviour {
         DataManager.instance.quizPoints = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    public void NextLevel()
+    {
+        int level = DataManager.instance.currentLvl += 1;
+        SceneManager.LoadScene("Informacion");
+    }
+
     /// <summary>
     /// Function that is called to go back to MainMenu.
     /// </summary>
