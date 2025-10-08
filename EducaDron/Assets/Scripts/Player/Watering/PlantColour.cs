@@ -60,7 +60,7 @@ public class PlantColour : MonoBehaviour
             }
         }
 
-        GameManager.Instance.PlantWatered();
+        MissionManager2.Instance.PlantWatered();
     }
 
     public bool IsWatered => isWatered;

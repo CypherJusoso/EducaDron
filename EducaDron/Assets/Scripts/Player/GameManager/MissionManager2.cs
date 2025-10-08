@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-public class GameManager : MonoBehaviour
-{    public static GameManager Instance { get; private set; }
+public class MissionManager2 : MonoBehaviour
+{    public static MissionManager2 Instance { get; private set; }
 
     private int totalPlants;
     private int wateredPlants = 0;

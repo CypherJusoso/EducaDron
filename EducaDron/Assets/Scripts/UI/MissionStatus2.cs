@@ -10,7 +10,7 @@ public class MissionStatus2 : MonoBehaviour
     [SerializeField] private TextMeshProUGUI remainingPlantsText;
     [SerializeField] private KeyCode toggleKey = KeyCode.Tab;
 
-    private GameManager gameManager;
+    private MissionManager2 gameManager;
 
     void Awake() 
     {
@@ -25,7 +25,7 @@ public class MissionStatus2 : MonoBehaviour
         }
 
       
-        gameManager = GameManager.Instance;
+        gameManager = MissionManager2.Instance;
 
   
         if (statusPanel != null)
