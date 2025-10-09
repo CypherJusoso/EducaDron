@@ -7,7 +7,7 @@ public class DroneStatusAndCollision : MonoBehaviour
 {
     const float MAX_HP = 100f;
 
-    [SerializeField] float droneLife = 100f;
+    public float droneLife = 100f;
     [SerializeField] float damageCounter = 2f;
     [SerializeField] float minimumDamageValue = 10f;
     //Solo puede haber un choque cada segundo

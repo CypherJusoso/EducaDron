@@ -22,6 +22,31 @@ namespace EducaDronAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EducaDronAPI.Models.LevelPoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("LevelPoint");
+                });
+
             modelBuilder.Entity("EducaDronAPI.Models.Progress", b =>
                 {
                     b.Property<int>("Id")
@@ -247,6 +272,17 @@ namespace EducaDronAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("EducaDronAPI.Models.LevelPoint", b =>
+                {
+                    b.HasOne("EducaDronAPI.Models.Users", "Usuario")
+                        .WithMany("LevelPoints")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("EducaDronAPI.Models.Progress", b =>
                 {
                     b.HasOne("EducaDronAPI.Models.Users", "Usuario")
@@ -311,6 +347,8 @@ namespace EducaDronAPI.Migrations
 
             modelBuilder.Entity("EducaDronAPI.Models.Users", b =>
                 {
+                    b.Navigation("LevelPoints");
+
                     b.Navigation("Progresss");
                 });
 #pragma warning restore 612, 618

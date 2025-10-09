@@ -31,4 +31,9 @@ public class GameSceneManager : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void Quiz()
+    {
+        SceneManager.LoadScene("Quiz");
+    }
 }

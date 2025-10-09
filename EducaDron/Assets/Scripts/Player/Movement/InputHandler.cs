@@ -11,6 +11,7 @@ public class InputHandler : MonoBehaviour
     
     public bool isDroneOn;
     public bool menuOpenInput;
+    public bool isFlashlightOn;
    
     InputActions _input;
 
@@ -34,6 +35,8 @@ public class InputHandler : MonoBehaviour
         _input.Player.ToggleDrone.performed += SetToggleDrone;
 
         _input.Player.MenuOpen.performed += SetMenuOpen;
+
+        _input.Player.Flashlight.performed += SetPerformed;
 
     }
 
@@ -76,6 +79,11 @@ public class InputHandler : MonoBehaviour
     void SetMenuOpen(InputAction.CallbackContext ctx)
     {
         menuOpenInput = ctx.performed;
+    }
+
+    void SetPerformed(InputAction.CallbackContext ctx)
+    {
+        isFlashlightOn = ctx.performed;
     }
 
     public void EnableInputs()

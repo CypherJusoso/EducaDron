@@ -3,6 +3,7 @@ using EducaDronAPI.DTOs;
 using EducaDronAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace EducaDronAPI.Controllers
@@ -66,6 +67,17 @@ namespace EducaDronAPI.Controllers
                     {
                         _context.Progress.Add(newProgress);
                     }
+
+                    var initalPoints = new List<LevelPoint>
+                    {
+                        new LevelPoint { UsuarioId = users.Id, Level = 1, Points = 0},
+                        new LevelPoint { UsuarioId = users.Id, Level = 2, Points = 0},
+                        new LevelPoint { UsuarioId = users.Id, Level = 3, Points = 0},
+                    };
+                    foreach (var newPoints in initalPoints)
+                    {
+                        _context.LevelPoint.Add(newPoints);
+                    }
                     await _context.SaveChangesAsync();
 
                     var userDto = new UserDto
@@ -120,6 +132,52 @@ namespace EducaDronAPI.Controllers
         {
             await signInManager.SignOutAsync();
             return Ok(new { mensaje = "Has cerrado sesion." });
+        }
+
+        [HttpPut("points/update-points")]
+        public async Task<IActionResult> UpdateLevelPoint(LevelPointDto dto)
+        {
+            if (dto == null) { return BadRequest(); }
+
+            var user = await userManager.FindByIdAsync(dto.UserId);
+            if (user == null) { return NotFound("Usuario no encontrado."); }
+
+            var levelToUpdatePoints = await _context.LevelPoint.Where(lp => lp.UsuarioId == dto.UserId && lp.Level == dto.LevelId).FirstOrDefaultAsync();
+            
+            if(levelToUpdatePoints == null) { return NotFound("Nivel no encontrado."); }
+            
+            if ( dto.NewPoints > levelToUpdatePoints.Points)
+            {
+                levelToUpdatePoints.Points = dto.NewPoints;
+            }
+            
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                levelToUpdatePoints.Level,
+                levelToUpdatePoints.Points
+            });
+        }
+
+        [HttpGet("points/{userId}")]
+        public async Task<IActionResult> GetUserPoints(string userId)
+        {
+            if (string.IsNullOrEmpty(userId)) {  return BadRequest("El UserId no puede estar vacio."); }
+
+            var points = await _context.LevelPoint
+                .Where(lp => lp.UsuarioId.Equals(userId))
+                .Select(lp => new { lp.Level, lp.Points})
+                .ToListAsync();
+
+            var totalPoints = points.Sum(p => p.Points);
+
+            return Ok(new
+            {
+                UserId = userId,
+                Points = points,
+                Total = totalPoints
+            });
         }
     }
 }

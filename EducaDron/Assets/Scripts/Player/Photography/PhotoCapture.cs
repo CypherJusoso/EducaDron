@@ -17,9 +17,18 @@ public class PhotoCapture : MonoBehaviour
 
     [SerializeField] AudioSource cameraAudio;
 
+    [SerializeField] GameObject failPanel;
+
     Texture2D screenCapture;
 
     Camera mainCam;
+
+    [SerializeField] InputHandler inputHandler;
+
+
+    const int MAX_PHOTOS = 10;
+
+    public int actualPhotos = 0;
 
     bool viewingPhoto;
     bool isPhotoMode = false;
@@ -49,7 +58,17 @@ public class PhotoCapture : MonoBehaviour
         {
             if (!viewingPhoto) 
             {
+                actualPhotos++;
                 StartCoroutine(CapturePhoto());
+
+                if (actualPhotos == MAX_PHOTOS && MissionManager.instance.photosTaken < MissionManager.instance.totalTargets)
+                {
+                    inputHandler.DisableInputs();
+                    RemovePhoto();
+                    failPanel.SetActive(true);
+                    Cursor.lockState = CursorLockMode.None;
+
+                }
             }
             else
             {

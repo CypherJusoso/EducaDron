@@ -13,10 +13,12 @@ public class LandingZone : MonoBehaviour
     [SerializeField] ProgressUpdateApi progressApi;
     [SerializeField] GameObject successPanel;
     [SerializeField] InputHandler inputHandler;
+    [SerializeField] LevelPointsManager levelPointsManager;
 
     private void Start()
     {
          userId = DataManager.instance.userId;
+        DataManager.instance.currentLvl = levelNumber;
     }
     private void OnTriggerStay(Collider other)
     {
@@ -30,6 +32,7 @@ public class LandingZone : MonoBehaviour
             inputHandler.DisableInputs();
             successPanel.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
+            levelPointsManager.CalculatePointsLevel1();
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
 
-    [SerializeField] float timerDuration = 180.0f;
+    public float timerDuration = 180.0f;
     [SerializeField] MicroBar timer_MicroBar;
 
     [SerializeField] PlayerMover3 playerMover;
@@ -21,6 +21,7 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
         TimerReduction();
     }
 

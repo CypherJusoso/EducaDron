@@ -34,4 +34,15 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("LoginScene");
     }
+
+    public void Level3()
+    {
+        SceneManager.LoadScene("Level3");
+
+    }
+    public void Quiz()
+    {
+        SceneManager.LoadScene("Quiz");
+
+    }
 }

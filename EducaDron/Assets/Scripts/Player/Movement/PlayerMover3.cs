@@ -15,6 +15,7 @@ public class PlayerMover3 : MonoBehaviour
     [SerializeField] CinemachineCamera thirdPersonCamera;
     [SerializeField] ThirdPersonLook thirdPersonScripts;
     [SerializeField] InputHandler _input;
+    [SerializeField] Transform hand;
 
     public bool isOn;
     //moveInput pero en 3D
@@ -55,7 +56,8 @@ public class PlayerMover3 : MonoBehaviour
         if (PauseManager.isPaused) return;
 
         Fly();
-       // MoveCamera();
+        // MoveCamera();
+
     }
     private void FixedUpdate()
     {
@@ -123,6 +125,13 @@ public class PlayerMover3 : MonoBehaviour
     {
         Vector3 camEuler = firstPersonCamera.transform.rotation.eulerAngles;
 
-        transform.rotation = Quaternion.Euler(0f, camEuler.y, 0f);  
+        transform.rotation = Quaternion.Euler(0f, camEuler.y, 0f);
+
+        float flashlightY = Mathf.DeltaAngle(transform.eulerAngles.y, camEuler.y);
+
+        flashlightY = Mathf.Clamp(flashlightY, -60f, 60f);
+
+        hand.localRotation = Quaternion.Euler(camEuler.x, flashlightY, 0);
+
     }
 }
