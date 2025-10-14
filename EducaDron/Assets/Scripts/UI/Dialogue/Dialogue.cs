@@ -14,8 +14,10 @@ public class Dialogue : MonoBehaviour
     [SerializeField] CinemachineInputAxisController inputProvider;
     [SerializeField] InputHandler inputHandler;
     [SerializeField] Timer timer;
+
     int index;
 
+    public static bool isDialoguePlaying = false;
 
     void Start()
     {
@@ -47,6 +49,7 @@ public class Dialogue : MonoBehaviour
 
     void StartDialogue()
     {
+        isDialoguePlaying = true;
         index = 0;
         StartCoroutine(TypeLine());
     }
@@ -72,6 +75,7 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
+            isDialoguePlaying = false;
             inputHandler.EnableInputs();
             thirdPersonLook.controlsEnabled = true;
             inputProvider.enabled = true;

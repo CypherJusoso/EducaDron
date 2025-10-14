@@ -7,16 +7,23 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        SelectButton.interactable = false;
+        if (SelectButton != null)
+        {
+           SelectButton.interactable = false;
 
         if (!string.IsNullOrEmpty(DataManager.instance.userId))
         {
             SelectButton.interactable = true;
         }
+        }
     }
     public void Play()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public void MainMenuDirect()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void SelectLevel()
@@ -43,6 +50,11 @@ public class MainMenu : MonoBehaviour
     public void Quiz()
     {
         SceneManager.LoadScene("Quiz");
+
+    }
+    public void Scoreboard()
+    {
+        SceneManager.LoadScene("Ranking");
 
     }
 }

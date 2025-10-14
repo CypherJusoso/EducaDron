@@ -11,10 +11,13 @@ public class ProgressUpdateApi : MonoBehaviour
     public void SendUpdate(string userId, int levelNumber, string newStatus)
     {
         StartCoroutine(UpdateProgress(userId, levelNumber, newStatus));
+
     }
     IEnumerator UpdateProgress(string userId, int levelNumber, string newStatus)
     {
         string jsonBody = JsonUtility.ToJson(new UpdateProgressDto(userId, levelNumber, newStatus));
+        Debug.Log($"URL: {URLPut}");
+        Debug.Log($"BODY: {jsonBody}");
 
         UnityWebRequest req = new UnityWebRequest(URLPut, "PUT");
 

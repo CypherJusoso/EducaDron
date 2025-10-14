@@ -10,6 +10,7 @@ public class MissionManager2 : MonoBehaviour
     public int WateredPlants => wateredPlants;
 
     [SerializeField] GameObject landingZone;
+    [SerializeField] Riego riegoScript;
 
     void Awake()
     {
@@ -24,7 +25,7 @@ public class MissionManager2 : MonoBehaviour
 
         landingZone.SetActive(false);
 
-        totalPlants = FindObjectsByType<PlantColour>(FindObjectsSortMode.None).Length;
+        totalPlants = FindObjectsByType<OnCropWatering2>(FindObjectsSortMode.None).Length;
 
         if (totalPlants == 0)
         {
@@ -43,8 +44,6 @@ public class MissionManager2 : MonoBehaviour
     public void PlantWatered()
     {
         wateredPlants++;
-        Debug.Log("Watered: " + wateredPlants + " / " + totalPlants);
-
         if (MissionStatus2.Instance != null)
         {
             MissionStatus2.Instance.UpdateStatusText();
@@ -61,9 +60,9 @@ public class MissionManager2 : MonoBehaviour
         Debug.Log("🎉 YOU WIN! All plants are watered! 🎉");
         landingZone.SetActive(true);
 
-        Riego riegoScript = FindAnyObjectByType<Riego>();
-        if (riegoScript != null)
+        if (riegoScript != null) 
         {
+            riegoScript.particulasRiego.Stop();
             riegoScript.enabled = false;
         }
     }

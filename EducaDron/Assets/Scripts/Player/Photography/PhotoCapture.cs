@@ -25,7 +25,6 @@ public class PhotoCapture : MonoBehaviour
 
     [SerializeField] InputHandler inputHandler;
 
-
     const int MAX_PHOTOS = 10;
 
     public int actualPhotos = 0;
@@ -44,6 +43,8 @@ public class PhotoCapture : MonoBehaviour
 
     private void Update()
     {
+        if (Dialogue.isDialoguePlaying) { return; }
+        if (PauseManager.isPaused) { return; }
         //Activa y desactiva el modo camara con F
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -115,7 +116,7 @@ public class PhotoCapture : MonoBehaviour
         RaycastHit hit;
 
         //Esto checkea donde golpea mi linea en un rango de maxDistance = 100f
-        if (Physics.Raycast(ray, out hit, 100f))
+        if (Physics.Raycast(ray, out hit, 20f))
         {
             if (hit.collider.CompareTag("Target"))
             {

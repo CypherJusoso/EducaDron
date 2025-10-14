@@ -35,7 +35,7 @@ public class LoginInputReader : MonoBehaviour
 
     public void GoToChooseLevel()
     {
-        SceneManager.LoadScene("ChooseLevel");
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void GoBack()

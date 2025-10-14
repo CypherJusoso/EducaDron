@@ -19,7 +19,7 @@ public class OnCropWatering : MonoBehaviour
         }
     }
 
-    void ProcessWatering()
+    public void ProcessWatering()
     {
         if (isWatered) { return; }
 
@@ -28,8 +28,12 @@ public class OnCropWatering : MonoBehaviour
         {
             isWatered = true;
             MissionManager3.instance.OnCropWatered();
-            flyParticle.SetActive(false);
-            purpleAura.SetActive(false);
+            if (flyParticle != null)
+                flyParticle.SetActive(false);
+
+            if (purpleAura != null)
+                purpleAura.SetActive(false);
+
             Debug.Log("Plant fully fumigated!");
         }
     }

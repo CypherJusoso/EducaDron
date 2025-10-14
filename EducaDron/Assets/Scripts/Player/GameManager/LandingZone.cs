@@ -7,8 +7,9 @@ public class LandingZone : MonoBehaviour
     bool isLandingZone = false;
 
     string userId;
-    int levelNumber = 1;
+    int levelNumber;
     string newStatus = "completado";
+    string currentScene;
 
     [SerializeField] ProgressUpdateApi progressApi;
     [SerializeField] GameObject successPanel;
@@ -17,9 +18,34 @@ public class LandingZone : MonoBehaviour
 
     private void Start()
     {
-         userId = DataManager.instance.userId;
-        DataManager.instance.currentLvl = levelNumber;
+        currentScene = SceneManager.GetActiveScene().name;
+
+        switch (currentScene)
+        {
+            case "Level1":
+                levelNumber = 1;
+                break;
+            case "Level2":
+                levelNumber = 2;
+                break;
+            case "Level3":
+                levelNumber = 3;
+                break;
+        }
+
+        if (DataManager.instance != null)
+        {
+            userId = DataManager.instance.userId;
+            DataManager.instance.currentLvl = levelNumber;
+        }
+        else
+        {
+            Debug.LogWarning("DataManager no encontrado.");
+            userId = "TestUser";
+        }
     }
+
+
     private void OnTriggerStay(Collider other)
     {
         if (stopSpam) { return; }
@@ -28,11 +54,30 @@ public class LandingZone : MonoBehaviour
         {
             Debug.Log("Nivel Terminado");
             stopSpam = true;
+            Debug.Log("SuccessPanel: " + successPanel);
+            successPanel.SetActive(true);
+            Debug.Log("SuccessPanel activado!");
+            Debug.Log($"Enviando progreso: userId={userId}, nivel={levelNumber}, estado={newStatus}");
             progressApi.SendUpdate(userId, levelNumber, newStatus);
             inputHandler.DisableInputs();
-            successPanel.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
-            levelPointsManager.CalculatePointsLevel1();
+            CalculateLevelPoints();
+        }
+    }
+
+    private void CalculateLevelPoints()
+    {
+        switch (currentScene)
+        {
+            case "Level1":
+                levelPointsManager.CalculatePointsLevel1();
+                break;
+            case "Level2":
+                levelPointsManager.CalculatePointsLevel2();
+                break;
+            case "Level3":
+                levelPointsManager.CalculatePointsLevel3();
+                break;
         }
     }
 

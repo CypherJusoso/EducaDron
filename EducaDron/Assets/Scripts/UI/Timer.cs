@@ -4,7 +4,7 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
 
-    public float timerDuration = 180.0f;
+    public float timerDuration = 300.0f;
     [SerializeField] MicroBar timer_MicroBar;
 
     [SerializeField] PlayerMover3 playerMover;
@@ -12,7 +12,7 @@ public class Timer : MonoBehaviour
 
     bool isRunning = false;
 
-    const float MAX_TIME = 180f;
+    const float MAX_TIME = 300f;
     void Start()
     {
         if (timer_MicroBar != null) timer_MicroBar.Initialize(MAX_TIME);

@@ -31,7 +31,7 @@ public class GetPointsApi : MonoBehaviour
 
         if (req.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Error en el FetchProgress" + req.error);
+            Debug.LogError("Error en el Get" + req.error);
         }
         else
         {
