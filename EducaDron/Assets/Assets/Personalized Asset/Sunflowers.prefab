@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleHits: 0
-  plantHp: 200
+  plantHp: 100
   dryModel: {fileID: 5310032038717888285}
   waterModel: {fileID: 1424210280760332404}
   isWatered: 0
