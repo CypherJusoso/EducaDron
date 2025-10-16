@@ -43,7 +43,7 @@ public class InformationPresenter : MonoBehaviour
     private IEnumerator ScrollToTopAfterLayout()
     {
         // Esperar a que TMP + LayoutGroup calculen tamaños
-        yield return new WaitForEndOfFrame();   // <-- antes te puse un ">" de más
+        yield return new WaitForEndOfFrame();
 
         Canvas.ForceUpdateCanvases();
 

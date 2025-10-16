@@ -313,7 +313,6 @@ public class GameManager : MonoBehaviour {
 
     public void NextLevel()
     {
-        int level = DataManager.instance.currentLvl + 1;
         SceneManager.LoadScene("Informacion");
     }
 
