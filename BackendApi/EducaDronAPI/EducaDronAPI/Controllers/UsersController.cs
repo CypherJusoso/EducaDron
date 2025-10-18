@@ -179,5 +179,24 @@ namespace EducaDronAPI.Controllers
                 Total = totalPoints
             });
         }
+
+        [HttpGet("points/ranking")]
+        public async Task<IActionResult> GetRanking()
+        {
+            var ranking = await _context.Users
+                .Select(u => new 
+                {
+                    UserId = u.Id,
+                    Username = u.UserName,
+                    TotalPoints = _context.LevelPoint
+                    .Where(lp => lp.UsuarioId == u.Id)
+                    .Select(lp => lp.Points)
+                    .Sum()
+                })
+                .OrderByDescending(u => u.TotalPoints)
+                .ToListAsync();
+
+            return Ok(new { dataList = ranking });
+        }
     }
 }
