@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e60fe115117c9147827b15692eb18ea, type: 3}
+  m_Name: Q6_1P
+  m_EditorClassIdentifier: 
+  _info: "\xBFCual de las siguientes pr\xE1cticas agr\xEDcolas pueden realizarse
+    con un dron multiespectrarl?"
+  _answers:
+  - _info: Recorrida de campo
+    _isCorrect: 0
+  - _info: Monitoreo de cultivos
+    _isCorrect: 0
+  - _info: "Cartograf\xEDa"
+    _isCorrect: 0
+  - _info: Todas las anteriores
+    _isCorrect: 1
+  _useTimer: 0
+  _timer: 30
+  _answerType: 0
+  _addScore: 10
+  _levelQuestion: 1
