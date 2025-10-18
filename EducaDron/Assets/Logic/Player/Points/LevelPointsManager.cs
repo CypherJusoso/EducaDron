@@ -45,15 +45,20 @@ public class LevelPointsManager : MonoBehaviour
 
         if (DataManager.instance != null)
         {
+
+            // REFACTORIZAR ESTE METODO. UTILIZAR LAS LINEAS COMENTADAS. INSTANCIAR EL DM EN UNA VARIABLE Y MANEJARLO DESDE AHI.
+            //DataManager ctx = DataManager.instance;
+            //ctx.currentLvl = 2;
+            //ctx.levelPoints = points;
             DataManager.instance.currentLvl = 2;
             DataManager.instance.levelPoints = points;
-            DataManager.instance.currentLvl = 3;
+            //DataManager.instance.currentLvl = 3;
         }
         else
         {
             Debug.LogWarning("DataManager no instanciado.");
         }
-        Debug.Log($"Puntos finales nivel 3: {points} (Vida: -{penalizacionHp}, Tiempo: -{penalizacionTiempo}, Riego: - {penalizacionAgua})");
+        Debug.Log($"Puntos finales nivel {DataManager.instance.currentLvl}: {points} (Vida: -{penalizacionHp}, Tiempo: -{penalizacionTiempo}, Riego: - {penalizacionAgua})");
     }
 
     public void CalculatePointsLevel3()

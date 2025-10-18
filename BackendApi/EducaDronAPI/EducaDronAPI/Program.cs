@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddIdentity<Users, IdentityRole>(options =>
 {
@@ -39,6 +39,23 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
     .AddDefaultTokenProviders();
 
 var app = builder.Build();
+
+// APLICA MIGRACIONES EN EL ARRANQUE (crea la BD si no existe)
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var db = services.GetRequiredService<AppDbContext>();
+        db.Database.Migrate(); // Crea la BD y aplica todas las migraciones pendientes
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Error al crear o migrar la base de datos.");
+        throw;
+    }
+}
 
 app.UseCors(MyAllowSpecificOrigins);
 
