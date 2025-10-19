@@ -1,5 +1,6 @@
 using Microlight.MicroBar;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +17,8 @@ public class DroneStatusAndCollision : MonoBehaviour
     [SerializeField] GameObject smallSmokeVFX;
     [SerializeField] GameObject largeSmokeVFX;
     [SerializeField] MicroBar punch_MicroBar;
+    [SerializeField] GameObject gameOverCanvas;
+    [SerializeField] GameObject alertUi;
 
 
     PlayerMover3 playerMover;
@@ -87,15 +90,26 @@ public class DroneStatusAndCollision : MonoBehaviour
 
     private void GameOver()
     {
-        droneLife = 0;
-        playerMover.isOn = false;
-        gameSceneManager.GameOver();
-        Instantiate(largeSmokeVFX, transform.position, Quaternion.identity);
-        Debug.Log("Game Over");
+       StartCoroutine(GameOverEnumerator());
     }
 
     void OnCollisionExit(Collision collisionInfo)
     {
         print("Collision Out: " + gameObject.name);
+    }
+
+    IEnumerator GameOverEnumerator()
+    {
+        droneLife = 0;
+        playerMover.isOn = false;
+        Instantiate(largeSmokeVFX, transform.position, Quaternion.identity);
+        if (alertUi != null) { alertUi.gameObject.SetActive(false); }
+        
+        yield return new WaitForSeconds(1f);
+        
+        Cursor.lockState = CursorLockMode.None;
+
+        gameOverCanvas.SetActive(true);
+        Debug.Log("Game Over");
     }
 }

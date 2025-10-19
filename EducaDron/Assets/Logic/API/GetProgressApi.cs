@@ -112,7 +112,6 @@ public class GetProgressApi : MonoBehaviour
             }
         }
     }
-
     public void LoadLevel(int levelNumber)
     {
         DataManager.instance.currentLvl = levelNumber;
