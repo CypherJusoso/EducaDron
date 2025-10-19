@@ -56,6 +56,10 @@ public struct UIElements
 
     [SerializeField] RectTransform finishUIElements;
     public RectTransform FinishUIElements { get { return finishUIElements; } }
+
+    // Nuevo: referencia directa al botón "Next Level"
+    [SerializeField] Button nextLevelButton;
+    public Button NextLevelButton { get { return nextLevelButton; } }
 }
 public class UIManager : MonoBehaviour {
 
@@ -174,6 +178,14 @@ public class UIManager : MonoBehaviour {
                 uIElements.FinishUIElements.gameObject.SetActive(true);
                 uIElements.HighScoreText.gameObject.SetActive(true);
                 uIElements.HighScoreText.text = ((highscore > events.StartupHighscore) ? "<color=yellow>new </color>" : string.Empty) + "Highscore: " + highscore;
+
+                // Ocultar "Button_NextLvl" si es el nivel 3
+                var dm = DataManager.instance;
+                bool isLastLevel = dm != null && dm.currentLvl == 3;
+                if (uIElements.NextLevelButton != null)
+                {
+                    uIElements.NextLevelButton.gameObject.SetActive(!isLastLevel);
+                }
                 break;
         }
     }

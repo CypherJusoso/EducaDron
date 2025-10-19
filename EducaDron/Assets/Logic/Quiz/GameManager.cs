@@ -313,13 +313,9 @@ public class GameManager : MonoBehaviour {
 
     public void NextLevel()
     {
-
         int level = DataManager.instance.currentLvl;
-        Debug.Log("Level Actual: " + level);
 
         DataManager.instance.currentLvl = level + 1;
-        Debug.Log("Level Siguiente: " + DataManager.instance.currentLvl);
-
         SceneManager.LoadScene("Informacion");
     }
 
