@@ -41,7 +41,7 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
 var app = builder.Build();
 
 // APLICA MIGRACIONES EN EL ARRANQUE (crea la BD si no existe)
-/*
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -57,7 +57,7 @@ using (var scope = app.Services.CreateScope())
         throw;
     }
 }
-*/
+
 app.UseCors(MyAllowSpecificOrigins);
 
 // Configure the HTTP request pipeline.
