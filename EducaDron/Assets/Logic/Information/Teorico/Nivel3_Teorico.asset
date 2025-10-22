@@ -14,66 +14,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nivelTeorico: 3
   titulo: Drones y Cultivos Nivel 3
-  contenido: 'What is Lorem Ipsum?
-
-    Lorem Ipsum is simply dummy text of the
-    printing and typesetting industry. Lorem Ipsum has been the industry''s standard
-    dummy text ever since the 1500s, when an unknown printer took a galley of type
-    and scrambled it to make a type specimen book. It has survived not only five
-    centuries, but also the leap into electronic typesetting, remaining essentially
-    unchanged. It was popularised in the 1960s with the release of Letraset sheets
-    containing Lorem Ipsum passages, and more recently with desktop publishing software
-    like Aldus PageMaker including versions of Lorem Ipsum.
-
-    
-
-    Why do we
-    use it?
-
-    It is a long established fact that a reader will be distracted
-    by the readable content of a page when looking at its layout. The point of using
-    Lorem Ipsum is that it has a more-or-less normal distribution of letters, as
-    opposed to using ''Content here, content here'', making it look like readable
-    English. Many desktop publishing packages and web page editors now use Lorem
-    Ipsum as their default model text, and a search for ''lorem ipsum'' will uncover
-    many web sites still in their infancy. Various versions have evolved over the
-    years, sometimes by accident, sometimes on purpose (injected humour and the like).
-
-    
-
-    Where
-    does it come from?
-
-    Contrary to popular belief, Lorem Ipsum is not simply
-    random text. It has roots in a piece of classical Latin literature from 45 BC,
-    making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney
-    College in Virginia, looked up one of the more obscure Latin words, consectetur,
-    from a Lorem Ipsum passage, and going through the cites of the word in classical
-    literature, discovered the undoubtable source. Lorem Ipsum comes from sections
-    1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good
-    and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory
-    of ethics, very popular during the Renaissance. The first line of Lorem Ipsum,
-    "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-
-    
-
-    The
-    standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those
-    interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum"
-    by Cicero are also reproduced in their exact original form, accompanied by English
-    versions from the 1914 translation by H. Rackham.
-
-
-    Where can I get some?
-
-    There
-    are many variations of passages of Lorem Ipsum available, but the majority have
-    suffered alteration in some form, by injected humour, or randomised words which
-    don''t look even slightly believable. If you are going to use a passage of Lorem
-    Ipsum, you need to be sure there isn''t anything embarrassing hidden in the middle
-    of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined
-    chunks as necessary, making this the first true generator on the Internet. It
-    uses a dictionary of over 200 Latin words, combined with a handful of model sentence
-    structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem
-    Ipsum is therefore always free from repetition, injected humour, or non-characteristic
-    words etc.'
+  contenido: "Anteriormente se ha descrito una serie de pr\xE1cticas y acciones potenciales
+    que surgen del an\xE1lisis de las im\xE1genes en diferentes espectros. Uno de
+    estos an\xE1lisis permite revelar presencia de pat\xF3genos como hongos, larvas,
+    insectos, ar\xE1cnidos, entre otras especies no deseadas en el cultivo, que afectan
+    negativamente su salud y potencial rendimiento para la cosecha. \n\nEn esta ocasi\xF3n
+    atenderemos aspectos fundamentales para la aplicaci\xF3n de fitosanitarios, componentes
+    qu\xEDmicos, mediante el uso de drones:\n\nPara rociar pesticidas con gotas uniformes
+    y minimizar el desperdicio, se emplea un dron de aplicaci\xF3n con sistema de
+    rociado atomizado, como la serie DJI Agras (p. ej., T40), cuyo dise\xF1o de aspersores
+    duales y control preciso del caudal favorecen una dispersi\xF3n homog\xE9nea
+    y menor uso de insumos. En campo, los drones aportan ventajas claras frente a
+    m\xE9todos tradicionales: aplicaci\xF3n precisa guiada por GPS que reduce derivas
+    y desperdicios, menor exposici\xF3n del personal a qu\xEDmicos, y acceso a zonas
+    dif\xEDciles sin maquinaria pesada. Como gran ventaja comparativa, destaca la
+    precisi\xF3n de dosificaci\xF3n y uniformidad de gotas que \u201Casegura una
+    dispersi\xF3n homog\xE9nea en los cultivos\u201D y disminuye el gasto de producto.\r\n\r\nAdem\xE1s,
+    la aplicaci\xF3n localizada permite tratar solo las \xE1reas que lo necesitan,
+    reduciendo el volumen total de agroqu\xEDmicos, los costos y el impacto ambiental
+    al evitar tratamientos extensivos sobre todo el lote.\r\n\r\nPara operar drones
+    agr\xEDcolas de forma segura y eficaz, una pr\xE1ctica esencial (y obligatoria
+    entre aplicaciones realizadas en momentos distintos o al cambiar de producto)
+    es calibrar el caudal\xEDmetro: debe hacerse antes del primer uso y repetirse
+    cuando se utilice un l\xEDquido de diferente viscosidad o si el error entre el
+    \xE1rea real y la te\xF3rica supera el 15 %; de lo contrario, la dosificaci\xF3n
+    de rociado se ve seriamente afectada. En el AGRAS T40, el rango de temperatura
+    de funcionamiento recomendado es de 0 \xB0C a 45 \xB0C y, para aplicar fitosanitarios
+    l\xEDquidos, debe usarse el sistema de rociado (aspersi\xF3n) del dron \u2014un
+    sistema dual de rociado atomizado con bombas centr\xEDfugas magn\xE9ticas y aspersores\u2014,
+    no el sistema de esparcido (que es para s\xF3lidos).\r\n\r\n\xA1Atenci\xF3n!
+    Debes saber que en Uruguay existe un organismo encargado de la regulaci\xF3n
+    del uso de Drones para fines comerciales productivos, el cual otroga licencias
+    de vuelo y garantiza que el usuario est\xE9 informado sobre las normativas de
+    vuelo en la regi\xF3n.\n\nEn cuanto al marco legal, en Uruguay el organismo regulador
+    para el uso y piloteo de drones es la Direcci\xF3n Nacional de Aviaci\xF3n Civil
+    e Infraestructura Aeron\xE1utica (DINACIA).\r\n"

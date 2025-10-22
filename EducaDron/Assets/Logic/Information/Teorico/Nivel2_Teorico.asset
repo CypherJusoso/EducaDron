@@ -13,25 +13,35 @@ MonoBehaviour:
   m_Name: Nivel2_Teorico
   m_EditorClassIdentifier: 
   nivelTeorico: 2
-  titulo: Drones y Cultivos Nivel2
-  contenido: 'There are many variations of passages of Lorem Ipsum available, but
-    the majority have suffered alteration in some form, by injected humour, or randomised
-    words which don''t look even slightly believable. If you are going to use a passage
-    of Lorem Ipsum, you need to be sure there isn''t anything embarrassing hidden
-    in the middle of text. All the Lorem Ipsum generators on the Internet tend to
-    repeat predefined chunks as necessary, making this the first true generator on
-    the Internet. It uses a dictionary of over 200 Latin words, combined with a handful
-    of model sentence structures, to generate Lorem Ipsum which looks reasonable.
-    The generated Lorem Ipsum is therefore always free from repetition, injected
-    humour, or non-characteristic words etc.
-
-
-    It is a long established fact
-    that a reader will be distracted by the readable content of a page when looking
-    at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-    distribution of letters, as opposed to using ''Content here, content here'',
-    making it look like readable English. Many desktop publishing packages and web
-    page editors now use Lorem Ipsum as their default model text, and a search for
-    ''lorem ipsum'' will uncover many web sites still in their infancy. Various versions
-    have evolved over the years, sometimes by accident, sometimes on purpose (injected
-    humour and the like).'
+  titulo: "An\xE1lisis de Im\xE1genes y Aplicaciones Eficientes "
+  contenido: "Anteriormente has tomado fotograf\xEDas de la chacra, captando im\xE1genes
+    del cultivo en diferentes escepctros gracias a la c\xE1mara multiespectral del
+    dron utilizado.\n\nEstas im\xE1genes son una gran fuente de informaci\xF3n para
+    el an\xE1isis del estado actual del terreno y el cultivo. A trav\xE9s de diferentes
+    an\xE1lisis del espectro obtenido se pueden definir acciones necesarias para
+    el cultivo, como por ejemplo:\n\n- Zonas con d\xE9ficit h\xEDdrico que necesitan
+    ser regadas.\n- Zonas infectadas por plagas no visibles al ojo humano que deben
+    ser tratadas localizadamente.\n- Zonas con bajo \xEDndice de vegetaci\xF3n en
+    relaci\xF3n con otras que requieren pr\xE1cticas de fertilizaci\xF3n localizada.\n-
+    Estado fenol\xF3gico del cultivo.\n\nPara operaciones de rociado y protecci\xF3n
+    de cultivos, el dron indicado es la serie DJI Agras, en especial el Agras T40,
+    dise\xF1ado para transportar l\xEDquido y aplicar agroqu\xEDmicos de forma precisa.\n\nEl
+    T40 integra un sistema de rociado dual atomizado con tanque de 40 L y capacidad
+    de carga completa de 40 kg, caracter\xEDsticas que maximizan superficie tratada
+    por vuelo y uniformidad de gotas; su resistencia m\xE1xima al viento es de 6
+    m/s, por lo que se debe operar por debajo de ese umbral para mantener cobertura
+    y seguridad.\n\nEl objetivo principal de usar drones con tanques de carga es
+    aplicar insumos de manera dirigida y eficiente, reduciendo derivas, optimizando
+    dosis y disminuyendo el uso de pesticidas para un manejo m\xE1s seguro y sostenible.\r\n\r\nPara
+    pulverizaci\xF3n con drones, el tama\xF1o de gota se regula seg\xFAn el objetivo
+    agron\xF3mico y las condiciones ambientales: para m\xE1xima cobertura foliar
+    (fungicidas/controles de contacto) se utilizan gotas m\xE1s finas y, cuando aumenta
+    el riesgo de deriva (viento, temperatura), se priorizan gotas m\xE1s gruesas;
+    los sistemas atomizados del Agras permiten un rango de 50\u2013500 \u03BCm, y
+    la operaci\xF3n segura exige vientos \u2264 6 m/s para mantener uniformidad y
+    evitar derivas.\r\n\r\nCon tanques de carga, un dron realiza aplicaci\xF3n de
+    agroqu\xEDmicos (pesticidas, fertilizantes l\xEDquidos) y tratamientos localizados,
+    incluso en zonas de dif\xEDcil acceso; estas son las pr\xE1cticas t\xEDpicas
+    de un dron de rociado. Para siembra, no se usa el tanque: se requiere m\xF3dulo
+    de esparcido/sembrado (algunos equipos permiten cambiar del sistema de rociado
+    al de esparcido).\r\n"
