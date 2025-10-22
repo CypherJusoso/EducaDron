@@ -13,24 +13,25 @@ MonoBehaviour:
   m_Name: Nivel1_Teorico
   m_EditorClassIdentifier: 
   nivelTeorico: 1
-  titulo: Drones y Cultivos Nivel 1
-  contenido: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-    Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s,
-    when an unknown printer took a galley of type and scrambled it to make a type
-    specimen book. It has survived not only five centuries, but also the leap into
-    electronic typesetting, remaining essentially unchanged. It was popularised in
-    the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-    and more recently with desktop publishing software like Aldus PageMaker including
-    versions of Lorem Ipsum.
-
-
-    Contrary to popular belief, Lorem Ipsum is not
-    simply random text. It has roots in a piece of classical Latin literature from
-    45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at
-    Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words,
-    consectetur, from a Lorem Ipsum passage, and going through the cites of the word
-    in classical literature, discovered the undoubtable source. Lorem Ipsum comes
-    from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes
-    of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the
-    theory of ethics, very popular during the Renaissance. The first line of Lorem
-    Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
+  titulo: Monitoreo de Cultivos
+  contenido: "En trabajos agr\xEDcolas de monitoreo y manejo sitio-espec\xEDfico,
+    los drones equipados con c\xE1maras multiespectrales y RGB permiten detectar
+    varias situaciones como:\n\n- Estr\xE9s h\xEDdrico\n- Deficiencias nutricionales\n-
+    Plagas/enfermedades\n- Generar mapas precisos del cultivo\n\nEn la pr\xE1ctica,
+    esto habilita tareas posteriores como:\n\n- Mapeo/topograf\xEDa\n- Inspecci\xF3n
+    a\xE9rea\n- An\xE1lisis de vegetaci\xF3n\n- Aplicaci\xF3n dirigida de agroqu\xEDmicos
+    con alta precisi\xF3n y menor impacto ambiental. \n\nCuando el objetivo es evaluar
+    la salud del cultivo, la mejor opci\xF3n es un drone con c\xE1mara multiespectral
+    (puede combinar RGB + bandas NIR/RedEdge) para calcular \xEDndices de vegetaci\xF3n
+    y anticipar problemas antes de que sean visibles; operativamente, el segmento
+    terrestre puede simplificarse hasta una tablet o smartphone, por lo que al menos
+    un operador con licencia puede manejar el sistema (aunque en campo suele sumarse
+    un observador por seguridad y normativa local).\r\n\r\nPara mapeo multiespectral
+    agr\xEDcola, el Phantom 4 Multispectral integra seis c\xE1maras (RGB + cinco
+    bandas: B, G, R, Red Edge y NIR) y un sensor de irradiancia para calcular NDVI
+    en tiempo real y generar mapas multiespectrales 2D con apoyo de RTK para mayor
+    precisi\xF3n geom\xE9trica; su autonom\xEDa ronda los 27 min y opera normalmente
+    entre 0\u201340 \xB0C con una bater\xEDa LiPo 4S. En condiciones de campo, es
+    clave considerar el viento: estos drones deben operar \xFAnicamente cuando la
+    velocidad del viento no supere los 6 m/s, a fin de preservar la estabilidad del
+    vuelo, la calidad de los datos y la seguridad operativa.\r\n"
