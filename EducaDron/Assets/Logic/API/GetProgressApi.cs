@@ -114,10 +114,10 @@ public class GetProgressApi : MonoBehaviour
     }
     public void LoadLevel(int levelNumber)
     {
-        DataManager.instance.currentLvl = levelNumber;
-        Debug.LogWarning("Nivel Setteado:" + DataManager.instance.currentLvl);
+        //DataManager.instance.currentLvl = levelNumber;
+        //Debug.LogWarning("Nivel Setteado:" + DataManager.instance.currentLvl);
 
-        SceneManager.LoadScene("Informacion");
+        SceneManager.LoadScene("Level"+ levelNumber);
         //SceneManager.LoadScene("Level" + levelNumber);
     }
 
