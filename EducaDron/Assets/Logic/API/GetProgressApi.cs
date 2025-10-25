@@ -1,3 +1,4 @@
+using Assets.Logic.API;
 using System.Collections;
 using System.Text;
 using UnityEngine;
@@ -24,11 +25,14 @@ public class GetProgressApi : MonoBehaviour
 
 
     string userId;
-    string URL = "http://localhost:5062/api/progress/?userId=";
+    string URL;
 
     private void Start()
     {
         userId = DataManager.instance.userId;
+
+        URL = ApiConfig.BuildWithQuery(ApiRoutes.Progress.Base, ("userId", userId));
+
         StartCoroutine(FetchProgress());
     }
 
