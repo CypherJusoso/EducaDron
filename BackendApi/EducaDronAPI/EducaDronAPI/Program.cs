@@ -21,9 +21,11 @@ builder.Services.AddCors(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<Users, IdentityRole>(options =>
 {
@@ -39,9 +41,12 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
     .AddDefaultTokenProviders();
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 // APLICA MIGRACIONES EN EL ARRANQUE (crea la BD si no existe)
-
+/*
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -57,6 +62,7 @@ using (var scope = app.Services.CreateScope())
         throw;
     }
 }
+*/
 
 app.UseCors(MyAllowSpecificOrigins);
 
@@ -78,5 +84,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapGet("/health", () => Results.Ok("OK"));
 
 app.Run();
