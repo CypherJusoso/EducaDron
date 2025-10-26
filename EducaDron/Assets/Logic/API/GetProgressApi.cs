@@ -38,8 +38,7 @@ public class GetProgressApi : MonoBehaviour
 
     IEnumerator FetchProgress()
     {
-        string fullURL = URL + userId;
-        UnityWebRequest req = UnityWebRequest.Get(fullURL);
+        UnityWebRequest req = UnityWebRequest.Get(URL);
 
         yield return req.SendWebRequest();
 

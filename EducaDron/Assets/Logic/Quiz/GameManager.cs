@@ -316,7 +316,7 @@ public class GameManager : MonoBehaviour {
         int level = DataManager.instance.currentLvl;
 
         DataManager.instance.currentLvl = level + 1;
-        SceneManager.LoadScene("Informacion");
+        SceneManager.LoadScene("Level"+DataManager.instance.currentLvl);
     }
 
     /// <summary>

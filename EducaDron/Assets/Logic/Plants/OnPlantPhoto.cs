@@ -3,8 +3,8 @@ using UnityEngine;
 public class OnPlantPhoto : MonoBehaviour
 {
     [SerializeField] GameObject exclamation;
-    bool isPhotographed = false;
 
+     public bool isPhotographed = false;
     public bool OnPhoto()
     {
         if (isPhotographed) { return false; }

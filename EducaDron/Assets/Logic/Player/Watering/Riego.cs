@@ -13,6 +13,9 @@ public class Riego : MonoBehaviour
     [Header("Riego")]
     public ParticleSystem particulasRiego; // Sistema de partículas de agua
     public KeyCode teclaRiego = KeyCode.R;
+    [SerializeField] AudioClip waterClip;
+    [SerializeField] Transform soundOrigin;
+
 
     [Header("UI")]
     [SerializeField] MicroBar waterMicroBar;
@@ -66,6 +69,11 @@ public class Riego : MonoBehaviour
 
         aguaActual -= velocidadRiego * Time.deltaTime;
         aguaActual = Mathf.Max(aguaActual, 0f);
+
+        if (waterClip != null)
+        {
+            AudioManager.instance.PlayLoopingSFX(waterClip, soundOrigin, 1f);
+        }
     }
 
     void DetenerRiego()
@@ -74,6 +82,7 @@ public class Riego : MonoBehaviour
         {
             estaRegando = false;
             particulasRiego.Stop();
+            AudioManager.instance.StopLoopingSFX();
         }
     }
 
