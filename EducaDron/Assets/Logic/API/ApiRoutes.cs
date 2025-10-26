@@ -12,14 +12,14 @@ namespace Assets.Logic.API
         {
             public const string Login = "/api/users/login";
             public const string Register = "/api/users/register";
-            public const string Points = "/api/users/points/";           // si tu endpoint termina con /
+            public const string Points = "/api/users/points/";
             public const string PointsRanking = "/api/users/points/ranking";
             public const string UpdatePoints = "/api/users/points/update-points";
         }
 
         public static class Progress
         {
-            public const string Base = "/api/progress/";  // Usalo con query: ?userId=...
+            public const string Base = "/api/progress/";
         }
     }
 }

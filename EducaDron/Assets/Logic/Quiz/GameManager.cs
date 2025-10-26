@@ -310,13 +310,20 @@ public class GameManager : MonoBehaviour {
         DataManager.instance.quizPoints = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-    public void NextLevel()
+    public void CallNextLevel()
+    {
+        StartCoroutine(NextLevel());
+    }
+    IEnumerator NextLevel()
     {
         int level = DataManager.instance.currentLvl;
+        int currentLvl = DataManager.instance.currentLvl;
+        int points = DataManager.instance.TotalPoints;
+        string id = DataManager.instance.userId;
+        yield return pointsApi.UpdatePoints(id, currentLvl, points);
 
-        DataManager.instance.currentLvl = level + 1;
-        SceneManager.LoadScene("Level"+DataManager.instance.currentLvl);
+        int nextLevel = DataManager.instance.currentLvl + 1;
+        SceneManager.LoadScene("Level"+nextLevel);
     }
 
     /// <summary>
