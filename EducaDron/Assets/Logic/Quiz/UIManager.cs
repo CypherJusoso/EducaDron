@@ -179,7 +179,6 @@ public class UIManager : MonoBehaviour {
                 uIElements.HighScoreText.gameObject.SetActive(true);
                 uIElements.HighScoreText.text = ((highscore > events.StartupHighscore) ? "<color=yellow>new </color>" : string.Empty) + "Highscore: " + highscore;
 
-                // Ocultar "Button_NextLvl" si es el nivel 3
                 var dm = DataManager.instance;
                 bool isLastLevel = dm != null && dm.currentLvl == 3;
                 if (uIElements.NextLevelButton != null)
