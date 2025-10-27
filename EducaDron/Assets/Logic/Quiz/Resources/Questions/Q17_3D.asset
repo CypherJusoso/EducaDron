@@ -15,7 +15,7 @@ MonoBehaviour:
   _info: "\xBFCual de estas es una pr\xE1ctica escencial y obligatoria entra aplicaciones
     en diferentes momentos?"
   _answers:
-  - _info: Limpieza del tanque y pulverizadores
+  - _info: "Calibrar el caudal\xEDmetro"
     _isCorrect: 1
   - _info: "Limpieza de las h\xE9lices"
     _isCorrect: 0

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _info: "\xBFCual es la fuente de energ\xEDa de un Dron?"
   _answers:
-  - _info: "Bater\xEDas recargables"
+  - _info: "Bater\xEDas LiPo 4S"
     _isCorrect: 1
   - _info: Combustible
     _isCorrect: 0
@@ -24,6 +24,6 @@ MonoBehaviour:
     _isCorrect: 0
   _useTimer: 1
   _timer: 30
-  _answerType: 0
+  _answerType: 1
   _addScore: 10
   _levelQuestion: 1
