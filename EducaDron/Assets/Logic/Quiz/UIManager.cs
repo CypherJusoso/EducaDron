@@ -162,17 +162,17 @@ public class UIManager : MonoBehaviour {
         {
             case ResolutionScreenType.Correct:
                 uIElements.ResolutionBG.color = parameters.CorrectBGColor;
-                uIElements.ResolutionStateInfoText.text = "CORRECT!";
+                uIElements.ResolutionStateInfoText.text = "CORRECTO!";
                 uIElements.ResolutionScoreText.text = "+" + score;
                 break;
             case ResolutionScreenType.Incorrect:
                 uIElements.ResolutionBG.color = parameters.IncorrectBGColor;
-                uIElements.ResolutionStateInfoText.text = "WRONG!";
+                uIElements.ResolutionStateInfoText.text = "INCORRECTO!";
                 uIElements.ResolutionScoreText.text = "-" + score;
                 break;
             case ResolutionScreenType.Finish:
                 uIElements.ResolutionBG.color = parameters.FinalBGColor;
-                uIElements.ResolutionStateInfoText.text = "FINAL SCORE";
+                uIElements.ResolutionStateInfoText.text = "RESULTADO";
 
                 StartCoroutine(CalculateScore());
                 uIElements.FinishUIElements.gameObject.SetActive(true);
