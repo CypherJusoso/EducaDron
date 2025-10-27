@@ -16,6 +16,7 @@ public class PlayerMover3 : MonoBehaviour
     [SerializeField] ThirdPersonLook thirdPersonScripts;
     [SerializeField] InputHandler _input;
     [SerializeField] Transform hand;
+    [SerializeField] AudioSource droneSoundLoop;
 
     public bool isOn;
     //moveInput pero en 3D
@@ -117,8 +118,17 @@ public class PlayerMover3 : MonoBehaviour
         thirdPersonCamera.enabled = !isOn;
 
         thirdPersonScripts.controlsEnabled = !isOn;
-        if (!isOn) { _rigidBody.useGravity = true; }
-        else { _rigidBody.useGravity = false; }
+        if (!isOn) 
+        { 
+            _rigidBody.useGravity = true;
+            droneSoundLoop.Stop();
+        }
+        else 
+        { 
+            _rigidBody.useGravity = false;
+            droneSoundLoop.Play();
+
+        }
     }
   
     void MovePlayerWithCamera()

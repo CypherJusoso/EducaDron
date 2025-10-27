@@ -1,23 +1,15 @@
 using UnityEngine;
 
-public class OnCropWatering : MonoBehaviour
+public class OnCropWatering : MonoBehaviour, IWaterable
 {
     [SerializeField] int particleHits = 0;
     [SerializeField] int plantHp = 20;
+
     [SerializeField] GameObject flyParticle;
     [SerializeField] GameObject purpleAura;
 
     public bool isWatered = false;
-    
-    private void OnParticleCollision(GameObject other)
-    {
-        Debug.Log("Collision with: " + other.name);
-
-        if (other.CompareTag("WateringSystem"))
-        {
-            ProcessWatering();
-        }
-    }
+    public bool IsWatered => isWatered;
 
     public void ProcessWatering()
     {
@@ -37,4 +29,5 @@ public class OnCropWatering : MonoBehaviour
             Debug.Log("Plant fully fumigated!");
         }
     }
+
 }

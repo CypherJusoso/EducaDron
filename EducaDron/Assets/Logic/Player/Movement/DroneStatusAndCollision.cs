@@ -19,7 +19,7 @@ public class DroneStatusAndCollision : MonoBehaviour
     [SerializeField] MicroBar punch_MicroBar;
     [SerializeField] GameObject gameOverCanvas;
     [SerializeField] GameObject alertUi;
-
+    [SerializeField] AudioClip[] damageSoundClips;
 
     PlayerMover3 playerMover;
 
@@ -62,6 +62,10 @@ public class DroneStatusAndCollision : MonoBehaviour
         Debug.Log($"Dron sufre {damage} de daño, vida = {droneLife}");
         if (damage >0 && damage < 10)
         {
+            if (AudioManager.instance != null)
+            {
+                AudioManager.instance.PlayRandomSoundFXClip(damageSoundClips, transform, 1f);
+            }
             isCollided = true;
 
             if (punch_MicroBar != null) 
@@ -73,6 +77,10 @@ public class DroneStatusAndCollision : MonoBehaviour
         }
         else if (damage >= 10) 
         {
+            if (AudioManager.instance != null)
+            {
+                AudioManager.instance.PlayRandomSoundFXClip(damageSoundClips, transform, 1f);
+            }
             isCollided = true;
             if (punch_MicroBar != null)
             {

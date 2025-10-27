@@ -1,3 +1,4 @@
+using Assets.Logic.API;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -6,7 +7,7 @@ using UnityEngine.Networking;
 
 public class LoginApi : MonoBehaviour
 {
-    string URL = "http://localhost:5062/api/users/login";
+    string URL = ApiConfig.Build(ApiRoutes.Users.Login);
 
     [SerializeField] GameObject successPanel;
     [SerializeField] TextMeshProUGUI errorText;

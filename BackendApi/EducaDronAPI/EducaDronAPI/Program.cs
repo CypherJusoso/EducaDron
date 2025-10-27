@@ -2,6 +2,7 @@ using EducaDronAPI.Data;
 using EducaDronAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -10,20 +11,38 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
-                                 .AllowAnyHeader()
-                                 .AllowAnyMethod();
-                      });
+    options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+    {
+        policy
+        .SetIsOriginAllowed(origin =>
+        {
+            if (string.IsNullOrEmpty(origin)) return false;
+            var uri = new Uri(origin);
+            var host = uri.Host.ToLowerInvariant();
+
+            // dev local (cualquier puerto)
+            if (host == "localhost" || host == "127.0.0.1") return true;
+
+            // futuro: itch.io
+            if (host == "itch.io" || host.EndsWith(".itch.io")) return true;
+
+            // CDN típico de itch (ajustaremos si cambia)
+            if (host == "v6p9d9t4.ssl.hwcdn.net") return true;
+
+            return false;
+        })
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
 });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<Users, IdentityRole>(options =>
 {
@@ -39,44 +58,28 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
     .AddDefaultTokenProviders();
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
-// APLICA MIGRACIONES EN EL ARRANQUE (crea la BD si no existe)
+// HTTPS en Azure
+app.UseHttpsRedirection();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var db = services.GetRequiredService<AppDbContext>();
-        db.Database.Migrate(); // Crea la BD y aplica todas las migraciones pendientes
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Error al crear o migrar la base de datos.");
-        throw;
-    }
-}
-
-app.UseCors(MyAllowSpecificOrigins);
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-// app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
+// CORS ANTES de auth
+app.UseCors(MyAllowSpecificOrigins);
+
+// Identity / Auth (estás usando AddIdentity arriba)
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapGet("/health", () => Results.Ok("OK"));
 
 app.Run();

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class OnCropWatering2 : MonoBehaviour
+public class OnCropWatering2 : MonoBehaviour, IWaterable
 {
     [SerializeField] int particleHits = 0;
     [SerializeField] int plantHp = 20;
@@ -9,6 +9,7 @@ public class OnCropWatering2 : MonoBehaviour
     [SerializeField] GameObject waterModel;
 
     public bool isWatered = false;
+    public bool IsWatered => isWatered;
 
     private void Start()
     {
@@ -38,5 +39,4 @@ public class OnCropWatering2 : MonoBehaviour
         }
     }
 
-    public bool IsWatered => isWatered;
 }
