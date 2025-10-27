@@ -12,6 +12,9 @@ public class LoginApi : MonoBehaviour
     [SerializeField] GameObject successPanel;
     [SerializeField] TextMeshProUGUI errorText;
 
+    // Spinner a mostrar mientras se hace la request
+    [SerializeField] GameObject loadingSpinner;
+
     public void SendDto(string username, string password)
     {
         StartCoroutine(LoginPost(username, password)); 
@@ -29,33 +32,47 @@ public class LoginApi : MonoBehaviour
         req.downloadHandler = new DownloadHandlerBuffer();
         req.SetRequestHeader("Content-Type", "application/json");
 
-        yield return req.SendWebRequest();
+        // Mostrar spinner y ocultar error previo
+        if (loadingSpinner != null) loadingSpinner.SetActive(true);
+        if (errorText != null) errorText.gameObject.SetActive(false);
 
-        string jsonResponse = req.downloadHandler.text;
-        Debug.Log("jsonResponse: " + jsonResponse);
-
-        if (req.result != UnityWebRequest.Result.Success)
+        try
         {
-            ErrorResponse errorResponse = JsonUtility.FromJson<ErrorResponse>(jsonResponse);
-            if (errorResponse.errors.Length > 0)
+            yield return req.SendWebRequest();
+
+            string jsonResponse = req.downloadHandler.text;
+            Debug.Log("jsonResponse: " + jsonResponse);
+
+            if (req.result != UnityWebRequest.Result.Success)
             {
-                errorText.text = errorResponse.errors[0];
-                errorText.gameObject.SetActive(true);
+                ErrorResponse errorResponse = null;
+                try { errorResponse = JsonUtility.FromJson<ErrorResponse>(jsonResponse); } catch { /* ignorar parse error */ }
+
+                if (errorResponse != null && errorResponse.errors != null && errorResponse.errors.Length > 0 && errorText != null)
+                {
+                    errorText.text = errorResponse.errors[0];
+                    errorText.gameObject.SetActive(true);
+                }
+
+                Debug.LogError("Error: " + req.error);
             }
+            else
+            {
+                jsonResponse = req.downloadHandler.text;
+                Debug.Log("Respuesta del servidor: " + jsonResponse);
 
-            Debug.LogError("Error: " + req.error);
+                LoginResponse loginResponse = JsonUtility.FromJson<LoginResponse>(jsonResponse);
 
+                DataManager.instance.userId = loginResponse.userId;
+                DataManager.instance.username = username;
+
+                if (successPanel != null) successPanel.SetActive(true);
+            }
         }
-        else
+        finally
         {
-            jsonResponse = req.downloadHandler.text;
-            Debug.Log("Respuesta del servidor: " + jsonResponse);
-
-            LoginResponse loginResponse = JsonUtility.FromJson<LoginResponse>(jsonResponse);
-
-            DataManager.instance.userId = loginResponse.userId;
-            DataManager.instance.username = username;
-            successPanel.SetActive(true);
+            // Asegurar ocultar el spinner pase lo que pase
+            if (loadingSpinner != null) loadingSpinner.SetActive(false);
         }
     }
 

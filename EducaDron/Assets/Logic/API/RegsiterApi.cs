@@ -13,6 +13,9 @@ public class RegisterApi : MonoBehaviour
     [SerializeField] GameObject successPanel;
     [SerializeField] TextMeshProUGUI errorText;
 
+    // Spinner a mostrar mientras se hace la request
+    [SerializeField] GameObject loadingSpinner;
+
     public void SendDto(string name, string email, string password, string confirmPassword)
     {
         StartCoroutine(RegisterPost(name, email, password, confirmPassword));
@@ -20,37 +23,47 @@ public class RegisterApi : MonoBehaviour
 
     IEnumerator RegisterPost(string name, string email, string password, string confirmPassword)
     {
-        //Crea el objeto RegisterDto y lo pasa a json
         string jsonBody = JsonUtility.ToJson(new RegisterDto(name, email, password, confirmPassword));
         UnityWebRequest req = new UnityWebRequest(URL, "POST");
         
-        //Convierte el string json a bytes 
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
 
         req.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        //Leer la respuesta del servidor despues de la request
         req.downloadHandler = new DownloadHandlerBuffer();
 
-        req.SetRequestHeader("Content-Type", "application/json");   
+        req.SetRequestHeader("Content-Type", "application/json");
 
-        yield return req.SendWebRequest();
-        
-        if (req.result != UnityWebRequest.Result.Success)
+        // Mostrar spinner y ocultar error previo
+        if (loadingSpinner != null) loadingSpinner.SetActive(true);
+        if (errorText != null) errorText.gameObject.SetActive(false);
+
+        try
         {
-            Debug.LogError("Error: " + req.error);
-            
-            ErrorResponse errorResponse = JsonUtility.FromJson<ErrorResponse>(req.downloadHandler.text);
-
-            if (errorResponse != null && errorResponse.errors != null && errorResponse.errors.Length > 0)
+            yield return req.SendWebRequest();
+        
+            if (req.result != UnityWebRequest.Result.Success)
             {
-                errorText.text = string.Join("\n", errorResponse.errors);
-                errorText.gameObject.SetActive(true);
+                Debug.LogError("Error: " + req.error);
+            
+                ErrorResponse errorResponse = null;
+                try { errorResponse = JsonUtility.FromJson<ErrorResponse>(req.downloadHandler.text); } catch { /* ignorar parse error */ }
+
+                if (errorResponse != null && errorResponse.errors != null && errorResponse.errors.Length > 0 && errorText != null)
+                {
+                    errorText.text = string.Join("\n", errorResponse.errors);
+                    errorText.gameObject.SetActive(true);
+                }
+            }
+            else
+            {
+                Debug.Log("Respuesta del servidor: " + req.downloadHandler.text);
+                if (successPanel != null) successPanel.SetActive(true);
             }
         }
-        else
+        finally
         {
-            Debug.Log("Respuesta del servidor: " + req.downloadHandler.text);
-            successPanel.SetActive(true);
+            // Asegurar ocultar el spinner pase lo que pase
+            if (loadingSpinner != null) loadingSpinner.SetActive(false);
         }
     }
 
