@@ -1,12 +1,14 @@
 using Microlight.MicroBar;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
 
     public float timerDuration = 300.0f;
     [SerializeField] MicroBar timer_MicroBar;
-
+    [SerializeField] Image batteryImage;
+    [SerializeField] Sprite[] batterySprites;
     [SerializeField] PlayerMover3 playerMover;
     [SerializeField] GameSceneManager gameSceneManager;
 
@@ -15,7 +17,11 @@ public class Timer : MonoBehaviour
     const float MAX_TIME = 300f;
     void Start()
     {
-        if (timer_MicroBar != null) timer_MicroBar.Initialize(MAX_TIME);
+        if (timer_MicroBar != null)
+        {
+            timer_MicroBar.Initialize(MAX_TIME);
+        }
+        UpdateBatteryIcon(1f);
     }
 
     // Update is called once per frame
@@ -40,6 +46,9 @@ public class Timer : MonoBehaviour
             {
                 timer_MicroBar.UpdateBar(timerDuration, false, UpdateAnim.Damage);
             }
+
+            float percentage = timerDuration / MAX_TIME;
+            UpdateBatteryIcon(percentage);
         }
     }
 
@@ -53,5 +62,27 @@ public class Timer : MonoBehaviour
         playerMover.isOn = false;
         gameSceneManager.GameOver();
         Debug.Log("Time Out");
+    }
+
+    void UpdateBatteryIcon(float percentage)
+    {
+        if (batterySprites.Length < 4 || batteryImage == null) { return; }
+    
+        if (percentage > 0.75f)
+        {
+            batteryImage.sprite = batterySprites[0];
+        }
+        else if (percentage > 0.5f)
+        {
+            batteryImage.sprite = batterySprites[1];
+        }
+        else if (percentage > 0.25f)
+        {
+            batteryImage.sprite = batterySprites[2];
+        }
+        else
+        {
+            batteryImage.sprite = batterySprites[3];
+        }
     }
 }

@@ -7,6 +7,7 @@ public class Watering : MonoBehaviour
     public const float WATER_CAPACITY = 1000f;
     public float aguaActual = 1000f;
     public float velocidadRiego = 10f; // Litros por segundo
+    private AudioSource currentWaterSound;
 
 
     [Header("Riego")]
@@ -14,7 +15,8 @@ public class Watering : MonoBehaviour
     [SerializeField] LayerMask plantLayerMask;
     [SerializeField] int waterPerSecond = 5;
     [SerializeField] ParticleSystem waterParticles;
-
+    [SerializeField] AudioClip waterClip;
+    [SerializeField] Transform soundOrigin;
 
     [Header("UI")]
     [SerializeField] MicroBar waterMicroBar;
@@ -71,6 +73,11 @@ public class Watering : MonoBehaviour
         {
             waterParticles.Play();
         }
+
+        if (waterClip != null)
+        {
+            AudioManager.instance.PlayLoopingSFX(waterClip, soundOrigin, 1f);
+        }
     }
 
     void StopWatering()
@@ -79,6 +86,10 @@ public class Watering : MonoBehaviour
         if (waterParticles != null && waterParticles.isPlaying)
         {
             waterParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            if (waterClip != null)
+            {
+                AudioManager.instance.StopLoopingSFX();
+            }
         }
     }
 
@@ -88,13 +99,14 @@ public class Watering : MonoBehaviour
 
         foreach (Collider col in hits)
         {
-            OnCropWatering2 onCropWatering = col.GetComponent<OnCropWatering2>();
-            if (onCropWatering != null && !onCropWatering.isWatered)
+            IWaterable plant = col.GetComponent<IWaterable>();  
+
+            if (plant != null && !plant.IsWatered)
             {
                 int waterInFrame = Mathf.CeilToInt(waterPerSecond * Time.deltaTime);
                 for(int i = 0; i < waterInFrame; i++)
                 {
-                    onCropWatering.ProcessWatering();
+                    plant.ProcessWatering();
                 }
             }
         }

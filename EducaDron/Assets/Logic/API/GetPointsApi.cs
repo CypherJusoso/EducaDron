@@ -1,3 +1,4 @@
+using Assets.Logic.API;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class GetPointsApi : MonoBehaviour
 
     string userId;
 
-    string URLGet = "http://localhost:5062/api/users/points/";
+    string URL = ApiConfig.Build(ApiRoutes.Users.Points);
     public void SendGet()
     {
         StartCoroutine(GetPoints());
@@ -24,7 +25,7 @@ public class GetPointsApi : MonoBehaviour
     }
     IEnumerator GetPoints()
     {
-        string fullUrl = URLGet + userId;
+        string fullUrl = URL + userId;
         UnityWebRequest req = UnityWebRequest.Get(fullUrl);
 
         yield return req.SendWebRequest();

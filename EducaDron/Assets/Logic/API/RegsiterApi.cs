@@ -1,3 +1,4 @@
+using Assets.Logic.API;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -7,8 +8,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class RegisterApi : MonoBehaviour
 {
-    string URL = "http://localhost:5062/api/users/register";
-
+    string URL = ApiConfig.Build(ApiRoutes.Users.Register);
+    
     [SerializeField] GameObject successPanel;
     [SerializeField] TextMeshProUGUI errorText;
 

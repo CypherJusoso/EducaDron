@@ -6,8 +6,12 @@ using UnityEngine.UI;
 public class PhotoCapture : MonoBehaviour
 {
     [SerializeField] Image photoDisplayArea;
+    [SerializeField] Image cameraOverlay;
+    [SerializeField] Sprite normalCamOverlay;
+    [SerializeField] Sprite greenCamOverlay;
     [SerializeField] GameObject photoContainer;
     [SerializeField] GameObject cameraUI;
+    [SerializeField] GameObject UICanvas;
    // [SerializeField] Camera firstPersonCamera;
 
    // [SerializeField] GameObject cameraFlash;
@@ -15,7 +19,7 @@ public class PhotoCapture : MonoBehaviour
 
     [SerializeField] Animator fadingAnimation;
 
-    [SerializeField] AudioSource cameraAudio;
+    [SerializeField] AudioClip cameraAudioClip;
 
     [SerializeField] GameObject failPanel;
 
@@ -51,7 +55,10 @@ public class PhotoCapture : MonoBehaviour
             isPhotoMode = !isPhotoMode;
             cameraUI.SetActive(isPhotoMode);
         }
-
+        if (isPhotoMode)
+        {
+            UpdateOverlayColor();
+        }
         if (!isPhotoMode) { return; }
 
         //Si apretas click izquierdo tomas la foto o cerras la interfaz
@@ -79,6 +86,7 @@ public class PhotoCapture : MonoBehaviour
 
         IEnumerator CapturePhoto()
         {
+            UICanvas.SetActive(false);
             cameraUI.SetActive(false);
             viewingPhoto = true;
 
@@ -92,7 +100,13 @@ public class PhotoCapture : MonoBehaviour
             screenCapture.ReadPixels(regionToRead, 0, 0, false);
             screenCapture.Apply();
 
+            UICanvas.SetActive(true);
+
             DetectTargetHit();
+            if (AudioManager.instance != null)
+            {
+                AudioManager.instance.PlaySoundFXClip(cameraAudioClip, transform, 1f);
+            }
             ShowPhoto();
         }
         void ShowPhoto()
@@ -149,5 +163,32 @@ public class PhotoCapture : MonoBehaviour
         viewingPhoto = false;
         photoContainer.SetActive(false);
         cameraUI.SetActive(true);
+    }
+
+    void UpdateOverlayColor()
+    {
+        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray,out hit, 20f))
+        {
+            if (hit.collider.CompareTag("Target"))
+            {
+                OnPlantPhoto plant = hit.collider.GetComponent<OnPlantPhoto>();
+                if (plant != null && !plant.isPhotographed)
+                {
+                    if (cameraOverlay.sprite != greenCamOverlay)
+                    {
+                        cameraOverlay.sprite = greenCamOverlay;
+                    }
+                    return;
+                }
+            }
+        }
+
+        if (cameraOverlay.sprite != normalCamOverlay)
+        {
+            cameraOverlay.sprite = normalCamOverlay;
+        }
     }
 }
