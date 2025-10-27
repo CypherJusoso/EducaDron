@@ -17,6 +17,7 @@ public class PlayerMover3 : MonoBehaviour
     [SerializeField] InputHandler _input;
     [SerializeField] Transform hand;
     [SerializeField] AudioSource droneSoundLoop;
+    [SerializeField] GameObject droneRender;
 
     public bool isOn;
     //moveInput pero en 3D
@@ -118,17 +119,31 @@ public class PlayerMover3 : MonoBehaviour
         thirdPersonCamera.enabled = !isOn;
 
         thirdPersonScripts.controlsEnabled = !isOn;
+
         if (!isOn) 
         { 
+            // Si apagamos el dron, cancela cualquier desactivación pendiente y muéstralo ya
+            CancelInvoke(nameof(DisableDroneRender));
+
             _rigidBody.useGravity = true;
             droneSoundLoop.Stop();
+            droneRender.SetActive(true);
         }
         else 
         { 
             _rigidBody.useGravity = false;
             droneSoundLoop.Play();
 
+            // Espera 3 segundos antes de ocultar el render del dron
+            CancelInvoke(nameof(DisableDroneRender)); // por seguridad
+            Invoke(nameof(DisableDroneRender), 3f);
         }
+    }
+
+    // Se llama por Invoke tras el retraso
+    void DisableDroneRender()
+    {
+        droneRender.SetActive(false);
     }
   
     void MovePlayerWithCamera()
