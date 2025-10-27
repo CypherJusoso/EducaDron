@@ -256,11 +256,30 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        _questions = filtered.ToArray();
+        // Si hay más de 6, barajamos y tomamos 6
+        int takeCount = Mathf.Min(6, filtered.Count);
+
+        if (filtered.Count > 1)
+        {
+            // Fisher-Yates shuffle para aleatorizar la lista
+            for (int i = filtered.Count - 1; i > 0; i--)
+            {
+                int j = UnityEngine.Random.Range(0, i + 1);
+                var temp = filtered[i];
+                filtered[i] = filtered[j];
+                filtered[j] = temp;
+            }
+        }
+
+        _questions = filtered.Take(takeCount).ToArray();
 
         if (_questions.Length == 0)
         {
             Debug.LogWarning($"No se encontraron Questions para el nivel {currentLevel}. Revisa el campo _levelQuestion en tus assets Question.");
+        }
+        else if (filtered.Count < 6)
+        {
+            Debug.LogWarning($"Solo se encontraron {filtered.Count} preguntas para el nivel {currentLevel}. Se usarán todas las disponibles.");
         }
     }
 
