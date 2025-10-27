@@ -172,7 +172,7 @@ public class UIManager : MonoBehaviour {
                 break;
             case ResolutionScreenType.Finish:
                 uIElements.ResolutionBG.color = parameters.FinalBGColor;
-                uIElements.ResolutionStateInfoText.text = "RESULTADO";
+                uIElements.ResolutionStateInfoText.text = "RESULTADO FINAL";
 
                 StartCoroutine(CalculateScore());
                 uIElements.FinishUIElements.gameObject.SetActive(true);
