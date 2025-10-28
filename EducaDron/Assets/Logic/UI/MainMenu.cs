@@ -68,6 +68,12 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Quiz");
 
     }
+
+    public void RedirectMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
     /// <summary>
     /// Carga la escena para ir a la tabla de puntajes
     /// </summary>
