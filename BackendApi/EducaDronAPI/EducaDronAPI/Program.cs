@@ -1,11 +1,11 @@
 using EducaDronAPI.Data;
 using EducaDronAPI.Models;
+using EducaDronAPI.Localization; // <-- añadir
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +55,7 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
     options.SignIn.RequireConfirmedAccount = false;
 })
     .AddEntityFrameworkStores<AppDbContext>()
+    .AddErrorDescriber<SpanishIdentityErrorDescriber>() // <-- registrar el describer
     .AddDefaultTokenProviders();
 
 var app = builder.Build();
