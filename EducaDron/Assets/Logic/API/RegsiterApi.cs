@@ -1,6 +1,7 @@
 using Assets.Logic.API;
 using System.Collections;
 using System.Text;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -22,8 +23,50 @@ public class RegisterApi : MonoBehaviour
     /// 
     public void SendDto(string name, string email, string password, string confirmPassword)
     {
+        // Validación local previa para evitar una request innecesaria
+        var validationMessage = GetValidationErrors(password, confirmPassword);
+        if (!string.IsNullOrEmpty(validationMessage))
+        {
+            if (errorText != null)
+            {
+                errorText.text = validationMessage;
+                errorText.gameObject.SetActive(true);
+            }
+            return;
+        }
+
         StartCoroutine(RegisterPost(name, email, password, confirmPassword));
     }
+
+    /// <summary>
+    /// Regresa mensaje de error si la contraseña no cumple con los requisitos.
+    /// Vacío si es válida.
+    /// </summary>
+    private string GetValidationErrors(string password, string confirmPassword)
+    {
+        var sb = new StringBuilder();
+
+        if (string.IsNullOrEmpty(password))
+        {
+            sb.AppendLine("La contraseña es obligatoria.");
+        }
+        else
+        {
+            if (password.Length < 8) sb.AppendLine("La contraseña debe tener al menos 8 caracteres.");
+            if (!password.Any(char.IsLower)) sb.AppendLine("Debe contener al menos una letra minúscula.");
+            if (!password.Any(char.IsUpper)) sb.AppendLine("Debe contener al menos una letra mayúscula.");
+            if (!password.Any(char.IsDigit)) sb.AppendLine("Debe contener al menos un número.");
+            if (!password.Any(ch => !char.IsLetterOrDigit(ch))) sb.AppendLine("Debe contener al menos un carácter especial.");
+        }
+
+        if (password != confirmPassword)
+        {
+            sb.AppendLine("Las contraseñas no coinciden.");
+        }
+
+        return sb.ToString().Trim();
+    }
+
     /// <summary>
     /// Metodo que llama a la API con un POST request para registrar un nuevo usuario.
     /// </summary>
