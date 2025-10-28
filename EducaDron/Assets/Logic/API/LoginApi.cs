@@ -12,11 +12,17 @@ public class LoginApi : MonoBehaviour
     [SerializeField] GameObject successPanel;
     [SerializeField] TextMeshProUGUI errorText;
 
+    /// <summary>
+    /// Metodo usado para el login del usuario enviando los datos ingresados a <see cref="LoginPost"/>.
+    /// </summary>
     public void SendDto(string username, string password)
     {
         StartCoroutine(LoginPost(username, password)); 
     }
 
+    /// <summary>
+    /// Solicitud POST a la API para que un usuario inicie sesion.
+    /// </summary>
     IEnumerator LoginPost(string username, string password)
     {
         string jsonBody = JsonUtility.ToJson(new LoginDto(username, password));

@@ -38,7 +38,8 @@ public class AnswerData : MonoBehaviour {
     #endregion
 
     /// <summary>
-    /// Function that is called to update the answer data.
+    /// Asigna el texto y el indice de la opcion de respuesta
+    /// actualizando los datos en pantalla
     /// </summary>
     public void UpdateData (string info, int index)
     {
@@ -46,7 +47,7 @@ public class AnswerData : MonoBehaviour {
         _answerIndex = index;
     }
     /// <summary>
-    /// Function that is called to reset values back to default.
+    /// Reinicia la respuesta a su estado por defecto
     /// </summary>
     public void Reset ()
     {
@@ -54,7 +55,9 @@ public class AnswerData : MonoBehaviour {
         UpdateUI();
     }
     /// <summary>
-    /// Function that is called to switch the state.
+    /// Cambia el estado actual de la respuesta entre seleccionada
+    /// y no seleccionada y notifica al sistema de eventos del
+    /// quiz sobre el cambio
     /// </summary>
     public void SwitchState ()
     {
@@ -67,7 +70,8 @@ public class AnswerData : MonoBehaviour {
         }
     }
     /// <summary>
-    /// Function that is called to update UI.
+    /// Actualiza el sprite del boton segun el estado actual
+    /// de la respuesta.
     /// </summary>
     void UpdateUI ()
     {

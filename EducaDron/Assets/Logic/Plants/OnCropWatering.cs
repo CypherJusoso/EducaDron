@@ -11,6 +11,10 @@ public class OnCropWatering : MonoBehaviour, IWaterable
     public bool isWatered = false;
     public bool IsWatered => isWatered;
 
+    /// <summary>
+    /// Procesa cuando el cultivo es regado y lo marca como completado al
+    /// alcanzar el valor establecido
+    /// </summary>
     public void ProcessWatering()
     {
         if (isWatered) { return; }

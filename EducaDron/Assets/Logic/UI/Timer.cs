@@ -30,7 +30,10 @@ public class Timer : MonoBehaviour
        
         TimerReduction();
     }
-
+    /// <summary>
+    /// Reduce el tiempo por cada frame que pasa y actualiza el icono
+    /// de la bateria dependiendo del porcentaje restante
+    /// </summary>
     private void TimerReduction()
     {
         if (isRunning)
@@ -56,14 +59,19 @@ public class Timer : MonoBehaviour
     {
         isRunning = true;
     }
-
+    /// <summary>
+    /// Muestra la pantalla de Game Over si se acaba el tiempo
+    /// </summary>
     void TimerEnd()
     {
         playerMover.isOn = false;
         gameSceneManager.GameOver();
         Debug.Log("Time Out");
     }
-
+    /// <summary>
+    /// Actualiza el icono de la bateria dependiendo del
+    /// tiempo restante
+    /// </summary>
     void UpdateBatteryIcon(float percentage)
     {
         if (batterySprites.Length < 4 || batteryImage == null) { return; }

@@ -20,7 +20,9 @@ public class MissionManager3 : MonoBehaviour
         instance = this;
         landingZone.SetActive(false);
     }
-
+    ///<summary>
+    ///Detecta cuando un cultivo es regado y actualiza el estado de la mision
+    ///</summary>
     public void OnCropWatered()
     {
         fumigatedCrops++;

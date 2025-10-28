@@ -16,7 +16,11 @@ namespace EducaDronAPI.Controllers
         {
             this._context = _context;
         }
-
+        /// <summary>
+        /// Actualiza el progreso de un usuario en un nivel especifico.
+        /// Cuando el nivel pasa a desbloqueado el siguiente nivel se
+        /// desbloquea automaticamente
+        /// </summary>
         [HttpPut]
         public async Task<IActionResult> UpdateProgress(UpdateProgressDto updateProgressDto)
         {
@@ -49,7 +53,9 @@ namespace EducaDronAPI.Controllers
             
             return Ok(levelToUpdate);
         }
-
+        /// <summary>
+        /// Obtiene el progreso de un usuario en todos sus niveles
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetProgress(string userId)
         {

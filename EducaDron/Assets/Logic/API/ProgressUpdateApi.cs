@@ -10,11 +10,18 @@ public class ProgressUpdateApi : MonoBehaviour
 
     string URL = ApiConfig.Build(ApiRoutes.Progress.Base);
 
+    /// <summary>
+    /// Metodo usado para actualizar el progreso del usuario llamando a <see cref="UpdateProgress"/>.
+    /// </summary>
     public void SendUpdate(string userId, int levelNumber, string newStatus)
     {
         StartCoroutine(UpdateProgress(userId, levelNumber, newStatus));
 
     }
+
+    /// <summary>
+    /// Solicitud PUT a la API para actualizar el progreso del usuario.
+    /// </summary>
     IEnumerator UpdateProgress(string userId, int levelNumber, string newStatus)
     {
         string jsonBody = JsonUtility.ToJson(new UpdateProgressDto(userId, levelNumber, newStatus));

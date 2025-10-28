@@ -11,6 +11,9 @@ namespace Assets.Logic.API
         public static string BaseUrl =
             "https://educadron-api-jfk-bkfcf9ckdqbjfngd.francecentral-01.azurewebsites.net";
 
+        /// <summary>
+        /// Builder que une la URL base con un path relativo.
+        /// </summary>
         public static string Build(string relativePath)
         {
             var b = BaseUrl.TrimEnd('/');
@@ -18,6 +21,9 @@ namespace Assets.Logic.API
             return b + r;
         }
 
+        /// <summary>
+        /// Builder que añade parametros de query al base path.
+        /// </summary>
         public static string BuildWithQuery(string path, params (string key, string value)[] qs)
         {
             var url = Build(path); // reutilizamos Build para base + path

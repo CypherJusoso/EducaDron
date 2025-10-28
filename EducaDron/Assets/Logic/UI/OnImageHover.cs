@@ -19,13 +19,19 @@ public class OnImageHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     }
 
-   
+   /// <summary>
+   /// Cuando el mouse entra sobre el elemento inicia una
+   /// animacion que remueve el desenfoque en la imagen
+   /// </summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
         blurImage.DOKill();
         blurImage.DOFade(0f, transitionDuration).SetEase(easeType);
     }
-
+    /// <summary>
+    /// Cuando el mouse sale del el elemento inicia una
+    /// animacion que devuelve el desenfoque en la imagen
+    /// </summary>
     public void OnPointerExit(PointerEventData eventData)
     {
         blurImage.DOKill();

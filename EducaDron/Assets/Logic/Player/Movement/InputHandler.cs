@@ -15,6 +15,9 @@ public class InputHandler : MonoBehaviour
    
     InputActions _input;
 
+    /// <summary>
+    /// Habilita los inputs del usuario
+    /// </summary>
     private void OnEnable()
     {
         _input = new InputActions();
@@ -39,7 +42,9 @@ public class InputHandler : MonoBehaviour
         _input.Player.Flashlight.performed += SetPerformed;
 
     }
-
+    /// <summary>
+    /// Deshabilita los inputs del usuario
+    /// </summary>
     private void OnDisable()
     {
 
@@ -51,46 +56,65 @@ public class InputHandler : MonoBehaviour
 
         _input.Player.Disable();
     }
-
+    /// <summary>
+    ///  Actualiza el vector de movimiento con el input del jugador
+    /// </summary>
     void SetMove(InputAction.CallbackContext ctx)
     {
         MoveInput = ctx.ReadValue<Vector2>();
     }
+    /// <summary>
+    /// Actualiza el vector de rotacion de camara con el input del jugador
+    /// </summary>
     void SetLook(InputAction.CallbackContext ctx)
     {
         LookInput = ctx.ReadValue<Vector2>();
     }
-
+    /// <summary>
+    /// Detecta cuando la tecla para ascender es presionada
+    /// </summary>
     void SetAscend(InputAction.CallbackContext ctx)
     {
         ascendPressed = ctx.ReadValue<float>();
     }
-
+    /// <summary>
+    /// Detecta cuando la tecla para descender es presionada
+    /// </summary>
     void SetDescend(InputAction.CallbackContext ctx) 
     {
         descendPessed = ctx.ReadValue<float>();
     }
-
+    /// <summary>
+    /// Detecta cuando la tecla para encender/apagar el dron es presionada
+    /// </summary>
     void SetToggleDrone(InputAction.CallbackContext ctx)
     {
         isDroneOn = ctx.performed;
     }
-
+    /// <summary>
+    /// Detecta cuando se apreta la tecla para abrir/cerrar el menu de pausa
+    /// </summary>
     void SetMenuOpen(InputAction.CallbackContext ctx)
     {
         menuOpenInput = ctx.performed;
     }
-
+    /// <summary>
+    /// Detecta cuando se apreta la tecla para encender/apagar la linterna
+    /// </summary>
     void SetPerformed(InputAction.CallbackContext ctx)
     {
         isFlashlightOn = ctx.performed;
     }
-
+    /// <summary>
+    /// Habilita todos los inputs del usuario
+    /// </summary>
     public void EnableInputs()
     {
         _input.Player.Enable();
     }
-
+    /// <summary>
+    /// Deshabilita los inputs del usuario
+    /// </summary>
     public void DisableInputs()
     {
         _input.Player.Disable();

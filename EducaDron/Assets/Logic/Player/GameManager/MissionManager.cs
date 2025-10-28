@@ -16,7 +16,9 @@ public class MissionManager : MonoBehaviour
         landingZone.SetActive(false);
     }
 
-    //Metodo que se ejecuta en photoCapture
+    ///<summary>
+    ///Detecta cuando se le saca foto a un cultivo y actualiza el estado de la mision
+    ///</summary>
     public void OnTargetPhotographed(GameObject target)
     {
         //Buscamos el OnPlantPhoto porque es el que puede decirnos si ya se saco una foto a ese cultivo

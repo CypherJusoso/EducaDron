@@ -13,6 +13,10 @@ public class MissionStatus3 : MonoBehaviour
         ShowMissionStatus();
     }
 
+    /// <summary>
+    /// Muestra y oculta la interfaz que muestra
+    /// el estado de la mision 
+    /// </summary>
     private void ShowMissionStatus()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -25,7 +29,10 @@ public class MissionStatus3 : MonoBehaviour
             missionPanel.SetActive(false);
         }
     }
-
+    /// <summary>
+    /// Actualiza el texto del estado de mision con las plantas
+    /// fumigadas y las que faltan por fumigar
+    /// </summary>
     void UpdateMissionText()
     {
         int current = MissionManager3.instance.fumigatedCrops;

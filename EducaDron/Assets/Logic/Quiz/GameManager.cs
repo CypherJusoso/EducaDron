@@ -73,6 +73,9 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Actualiza la lista de respuestas seleccionadas segun el tipo de pregunta
+    /// </summary>
     public void UpdateAnswers(AnswerData newAnswer)
     {
         if (Questions[currentQuestion].GetAnswerType == Question.AnswerType.Single)
@@ -100,12 +103,16 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Limpia la lista de respuestas seleccionadas
+    /// </summary>
     public void EraseAnswers()
     {
         PickedAnswers = new List<AnswerData>();
     }
-
+    /// <summary>
+    /// Carga una nueva pregunta aleatoria
+    /// </summary>
     void Display()
     {
         EraseAnswers();
@@ -123,6 +130,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Lee la respuesta del jugador, actualiza la puntuacion y muestra el resultado en pantalla
+    /// </summary>
     public void Accept()
     {
         UpdateTimer(false);
@@ -154,7 +164,9 @@ public class GameManager : MonoBehaviour
     }
 
     #region Timer Methods
-
+    /// <summary>
+    /// Activa o detiene el temporizador
+    /// </summary>
     void UpdateTimer(bool state)
     {
         switch (state)
@@ -175,6 +187,10 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// Inicia el temporizador para la pregunta actual, actualiza su color conforme pasa el tiempo
+    /// </summary>
+    /// <returns></returns>
     IEnumerator StartTimer()
     {
         var totalTime = Questions[currentQuestion].Timer;
@@ -199,6 +215,9 @@ public class GameManager : MonoBehaviour
         }
         Accept();
     }
+    /// <summary>
+    /// Espera unos segundos antes de cargar la siguiente pregunta
+    /// </summary>
     IEnumerator WaitTillNextRound()
     {
         yield return new WaitForSeconds(GameUtility.ResolutionDelayTime);
@@ -206,7 +225,10 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
-
+    /// <summary>
+    /// Verifica si las respuestas seleccionadas son correctas
+    /// </summary>
+    /// <returns></returns>
     bool CheckAnswers()
     {
         if (!CompareAnswers())
@@ -215,7 +237,9 @@ public class GameManager : MonoBehaviour
         }
         return true;
     }
-
+    /// <summary>
+    /// Compara las respuestas seleccionadas con las correctas para determinar si coinciden
+    /// </summary>
     bool CompareAnswers()
     {
         if (PickedAnswers.Count > 0)
@@ -230,7 +254,9 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
-
+    /// <summary>
+    /// Carga las preguntas del nivel actual desde la carpeta Resources/Questions y las filtra por nivel
+    /// </summary>
     void LoadQuestions()
     {
         var dm = DataManager.instance;
@@ -282,18 +308,26 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning($"Solo se encontraron {filtered.Count} preguntas para el nivel {currentLevel}. Se usarán todas las disponibles.");
         }
     }
-
+    /// <summary>
+    /// Reinicia el quiz y la puntacion del usuario
+    /// </summary>
     public void RestartGame()
     {
         DataManager.instance.quizPoints = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
+    /// <summary>
+    /// Llama a <see cref="NextLevel"/> para enviar los
+    /// puntos del usuario y cargar el siguiente nivel
+    /// </summary>
     public void CallNextLevel()
     {
         StartCoroutine(NextLevel());
     }
 
+    /// <summary>
+    /// Envia los puntos a la API y carga el siguiente nivel
+    /// </summary>
     IEnumerator NextLevel()
     {
         int level = DataManager.instance.currentLvl;
@@ -305,11 +339,18 @@ public class GameManager : MonoBehaviour
         int nextLevel = DataManager.instance.currentLvl + 1;
         SceneManager.LoadScene("Level" + nextLevel);
     }
-
+    /// <summary>
+    /// Llama a <see cref="QuitWhenApiCallEnds"/> para guardar los 
+    /// puntos en la api y volver al menu principal
+    /// </summary>
     public void QuitGame()
     {
         StartCoroutine(QuitWhenApiCallEnds());
     }
+
+    /// <summary>
+    /// Envia los puntos antes de cerrar la partida y carga el menu princiapl
+    /// </summary>
     IEnumerator QuitWhenApiCallEnds()
     {
         Debug.Log("Max Points " + DataManager.instance.TotalPoints);
@@ -320,6 +361,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    /// <summary>
+    /// Actualiza la puntacion actual del quiz
+    /// </summary>
     private void UpdateScore(int add)
     {
         events.CurrentFinalScore += add;
@@ -341,6 +385,9 @@ public class GameManager : MonoBehaviour
 
     #region Getters
 
+    /// <summary>
+    /// Obtiene una pregunta aleatoria que no haya sido usada
+    /// </summary>
     Question GetRandomQuestion()
     {
         var randomIndex = GetRandomQuestionIndex();
@@ -348,6 +395,10 @@ public class GameManager : MonoBehaviour
 
         return Questions[currentQuestion];
     }
+
+    /// <summary>
+    /// Devuelve un indice aleatorio que le corresponde a una pregunta no respondida
+    /// </summary>
     int GetRandomQuestionIndex()
     {
         var random = 0;

@@ -28,6 +28,9 @@ public class PauseManager : MonoBehaviour
         }
     }
 
+    ///<summary>
+    ///Metodo usado para pausar el juego
+    ///</summary>
     public void PauseGame()
     {
         pauseMenu.SetActive(true);
@@ -37,6 +40,9 @@ public class PauseManager : MonoBehaviour
         AudioListener.pause = true;
     }
 
+    ///<summary>
+    ///Metodo usado para resumir el juego
+    ///</summary>
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
@@ -46,19 +52,19 @@ public class PauseManager : MonoBehaviour
         AudioListener.pause = false;
     }
 
+    ///<summary>
+    ///Carga la escena del menu principal
+    ///</summary>
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
     }
 
+    ///<summary>
+    ///Metodo usado para salir del simulador
+    ///</summary>
     public void QuitGame()
     {
         Application.Quit();
-
-        //TEST PARA EL EDITOR
-#if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-#endif
-        Debug.Log("Saliste del Videojuego!");
     }
 }

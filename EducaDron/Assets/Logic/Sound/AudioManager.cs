@@ -44,6 +44,9 @@ public class AudioManager : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+    /// <summary>
+    /// Reproduce un efecto de sonido unico en la posicion indicada y lo destruye cuando se termina de reproducir
+    /// </summary>
     public void PlaySoundFXClip(AudioClip clip, Transform spawnTransform, float volume)
     {
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity, transform);
@@ -57,7 +60,9 @@ public class AudioManager : MonoBehaviour
         Destroy(audioSource.gameObject, clipLength);
     
     }
-
+    /// <summary>
+    /// Reproduce un efecto de sonido al azar de un arreglo de AudioClips
+    /// </summary>
     public void PlayRandomSoundFXClip(AudioClip[] clips, Transform spawnTransform, float volume)
     {
         int rand = Random.Range(0, clips.Length);
@@ -73,7 +78,9 @@ public class AudioManager : MonoBehaviour
         Destroy(audioSource.gameObject, clipLength);
 
     }
-
+    /// <summary>
+    /// Reproduce un efecto de sonido en loop que sigue la posicion del objeto
+    /// </summary>
     public void PlayLoopingSFX(AudioClip clip, Transform followTransform, float volume)
     {
         if (loopingSFXSource == null)
@@ -85,7 +92,9 @@ public class AudioManager : MonoBehaviour
             loopingSFXSource.Play();
         }
     }
-
+    /// <summary>
+    /// Detiene el efecto de sonido en loop y libera el objeto
+    /// </summary>
     public void StopLoopingSFX()
     {
         if (loopingSFXSource != null)
@@ -95,7 +104,9 @@ public class AudioManager : MonoBehaviour
             loopingSFXSource = null;
         }
     }
-
+    /// <summary>
+    /// Reproduce una musica en especifico, permitiendo establecer si se repite en bucle o no
+    /// </summary>
     public void PlayMusic(AudioClip musicClip, bool loop)
     {
         if (musicObject == null)
@@ -111,18 +122,20 @@ public class AudioManager : MonoBehaviour
         musicObject.loop = loop;
         musicObject.Play();
     }
-
+    /// <summary>
+    /// Detiene la reproduccion de musica y limpia la referencia al clip
+    /// </summary>
     public void StopMusic()
     {
         if (musicObject != null) 
         {
-            Debug.Log("Stopping music: " + musicObject.clip?.name);
-
             musicObject.Stop(); 
             musicObject.clip = null;
         }
     }
-    
+    /// <summary>
+    /// Elige que musica reproducir dependiendo de la escena cargada
+    /// </summary>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
 

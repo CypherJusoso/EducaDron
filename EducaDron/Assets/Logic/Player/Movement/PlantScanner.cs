@@ -12,13 +12,15 @@ public class PlantScanner : MonoBehaviour
     [SerializeField] TextMeshProUGUI alertText;
 
     Collider[] closePlants;
-    PlantColour plantColour;
     bool isInRange = false;
     void Update()
     {
         DetectNearbyPlants();
     }
 
+    /// <summary>
+    /// Detecta cuando hay cultivos cercanos que necesitan riego, mostrando una alerta para avisar al usuario
+    /// </summary>
     void DetectNearbyPlants()
     {
         closePlants = Physics.OverlapSphere(transform.position, detectionRadius, plantLayerMask);
@@ -59,6 +61,9 @@ public class PlantScanner : MonoBehaviour
         }
         
     }
+    /// <summary>
+    /// Determina cual de los cultivos detectados esta mas cerca del dron
+    /// </summary>
     Collider GetClosestPlant(Collider[] plants)
     {
         Collider closest = null;
@@ -76,6 +81,9 @@ public class PlantScanner : MonoBehaviour
         return closest;
     }
 
+    /// <summary>
+    /// Activa y desactiva la alerta de que hay un cultivo que necesita ser regado
+    /// </summary>
     void ShowIndicator(bool show)
     {
         if (alertUI != null)
@@ -88,7 +96,9 @@ public class PlantScanner : MonoBehaviour
             alertText.text = show ? "Cultivo detectado -Presiona R para regar" : "";
         }
     }
-
+    /// <summary>
+    /// Dibuja en el editor la esfera de rango del metodo <see cref="DetectNearbyPlants"/>
+    /// </summary>
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;

@@ -13,16 +13,24 @@ public class GetPointsApi : MonoBehaviour
     string userId;
 
     string URL = ApiConfig.Build(ApiRoutes.Users.Points);
-    public void SendGet()
-    {
-        StartCoroutine(GetPoints());
-    }
+
     private void Start()
     {
         userId = DataManager.instance.userId;
         SendGet();
 
     }
+    /// <summary>
+    /// Metodo usado para conseguir los puntos de un usuario llamando a <see cref="GetPoints"/>.
+    /// </summary>
+    public void SendGet()
+    {
+        StartCoroutine(GetPoints());
+    }
+
+    /// <summary>
+    /// Metodo que llama a la API con una GET request para conseguir los puntos de un usuario.
+    /// </summary>
     IEnumerator GetPoints()
     {
         string fullUrl = URL + userId;
@@ -44,6 +52,9 @@ public class GetPointsApi : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Metodo que actualiza el texto mostrando los puntos del jugador en cada nivel.
+    /// </summary>
     void UpdateTMP(UserAllPoints userAllPoints)
     {
         foreach (var point in userAllPoints.points)

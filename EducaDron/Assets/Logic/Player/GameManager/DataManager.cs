@@ -25,6 +25,9 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Reinicia los puntos de un usuario localmente
+    ///</summary>
     public void ResetPoints()
     {
         levelPoints = 0;

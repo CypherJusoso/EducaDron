@@ -10,7 +10,9 @@ public class CameraShake : MonoBehaviour
 
     Vector3 shakeVector;
 
-
+    ///<summary>
+    ///Metodo usado para agitar la camara del dron cuando este se choca
+    ///</summary>
     private void Update()
     {
         if (droneStatus.isCollided) 

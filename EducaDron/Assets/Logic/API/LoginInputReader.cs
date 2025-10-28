@@ -10,6 +10,11 @@ public class LoginInputReader : MonoBehaviour
     [SerializeField] TMP_InputField passwordInput;
     [SerializeField] TextMeshProUGUI errorText;
 
+
+    /// <summary>
+    /// Lee los inputs del usuario cuando este intenta iniciar sesion y los envia para su validacion.
+    /// </summary>
+    /// 
     public void ReadInputField()
     {
         string username = usernameInput.text;
@@ -18,6 +23,9 @@ public class LoginInputReader : MonoBehaviour
         ReadStringInput(username, password);
     }
 
+    /// <summary>
+    /// Revisa los inputs del usuario para ver si algun campo esta vacio.
+    /// </summary>
     public void ReadStringInput(string username, string password)
     {
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password)) 

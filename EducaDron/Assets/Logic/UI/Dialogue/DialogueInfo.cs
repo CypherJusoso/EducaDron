@@ -38,6 +38,11 @@ public class DialogueInfo : MonoBehaviour
         buttonNext.onClick.AddListener(NextPage);
         buttonPrevious.onClick.AddListener(PrevPage);
     }
+    /// <summary>
+    /// Muestra una pagina especifica del tutorial, cambiando el texto y las imagenes
+    /// segun el indice recibido
+    /// </summary>
+
     void ShowPage(int pageIndex)
     {
         currentPage = pageIndex;
@@ -57,6 +62,10 @@ public class DialogueInfo : MonoBehaviour
         buttonNext.GetComponentInChildren<TextMeshProUGUI>().text =
             (pageIndex == pages.Length - 1) ? "Comenzar" : "Siguiente";
     }
+    /// <summary>
+    /// Avanza a la siguiente pagina del tutorial, al llegar
+    /// al final cierra el panel actual y activa el panel del tutorial
+    /// </summary>
 
     void NextPage()
     {
@@ -71,7 +80,10 @@ public class DialogueInfo : MonoBehaviour
             panelTutorial.SetActive(true);
         }
     }
-    
+    /// <summary>
+    /// Retrocede a la pagina anterior del tutorial si existe
+    /// </summary>
+
     void PrevPage()
     {
         if (currentPage > 0)

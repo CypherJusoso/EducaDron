@@ -36,6 +36,10 @@ public class Dialogue : MonoBehaviour
         buttonNext.onClick.AddListener(NextPage);
         buttonPrevious.onClick.AddListener(PrevPage);
     }
+    /// <summary>
+    /// Muestra una pagina especifica del tutorial, cambiando el texto y las imagenes
+    /// segun el indice recibido
+    /// </summary>
     void ShowPage(int pageIndex)
     {
         currentPage = pageIndex;
@@ -55,7 +59,10 @@ public class Dialogue : MonoBehaviour
         buttonNext.GetComponentInChildren<TextMeshProUGUI>().text =
             (pageIndex == pages.Length - 1) ? "Comenzar" : "Siguiente";
     }
-
+    /// <summary>
+    /// Avanza a la siguiente pagina del tutorial, al llegar
+    /// al final reactiva los controles del jugador y comienza el desafio
+    /// </summary>
     void NextPage()
     {
         if (currentPage < pages.Length - 1)
@@ -74,7 +81,9 @@ public class Dialogue : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
-    
+    /// <summary>
+    /// Retrocede a la pagina anterior del tutorial si existe
+    /// </summary>
     void PrevPage()
     {
         if (currentPage > 0)

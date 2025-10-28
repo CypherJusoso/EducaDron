@@ -12,6 +12,11 @@ public class InputReader : MonoBehaviour
     [SerializeField] TMP_InputField confirmPasswordInput;
     [SerializeField] TextMeshProUGUI errorText;
 
+    /// <summary>
+    /// Recibe los datos ingresados por el usuario y 
+    /// se los manda a <see cref="ReadStringInput"/>
+    /// para su validacion
+    /// </summary>
     public void ReadInputField()
     {
         string name = nameInput.text;
@@ -21,6 +26,11 @@ public class InputReader : MonoBehaviour
 
         ReadStringInput(name, email, password, confirmPassword);
     }
+    /// <summary>
+    /// Verifica que los campos no esten vacios y que las 
+    /// contraseñas coincidan, en caso de error muestra un
+    /// mensaje en pantalla
+    /// </summary>
       public void ReadStringInput(string name, string email, string password, string confirmPassword)
       {
 
@@ -43,13 +53,17 @@ public class InputReader : MonoBehaviour
         errorText.gameObject.SetActive(false);
         registerApi.SendDto(name, email, password, confirmPassword);
     }
-
+    /// <summary>
+    /// Dirige al usuario al login
+    /// </summary>
 public void GoToLogin()
     {
         //Ir a la siguiente escena
         SceneManager.LoadScene("LoginScene");
     }
-
+    /// <summary>
+    /// Volver al menu principal
+    /// </summary>
     public void GoBack()
     {
         SceneManager.LoadScene("MainMenu");
