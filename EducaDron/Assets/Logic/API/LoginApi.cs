@@ -4,43 +4,85 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class LoginApi : MonoBehaviour
 {
     string URL = ApiConfig.Build(ApiRoutes.Users.Login);
 
-    [SerializeField] GameObject successPanel;
-    [SerializeField] TextMeshProUGUI errorText;
+    [Header("Campos del formulario")]
+    [SerializeField] TMP_InputField usernameInput;
+    [SerializeField] TMP_InputField passwordInput;
 
-    // Spinner a mostrar mientras se hace la request
+    [Header("UI de éxito / carga")]
+    [SerializeField] GameObject successPanel;
     [SerializeField] GameObject loadingSpinner;
 
-    /// <summary>
-    /// Metodo usado para el login del usuario enviando los datos ingresados a <see cref="LoginPost"/>.
-    /// </summary>
-    public void SendDto(string username, string password)
+    [Header("UI de error")]
+    [SerializeField] ErrorPanelController errorUi;
+
+    // Método que debe llamarse desde el botón "Iniciar sesión" (sin parámetros)
+    public void OnLoginClick()
     {
-        StartCoroutine(LoginPost(username, password)); 
+        var username = usernameInput != null ? usernameInput.text : null;
+        var password = passwordInput != null ? passwordInput.text : null;
+
+        // Opcional: normalizar espacios
+        username = username?.Trim();
+        password = password?.Trim();
+
+        SendDto(username, password);
     }
 
     /// <summary>
-    /// Solicitud POST a la API para que un usuario inicie sesion.
+    /// Envía los datos y centraliza validaciones locales + manejo de errores de API.
+    /// </summary>
+    public void SendDto(string username, string password)
+    {
+        var validationMessage = GetValidationErrors(username, password);
+        if (!string.IsNullOrEmpty(validationMessage))
+        {
+            errorUi?.Show(validationMessage);
+            return;
+        }
+
+        StartCoroutine(LoginPost(username, password));
+    }
+
+    /// <summary>
+    /// Valida campos locales. Retorna texto con errores (uno por línea) o vacío si todo es válido.
+    /// </summary>
+    private string GetValidationErrors(string username, string password)
+    {
+        var sb = new StringBuilder();
+
+        if (string.IsNullOrWhiteSpace(username))
+            sb.AppendLine("El nombre de usuario es obligatorio.");
+
+        if (string.IsNullOrWhiteSpace(password))
+            sb.AppendLine("La contraseña es obligatoria.");
+
+        return sb.ToString().Trim();
+    }
+
+    /// <summary>
+    /// Solicitud POST a la API para que un usuario inicie sesión.
     /// </summary>
     IEnumerator LoginPost(string username, string password)
     {
         string jsonBody = JsonUtility.ToJson(new LoginDto(username, password));
 
-        UnityWebRequest req = new UnityWebRequest(URL, "POST");
-
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
-
-        req.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        req.downloadHandler = new DownloadHandlerBuffer();
+        var req = new UnityWebRequest(URL, "POST")
+        {
+            uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonBody)),
+            downloadHandler = new DownloadHandlerBuffer()
+        };
         req.SetRequestHeader("Content-Type", "application/json");
 
-        // Mostrar spinner y ocultar error previo
         if (loadingSpinner != null) loadingSpinner.SetActive(true);
-        if (errorText != null) errorText.gameObject.SetActive(false);
+        errorUi?.Hide();
+
+        string pendingErrorMessage = null;
 
         try
         {
@@ -51,23 +93,12 @@ public class LoginApi : MonoBehaviour
 
             if (req.result != UnityWebRequest.Result.Success)
             {
-                ErrorResponse errorResponse = null;
-                try { errorResponse = JsonUtility.FromJson<ErrorResponse>(jsonResponse); } catch { /* ignorar parse error */ }
-
-                if (errorResponse != null && errorResponse.errors != null && errorResponse.errors.Length > 0 && errorText != null)
-                {
-                    errorText.text = errorResponse.errors[0];
-                    errorText.gameObject.SetActive(true);
-                }
-
+                pendingErrorMessage = ApiErrorUtils.BuildUserFriendlyError(req);
                 Debug.LogError("Error: " + req.error);
             }
             else
             {
-                jsonResponse = req.downloadHandler.text;
-                Debug.Log("Respuesta del servidor: " + jsonResponse);
-
-                LoginResponse loginResponse = JsonUtility.FromJson<LoginResponse>(jsonResponse);
+                var loginResponse = JsonUtility.FromJson<LoginResponse>(jsonResponse);
 
                 DataManager.instance.userId = loginResponse.userId;
                 DataManager.instance.username = username;
@@ -77,8 +108,9 @@ public class LoginApi : MonoBehaviour
         }
         finally
         {
-            // Asegurar ocultar el spinner pase lo que pase
             if (loadingSpinner != null) loadingSpinner.SetActive(false);
+            if (!string.IsNullOrEmpty(pendingErrorMessage))
+                errorUi?.Show(pendingErrorMessage);
         }
     }
 
@@ -100,13 +132,5 @@ public class LoginApi : MonoBehaviour
     {
         public string userId;
         public string userName;
-    }
-
-    [System.Serializable]
-    public class ErrorResponse
-    {
-        public string title;
-        public int status;
-        public string[] errors;
     }
 }
