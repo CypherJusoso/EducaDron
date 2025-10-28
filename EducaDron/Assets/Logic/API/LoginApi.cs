@@ -10,6 +10,10 @@ public class LoginApi : MonoBehaviour
 {
     string URL = ApiConfig.Build(ApiRoutes.Users.Login);
 
+    [Header("Campos del formulario")]
+    [SerializeField] TMP_InputField usernameInput;
+    [SerializeField] TMP_InputField passwordInput;
+
     [Header("UI de éxito / carga")]
     [SerializeField] GameObject successPanel;
     [SerializeField] GameObject loadingSpinner;
@@ -17,16 +21,25 @@ public class LoginApi : MonoBehaviour
     [Header("UI de error")]
     [SerializeField] ErrorPanelController errorUi;
 
+    // Método que debe llamarse desde el botón "Iniciar sesión" (sin parámetros)
+    public void OnLoginClick()
+    {
+        var username = usernameInput != null ? usernameInput.text : null;
+        var password = passwordInput != null ? passwordInput.text : null;
+
+        // Opcional: normalizar espacios
+        username = username?.Trim();
+        password = password?.Trim();
+
+        SendDto(username, password);
+    }
+
     /// <summary>
-    /// Envia los datos y centraliza validaciones locales + manejo de errores de API.
+    /// Envía los datos y centraliza validaciones locales + manejo de errores de API.
     /// </summary>
     public void SendDto(string username, string password)
     {
-        var sb = new StringBuilder();
-        if (string.IsNullOrWhiteSpace(username)) sb.AppendLine("El nombre de usuario es obligatorio.");
-        if (string.IsNullOrWhiteSpace(password)) sb.AppendLine("La contraseña es obligatoria.");
-
-        var validationMessage = sb.ToString().Trim();
+        var validationMessage = GetValidationErrors(username, password);
         if (!string.IsNullOrEmpty(validationMessage))
         {
             errorUi?.Show(validationMessage);
@@ -34,6 +47,22 @@ public class LoginApi : MonoBehaviour
         }
 
         StartCoroutine(LoginPost(username, password));
+    }
+
+    /// <summary>
+    /// Valida campos locales. Retorna texto con errores (uno por línea) o vacío si todo es válido.
+    /// </summary>
+    private string GetValidationErrors(string username, string password)
+    {
+        var sb = new StringBuilder();
+
+        if (string.IsNullOrWhiteSpace(username))
+            sb.AppendLine("El nombre de usuario es obligatorio.");
+
+        if (string.IsNullOrWhiteSpace(password))
+            sb.AppendLine("La contraseña es obligatoria.");
+
+        return sb.ToString().Trim();
     }
 
     /// <summary>
