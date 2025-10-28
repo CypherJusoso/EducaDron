@@ -8,12 +8,17 @@ public class SliderLevels : MonoBehaviour
 
     AudioMixerManager audioManager;
 
+    /// <summary>
+    /// Carga los valores de volumenes ya guardados y asigna los
+    /// listeners de los sliders para actualizar el volumen en tiempo
+    /// real
+    /// </summary>
     private void Start()
     {
         audioManager = Object.FindFirstObjectByType<AudioMixerManager>();
         if (audioManager == null)
         {
-            Debug.LogError("AudioMixerManager not found! Make sure it exists in the Bootstrap scene.");
+            Debug.LogError("AudioMixerManager no encontrado.");
             return;
         }
 

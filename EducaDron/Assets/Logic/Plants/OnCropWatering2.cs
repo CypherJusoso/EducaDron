@@ -16,15 +16,10 @@ public class OnCropWatering2 : MonoBehaviour, IWaterable
         dryModel.SetActive(true);
         waterModel.SetActive(false);
     }
-
-    private void OnParticleCollision(GameObject other)
-    {
-        if (other.CompareTag("WateringSystem"))
-        {
-            ProcessWatering();
-        }
-    }
-
+    /// <summary>
+    /// Procesa cuando el cultivo es regado y lo marca como completado al
+    /// alcanzar el valor establecido
+    /// </summary>
     public void ProcessWatering()
     {
         if (isWatered) { return; }

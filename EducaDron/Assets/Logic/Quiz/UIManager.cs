@@ -108,12 +108,18 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Actualiza la interfaz con su nueva pregunta
+    /// </summary>
+    /// <param name="question"></param>
     void UpdateQuestionUI(Question question)
     {
         uIElements.QuestionInfoTextObject.text = question.Info;
         CreateAnswers(question);
     }
-
+    /// <summary>
+    /// Muestra la pantalla de resolucion segun el resultado del jugador
+    /// </summary>
     void DisplayResolution(ResolutionScreenType type, int score)
     {
         UpdateResUI(type, score);
@@ -130,14 +136,18 @@ public class UIManager : MonoBehaviour
             StartCoroutine(IE_DisplayTimedResolution);
         }
     }
-
+    /// <summary>
+    /// Espera unos segundos y cierra la pantalla de resolucion
+    /// </summary>
     IEnumerator DisplayTimedResolution()
     {
         yield return new WaitForSeconds(GameUtility.ResolutionDelayTime);
         uIElements.ResolutionScreenAnimator.SetInteger(resStateParaHash, 1);
         uIElements.MainCanvasGroup.blocksRaycasts = true;
     }
-
+    /// <summary>
+    /// Actualiza los textos y colores de la pantalla de resolucion dependiendo del resultado
+    /// </summary>
     void UpdateResUI(ResolutionScreenType type, int score)
     {
         switch (type)
@@ -168,7 +178,9 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-
+    /// <summary>
+    /// Anima progresivamente el puntaje final hasta alcanzar el valor real obtenido por el usuario
+    /// </summary>
     IEnumerator CalculateScore()
     {
         var scoreValue = 0;
@@ -179,7 +191,9 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
     }
-
+    /// <summary>
+    /// Crea las opciones de respuesta en la interfaz a partir de los datos de la pregunta actual
+    /// </summary>
     void CreateAnswers(Question question)
     {
         EraseAnswers();
@@ -198,7 +212,9 @@ public class UIManager : MonoBehaviour
             currentAnswers.Add(newAnswer);
         }
     }
-
+    /// <summary>
+    /// Elimina las respuestas anteriores de la interfaz antes de mostrar una nueva pregunta
+    /// </summary>
     void EraseAnswers()
     {
         foreach (var answer in currentAnswers)
@@ -207,7 +223,9 @@ public class UIManager : MonoBehaviour
         }
         currentAnswers.Clear();
     }
-
+    /// <summary>
+    /// Actualiza el texto del marcador con la puntacion actual del usuario
+    /// </summary>
     void UpdateScoreUI()
     {
         uIElements.ScoreText.text = "Score: " + events.CurrentFinalScore;

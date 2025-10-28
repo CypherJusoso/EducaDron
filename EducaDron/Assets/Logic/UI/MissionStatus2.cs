@@ -44,7 +44,10 @@ public class MissionStatus2 : MonoBehaviour
     {
         CheckInput();
     }
-
+    /// <summary>
+    /// Muestra y oculta la interfaz que muestra
+    /// el estado de la mision 
+    /// </summary>
     private void CheckInput()
     {
         
@@ -59,6 +62,10 @@ public class MissionStatus2 : MonoBehaviour
             statusPanel.SetActive(false);
         }
     }
+    /// <summary>
+    /// Actualiza el texto del estado de mision con las plantas
+    /// regadas y las que faltan por regar
+    /// </summary>
     public void UpdateStatusText()
     {
         if (gameManager == null)

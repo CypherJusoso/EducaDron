@@ -36,6 +36,9 @@ public class GetProgressApi : MonoBehaviour
         StartCoroutine(FetchProgress());
     }
 
+    /// <summary>
+    /// Solicitud GET a la API para conseguir el progreso de un usuario.
+    /// </summary>
     IEnumerator FetchProgress()
     {
         UnityWebRequest req = UnityWebRequest.Get(URL);
@@ -63,8 +66,10 @@ public class GetProgressApi : MonoBehaviour
         }
     }
 
-   
 
+    /// <summary>
+    /// Actualiza los botones de elegir nivel dependiendo de el progeso del usuario
+    /// </summary>
     void UpdateButtons(LevelProgress[] progress)
     {
         foreach (var prog in progress)
@@ -115,6 +120,10 @@ public class GetProgressApi : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Metodo usado para cargar el nivel seleccionado por el usuario.
+    /// </summary>
     public void LoadLevel(int levelNumber)
     {
         //DataManager.instance.currentLvl = levelNumber;

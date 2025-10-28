@@ -11,7 +11,9 @@ public class ButtonSFX : MonoBehaviour
         button = GetComponent<Button>();
         button.onClick.AddListener(PlayClickSound);
     }
-
+    /// <summary>
+    /// Llama a <see cref="AudioManager"/> para reproducir un sonido cuando se presiona un boton
+    /// </summary>
     void PlayClickSound()
     {
         if (AudioManager.instance != null)

@@ -8,6 +8,10 @@ public class GetRanking : MonoBehaviour
 {
     string URL = ApiConfig.Build(ApiRoutes.Users.PointsRanking);
 
+
+    /// <summary>
+    /// Solicitud GET a la API para conseguir los puntos de todos los usuarios.
+    /// </summary>
     public IEnumerator GetRankingData(System.Action<List<RankingData>> onSuccess)
     {
         UnityWebRequest req = UnityWebRequest.Get(URL);

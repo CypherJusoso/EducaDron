@@ -9,6 +9,9 @@ public class MissionStatus : MonoBehaviour
     [SerializeField] PhotoCapture photoCapture;
 
     int remainingPhotos;
+    /// <summary>
+    /// Actualiza cuantas fotos le quedan al usuario
+    /// </summary>
     void Update()
     {
         remainingPhotos = 10 - photoCapture.actualPhotos;
@@ -18,7 +21,10 @@ public class MissionStatus : MonoBehaviour
         }
         PressTab();
     }
-
+    /// <summary>
+    /// Muestra y oculta la interfaz que muestra
+    /// el estado de la mision 
+    /// </summary>
     private void PressTab()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -31,7 +37,10 @@ public class MissionStatus : MonoBehaviour
             missionPanel.SetActive(false);
         }
     }
-
+    /// <summary>
+    /// Actualiza cuantos cultivos quedan por ser fotografiados
+    /// y las fotografias restantes
+    /// </summary>
     void UpdateMissionText()
     {
         int current = MissionManager.instance.photosTaken;

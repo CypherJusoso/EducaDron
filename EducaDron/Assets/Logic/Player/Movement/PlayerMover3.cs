@@ -35,17 +35,9 @@ public class PlayerMover3 : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
         firstPersonCamera.enabled = false;
     }
-
-    private void Start()
-    {
-    }
-    public InputActions GetInputActions()
-    {
-        return inputActions;
-    }
     private void Update()
     {
-        ascendPressed =_input.ascendPressed;
+        ascendPressed = _input.ascendPressed;
         descendPressed = _input.descendPessed;
         moveInput = _input.MoveInput;
         lookInput = _input.LookInput;
@@ -73,9 +65,16 @@ public class PlayerMover3 : MonoBehaviour
         MovePlayerWithCamera();
 
     }
+    public InputActions GetInputActions()
+    {
+        return inputActions;
+    }
+  
+    /// <summary>
+    /// Calcula la direccion del dron basado en los inputs del jugador
+    /// </summary>
     private void Fly()
     {
-        //Valor del teclado
         movementInput = new Vector3(moveInput.x, 0f, moveInput.y);
         
         //Asignar el valor de y al vector dependiendo de que presione el jugador
@@ -86,7 +85,9 @@ public class PlayerMover3 : MonoBehaviour
         else
         { movementInput.y = 0f; }
     }
-
+    /// <summary>
+    /// Ajusta la velocidad del dron dependiendo de si se esta moviendo o no
+    /// </summary>
     void UpdateSpeed()
     {
         if (movementInput.magnitude > 0.1f)
@@ -102,13 +103,18 @@ public class PlayerMover3 : MonoBehaviour
         //La velocidad esta locked a un número entre 0 y maxFlySpeed
         currentSpeed = Mathf.Clamp(currentSpeed, 0f, maxFlySpeed);
     }
+    /// <summary>
+    /// Aplica el movimiento del dron en la direccion actual actualizando su velocidad en el Rigidbody
+    /// </summary>
     void MovePlayer()
     {
         Vector3 move = transform.TransformDirection(lastMoveVector);
         _rigidBody.linearVelocity = move * currentSpeed;
 
     }
-
+    /// <summary>
+    /// Alterna el estado del dron entre encendido y apagado
+    /// </summary>
     void ToggleDrone()
     {
         isOn = !isOn;
@@ -140,12 +146,16 @@ public class PlayerMover3 : MonoBehaviour
         }
     }
 
-    // Se llama por Invoke tras el retraso
+    /// <summary>
+    /// Espera unos segundos y desactiva el render del dron
+    /// </summary>
     void DisableDroneRender()
     {
         droneRender.SetActive(false);
     }
-  
+    /// <summary>
+    /// Alinea el dron con la rotacion de la camara y actualiza la rotacion de la linterna
+    /// </summary>
     void MovePlayerWithCamera()
     {
         Vector3 camEuler = firstPersonCamera.transform.rotation.eulerAngles;

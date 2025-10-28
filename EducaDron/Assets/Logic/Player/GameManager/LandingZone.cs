@@ -45,7 +45,9 @@ public class LandingZone : MonoBehaviour
         }
     }
 
-
+    ///<summary>
+    ///Si el usuario esta en la zona de aterrizaje y presiona "5" completa el desafio
+    ///</summary>
     private void OnTriggerStay(Collider other)
     {
         if (stopSpam) { return; }
@@ -64,7 +66,9 @@ public class LandingZone : MonoBehaviour
             CalculateLevelPoints();
         }
     }
-
+    ///<summary>
+    ///Metodo que llama a <see cref="LevelPointsManager"/> para calcular los puntos en cada nivel
+    ///</summary>
     private void CalculateLevelPoints()
     {
         switch (currentScene)
@@ -80,7 +84,9 @@ public class LandingZone : MonoBehaviour
                 break;
         }
     }
-
+    ///<summary>
+    ///Detecta cuando el jugador toca la zona de aterrizaje
+    ///</summary>
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Enter");
@@ -91,7 +97,9 @@ public class LandingZone : MonoBehaviour
 
         Debug.Log("isLanding: " + isLandingZone);
     }
-
+    ///<summary>
+    ///Detecta cuando el jugador sale de la zona de aterrizaje
+    ///</summary>
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -100,7 +108,9 @@ public class LandingZone : MonoBehaviour
         }
         Debug.Log("isLanding: " + isLandingZone);
     }
-
+    ///<summary>
+    ///Metodo para ir a la escena de menu principal
+    ///</summary>
     void VolverAlMenuPrincipal()
     {
         SceneManager.LoadScene("MainMenu");

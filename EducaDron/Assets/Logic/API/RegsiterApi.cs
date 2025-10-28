@@ -13,11 +13,17 @@ public class RegisterApi : MonoBehaviour
     [SerializeField] GameObject successPanel;
     [SerializeField] TextMeshProUGUI errorText;
 
+    /// <summary>
+    /// Metodo usado para el proceso de registro enviando los datos ingresados a <see cref="RegisterPost"/> .
+    /// </summary>
+    /// 
     public void SendDto(string name, string email, string password, string confirmPassword)
     {
         StartCoroutine(RegisterPost(name, email, password, confirmPassword));
     }
-
+    /// <summary>
+    /// Metodo que llama a la API con un POST request para registrar un nuevo usuario.
+    /// </summary>
     IEnumerator RegisterPost(string name, string email, string password, string confirmPassword)
     {
         //Crea el objeto RegisterDto y lo pasa a json

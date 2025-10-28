@@ -18,6 +18,9 @@ public class Flashlight : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Al llamar a este metodo se enciende la linterna del dron
+    ///</summary>
     private void ActivateFlashlight()
     {
         flashing = !flashing;

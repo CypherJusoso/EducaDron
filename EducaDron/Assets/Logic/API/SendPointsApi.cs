@@ -9,6 +9,9 @@ public class SendPointsApi : MonoBehaviour
 
     string URL = ApiConfig.Build(ApiRoutes.Users.UpdatePoints);
 
+    /// <summary>
+    /// Solicitud PUT a la API para actualizar los puntos de un usuario 
+    /// </summary>
     public IEnumerator UpdatePoints(string userId, int levelNumber, int points)
     {
         string jsonBody = JsonUtility.ToJson(new UpdatePointsDto(userId, points, levelNumber));

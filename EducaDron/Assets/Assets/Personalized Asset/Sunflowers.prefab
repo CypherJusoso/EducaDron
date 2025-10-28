@@ -222,7 +222,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.140053, y: -9.218926, z: -19.318283}
-  m_LocalScale: {x: 2.3999996, y: 2.4000003, z: 2.4}
+  m_LocalScale: {x: 2.4, y: 2.4, z: 2.3999996}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5310032038718245693}
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleHits: 0
-  plantHp: 100
+  plantHp: 50
   dryModel: {fileID: 5310032038717888285}
   waterModel: {fileID: 1424210280760332404}
   isWatered: 0
