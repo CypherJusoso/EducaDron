@@ -11,7 +11,8 @@ public class PhotoCapture : MonoBehaviour
     [SerializeField] Sprite greenCamOverlay;
     [SerializeField] GameObject photoContainer;
     [SerializeField] GameObject cameraUI;
-    [SerializeField] GameObject UICanvas;
+    [SerializeField] GameObject uiCanvas;
+    [SerializeField] GameObject missionStatusCanvas;
    // [SerializeField] Camera firstPersonCamera;
 
    // [SerializeField] GameObject cameraFlash;
@@ -70,15 +71,6 @@ public class PhotoCapture : MonoBehaviour
             {
                 actualPhotos++;
                 StartCoroutine(CapturePhoto());
-
-                if (actualPhotos == MAX_PHOTOS && MissionManager.instance.photosTaken < MissionManager.instance.totalTargets)
-                {
-                    inputHandler.DisableInputs();
-                    RemovePhoto();
-                    failPanel.SetActive(true);
-                    Cursor.lockState = CursorLockMode.None;
-
-                }
             }
             else
             {
@@ -92,7 +84,8 @@ public class PhotoCapture : MonoBehaviour
     /// </summary>
     IEnumerator CapturePhoto()
     {
-        UICanvas.SetActive(false);
+        uiCanvas.SetActive(false);
+        missionStatusCanvas.SetActive(false);   
         cameraUI.SetActive(false);
         viewingPhoto = true;
 
@@ -106,12 +99,21 @@ public class PhotoCapture : MonoBehaviour
         screenCapture.ReadPixels(regionToRead, 0, 0, false);
         screenCapture.Apply();
 
-        UICanvas.SetActive(true);
-
+        uiCanvas.SetActive(true);
+        missionStatusCanvas.SetActive(true);
         DetectTargetHit();
         if (AudioManager.instance != null)
         {
             AudioManager.instance.PlaySoundFXClip(cameraAudioClip, transform, 1f);
+        }
+
+        if (actualPhotos == MAX_PHOTOS && MissionManager.instance.photosTaken < MissionManager.instance.totalTargets)
+        {
+            GameOverManager.instance.ActivateGameOver();
+            RemovePhoto();
+            failPanel.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+
         }
         ShowPhoto();
     }

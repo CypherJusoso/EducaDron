@@ -7,8 +7,6 @@ public class Watering : MonoBehaviour
     [SerializeField] float waterCapacity = 1000f;
     public float aguaActual = 1000f;
     public float velocidadRiego = 10f; // Litros por segundo
-    private AudioSource currentWaterSound;
-
 
     [Header("Riego")]
     [SerializeField] float wateringRadius = 5f;
@@ -28,12 +26,13 @@ public class Watering : MonoBehaviour
 
 
     bool isWatering = false;
+    bool isGameOverTriggered;
     private void Start()
     {
         StopWatering();
 
         aguaActual = waterCapacity;
-
+        isGameOverTriggered = false;
         if (waterMicroBar != null) waterMicroBar.Initialize(waterCapacity);
         
     }
@@ -61,10 +60,11 @@ public class Watering : MonoBehaviour
             aguaActual -= velocidadRiego * Time.deltaTime;
             aguaActual = Mathf.Max(aguaActual, 0f);
 
-            if (aguaActual <= 0 && isWatering)
+            if (aguaActual <= 0 && isWatering && !isGameOverTriggered)
             {
                 StopWatering();
                 GameOver();
+                isGameOverTriggered=true;
             }
         }
 
@@ -85,7 +85,7 @@ public class Watering : MonoBehaviour
             waterParticles.Play();
         }
 
-        if (waterClip != null)
+        if (waterClip != null && AudioManager.instance != null)
         {
             AudioManager.instance.PlayLoopingSFX(waterClip, soundOrigin, 1f);
         }
@@ -101,7 +101,10 @@ public class Watering : MonoBehaviour
             waterParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             if (waterClip != null)
             {
-                AudioManager.instance.StopLoopingSFX();
+                if (AudioManager.instance != null)
+                {
+                    AudioManager.instance.StopLoopingSFX();
+                }
             }
         }
     }
@@ -135,7 +138,7 @@ public class Watering : MonoBehaviour
     void GameOver()
     {
 
-        playerMover.isOn = false;
+        GameOverManager.instance.ActivateGameOver();
         Cursor.lockState = CursorLockMode.None;
         failurePanel.SetActive(true);
 
