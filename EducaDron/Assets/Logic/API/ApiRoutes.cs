@@ -15,6 +15,7 @@ namespace Assets.Logic.API
             public const string Points = "/api/users/points/";
             public const string PointsRanking = "/api/users/points/ranking";
             public const string UpdatePoints = "/api/users/points/update-points";
+            public const string Logout = "/api/users/logout";
         }
 
         public static class Progress
