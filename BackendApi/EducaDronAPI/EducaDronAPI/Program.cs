@@ -25,23 +25,21 @@ builder.Services.AddCors(options =>
                 // itch.io
                 if (host == "itch.io" || host.EndsWith(".itch.io")) return true;
 
-                // itch.zone (usado por el player HTML: p.ej. html-classic.itch.zone)
+                // itch.zone
                 if (host == "itch.zone" || host.EndsWith(".itch.zone")) return true;
 
-                // CDNs habituales de itch (ajusta según veas en Network)
+                // CDNs de itch
                 if (host == "v6p9d9t4.ssl.hwcdn.net" || host == "w3g3a5v6.ssl.hwcdn.net") return true;
-                // o, si prefieres, permitir el sufijo:
-                // if (host.EndsWith(".ssl.hwcdn.net")) return true;
 
                 return false;
             })
             .AllowAnyHeader()
             .AllowAnyMethod();
-            // Añade .AllowCredentials() solo si vas a usar cookies cross-site.
+
     });
 });
 
-// Add services to the container.
+// Add services al container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -60,7 +58,7 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
     options.SignIn.RequireConfirmedAccount = false;
 })
     .AddEntityFrameworkStores<AppDbContext>()
-    .AddErrorDescriber<SpanishIdentityErrorDescriber>() // <-- registrar el describer
+    .AddErrorDescriber<SpanishIdentityErrorDescriber>()
     .AddDefaultTokenProviders();
 
 var app = builder.Build();
@@ -76,7 +74,7 @@ app.UseRouting();
 // CORS ANTES de auth
 app.UseCors(MyAllowSpecificOrigins);
 
-// Identity / Auth (estás usando AddIdentity arriba)
+// Identity / Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
