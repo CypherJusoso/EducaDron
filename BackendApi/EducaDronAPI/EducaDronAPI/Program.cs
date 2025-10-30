@@ -14,25 +14,30 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
     {
         policy
-        .SetIsOriginAllowed(origin =>
-        {
-            if (string.IsNullOrEmpty(origin)) return false;
-            var uri = new Uri(origin);
-            var host = uri.Host.ToLowerInvariant();
+            .SetIsOriginAllowed(origin =>
+            {
+                if (!Uri.TryCreate(origin, UriKind.Absolute, out var uri)) return false;
+                var host = uri.IdnHost.ToLowerInvariant();
 
-            // dev local (cualquier puerto)
-            if (host == "localhost" || host == "127.0.0.1") return true;
+                // dev local
+                if (host == "localhost" || host == "127.0.0.1") return true;
 
-            // futuro: itch.io
-            if (host == "itch.io" || host.EndsWith(".itch.io")) return true;
+                // itch.io
+                if (host == "itch.io" || host.EndsWith(".itch.io")) return true;
 
-            // CDN típico de itch (ajustaremos si cambia)
-            if (host == "v6p9d9t4.ssl.hwcdn.net") return true;
+                // itch.zone (usado por el player HTML: p.ej. html-classic.itch.zone)
+                if (host == "itch.zone" || host.EndsWith(".itch.zone")) return true;
 
-            return false;
-        })
-        .AllowAnyHeader()
-        .AllowAnyMethod();
+                // CDNs habituales de itch (ajusta según veas en Network)
+                if (host == "v6p9d9t4.ssl.hwcdn.net" || host == "w3g3a5v6.ssl.hwcdn.net") return true;
+                // o, si prefieres, permitir el sufijo:
+                // if (host.EndsWith(".ssl.hwcdn.net")) return true;
+
+                return false;
+            })
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+            // Añade .AllowCredentials() solo si vas a usar cookies cross-site.
     });
 });
 
