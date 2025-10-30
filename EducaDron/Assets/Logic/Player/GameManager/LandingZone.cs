@@ -54,6 +54,8 @@ public class LandingZone : MonoBehaviour
 
        if (isLandingZone && Input.GetKey(KeyCode.Alpha5))
         {
+
+            GameOverManager.instance.ActivateGameOver();
             Debug.Log("Nivel Terminado");
             stopSpam = true;
             Debug.Log("SuccessPanel: " + successPanel);
@@ -61,7 +63,6 @@ public class LandingZone : MonoBehaviour
             Debug.Log("SuccessPanel activado!");
             Debug.Log($"Enviando progreso: userId={userId}, nivel={levelNumber}, estado={newStatus}");
             progressApi.SendUpdate(userId, levelNumber, newStatus);
-            inputHandler.DisableInputs();
             Cursor.lockState = CursorLockMode.None;
             CalculateLevelPoints();
         }

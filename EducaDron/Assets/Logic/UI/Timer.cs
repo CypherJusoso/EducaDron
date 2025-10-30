@@ -10,7 +10,7 @@ public class Timer : MonoBehaviour
     [SerializeField] Image batteryImage;
     [SerializeField] Sprite[] batterySprites;
     [SerializeField] PlayerMover3 playerMover;
-    [SerializeField] GameSceneManager gameSceneManager;
+    [SerializeField] GameObject timerLosePanel;
 
     bool isRunning = false;
 
@@ -64,8 +64,9 @@ public class Timer : MonoBehaviour
     /// </summary>
     void TimerEnd()
     {
-        playerMover.isOn = false;
-        gameSceneManager.GameOver();
+        GameOverManager.instance.ActivateGameOver();
+        timerLosePanel.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
         Debug.Log("Time Out");
     }
     /// <summary>

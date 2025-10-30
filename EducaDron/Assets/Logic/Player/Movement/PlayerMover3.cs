@@ -16,7 +16,7 @@ public class PlayerMover3 : MonoBehaviour
     [SerializeField] ThirdPersonLook thirdPersonScripts;
     [SerializeField] InputHandler _input;
     [SerializeField] Transform hand;
-    [SerializeField] AudioSource droneSoundLoop;
+    public AudioSource droneSoundLoop;
     [SerializeField] GameObject droneRender;
 
     public bool isOn;
