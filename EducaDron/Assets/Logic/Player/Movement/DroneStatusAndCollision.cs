@@ -125,6 +125,8 @@ public class DroneStatusAndCollision : MonoBehaviour
         
         Cursor.lockState = CursorLockMode.None;
 
+        GameOverManager.instance.ActivateGameOver();
+
         gameOverCanvas.SetActive(true);
         Debug.Log("Game Over");
     }

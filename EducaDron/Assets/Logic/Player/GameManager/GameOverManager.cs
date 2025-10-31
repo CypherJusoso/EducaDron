@@ -5,6 +5,7 @@ public class GameOverManager : MonoBehaviour
     public static GameOverManager instance;
 
     [SerializeField] PlayerMover3 playerMover;
+    [SerializeField] GameObject barCanvas;
     private void Awake()
     {
         instance = this;
@@ -16,7 +17,12 @@ public class GameOverManager : MonoBehaviour
     {
         if (playerMover != null)
         {
+            if (barCanvas != null)
+            {
+                barCanvas.SetActive(false);
+            }
             playerMover.isOn = false;
+            Debug.Log("Music: " + playerMover.droneSoundLoop);
             if (playerMover.droneSoundLoop != null)
             {
                 playerMover.droneSoundLoop.Stop();
