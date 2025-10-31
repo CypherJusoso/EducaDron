@@ -1,112 +1,86 @@
 # EducaDron
 
-EducaDron es un proyecto de videojuego educativo desarrollado con Unity. Este documento guía al tribunal para ejecutar, evaluar y, en su caso, compilar el proyecto. La versión web pública está disponible en:
+EducaDron es un proyecto de videojuego educativo desarrollado con Unity. Este documento gu a al tribunal para ejecutar, evaluar y, en su caso, compilar el proyecto. La versi n web p blica est  disponible en:
 - https://educadron.itch.io/educadron
 
 ## 1. Objetivo del proyecto
-EducaDron propone actividades formativas gamificadas en torno al pilotaje y lógica de un dron, integrando UI, progreso y consumo de API para persistencia de datos.
+EducaDron propone actividades formativas gamificadas en torno al pilotaje y l gica de un dron, integrando UI, progreso y consumo de API para persistencia de datos.
 
-## 2. Requisitos
+## 2.
+### 2.1 Ejecuci n r pida (versi n local Windows)
 
-- Unity (versión exacta del proyecto): consultar `ProjectSettings/ProjectVersion.txt`.
-  - Recomendado: instalar esa versión vía Unity Hub (LTS equivalente o superior cuando sea posible).
-- Sistema operativo: Windows 10/11 o equivalente compatible con la versión de Unity indicada.
-- Conexión a Internet para acceso al backend.
-- Navegador moderno (para WebGL): Chrome, Edge o Firefox actualizados.
+- Abrir: ".\EducaDron\BuildWindows\EducaDron.exe"
+- Requisitos: conexi n estable a Internet. El juego usa un backend p blico.
 
-Dependencias de terceros incluidas en `Assets`:
-- DOTween (Demigiant)
-- Rain Maker (Digital Ruby)
-
-## 3. Ejecución rápida (versión web pública)
+### 2.2 Ejecuci n r pida (versi n web p blica)
 
 - Abrir: https://educadron.itch.io/educadron
-- Requisitos: conexión estable a Internet. El juego usa un backend público.
+- Requisitos: conexi n estable a Internet. El juego usa un backend p blico.
 
-## 4. Ejecución local con Unity Editor
-
-1. Abrir Unity Hub.
-2. Añadir la carpeta del proyecto y abrir con la versión de Unity indicada en `ProjectVersion.txt`.
-3. Cargar la escena principal (si no se abre por defecto).
-4. Pulsar Play en el Editor.
-
-Notas:
-- El juego consume un backend configurado en tiempo de ejecución (ver “Configuración del backend”).
-- Para pruebas sin bloquear, mantener conexión a la URL del API.
-
-## 5. Ejecución local del build WebGL (incluido)
+## 3. Ejecuci n local del build WebGL restringida
 
 El repositorio contiene un build WebGL en `BuildWebGL/`. Debido a restricciones de los navegadores, debe servirse desde un servidor local (no funciona abriendo el `index.html` con doble clic por CORS).
 
-- Usando Python 3:
-  1) Abrir terminal en la carpeta que contiene `BuildWebGL\index.html`.
-  2) Ejecutar:
-     - Windows: `py -m http.server 8080`
-     - Otras plataformas: `python3 -m http.server 8080`
-  3) Navegar a: http://localhost:8080/BuildWebGL/index.html
+## 4. Compilaci n
 
-## 6. Compilación
-
-### 6.1 Compilar para WebGL
-1. Unity > File > Build Settings…
-2. Seleccionar “WebGL” y pulsar “Switch Platform”.
-3. Pulsar “Build” o “Build and Run” y elegir carpeta de salida.
+### 4.1 Compilar para WebGL
+1. Unity > File > Build Settings 
+2. Seleccionar  WebGL  y pulsar  Switch Platform .
+3. Pulsar  Build  o  Build and Run  y elegir carpeta de salida.
 4. Subir el contenido generado a un hosting (por ejemplo, itch.io) o servirlo desde un servidor web.
 
-### 6.2 Compilar para escritorio (Windows)
-1. Unity > File > Build Settings…
-2. Seleccionar “PC, Mac & Linux Standalone” (arquitectura acorde).
-3. Pulsar “Build” y elegir carpeta de salida.
+### 4.2 Compilar para escritorio (Windows)
+1. Unity > File > Build Settings 
+2. Seleccionar  PC, Mac & Linux Standalone  (arquitectura acorde).
+3. Pulsar  Build  y elegir carpeta de salida.
 4. Ejecutar el `.exe` generado.
 
-## 7. Configuración del backend
+## 5. Configuraci n del backend
 
 El juego consume servicios REST cuya URL base se define en:
 
 - `Assets/Logic/API/ApiConfig.cs`:
   - `ApiConfig.BaseUrl = "https://educadron-api-jfk-bkfcf9ckdqbjfngd.francecentral-01.azurewebsites.net"` (por defecto).
-  - Métodos de ayuda:
+  - M todos de ayuda:
     - `Build(string relativePath)`
     - `BuildWithQuery(string path, params (string key, string value)[] qs)`
 
-Para apuntar a otro entorno (p. ej. staging/producción), modificar `BaseUrl` y reconstruir.
-
 Requisitos de red:
 - Acceso HTTPS saliente hacia la URL configurada.
-- Si el firewall corporativo restringe tráfico, permitir el dominio del backend.
+- Si el firewall corporativo restringe tr fico, permitir el dominio del backend.
 
-## 8. Estructura relevante del repositorio
+## 6. Estructura relevante del repositorio
 
 - `Assets/Logic/API/`:
-  - `ApiConfig.cs`: configuración de URL base y helpers.
+  - `ApiConfig.cs`: configuraci n de URL base y helpers.
   - Otras clases de acceso a API (login, puntos, logout).
-- `Assets/Logic/UI/`: lógica del menú principal y UI.
+- `Assets/Logic/UI/`: l gica del men  principal y UI.
 - `BuildWebGL/`: build web listo para servir con `index.html`.
 - `Assets/Plugins/Demigiant/DOTween/`: tweening.
 - `Assets/RainMaker/`: efectos de lluvia.
 
 ## 9. Controles y experiencia de usuario
 
-- La interfaz guía al usuario a través del menú principal y las actividades.
-- Los detalles de control específicos se presentan en el propio juego según la escena/actividad.
+- La interfaz gu a al usuario a trav s del men  principal y las actividades.
+- Los detalles de control espec ficos se presentan en el propio juego seg n la escena/actividad.
 
-## 10. Solución de problemas
+## 10. Soluci n de problemas
 
 - No carga en navegador (WebGL):
   - Servir bajo HTTP/HTTPS (no abrir `index.html` directamente).
-  - Probar con otro navegador o limpiar caché.
-- Errores de API / autenticación:
+  - Probar con otro navegador o limpiar cach .
+- Errores de API / autenticaci n:
+  - Tanto la API como la base de datos se aloja en un servidor de Azure modalidad: "serverless" por lo cual se inactiva tras 1 hora sin solicitudes.
+  Puede que el primer request no obtenga respuesta, espere 30-60 segundos a que la Base de Datos reinicie su actividad.
   - Verificar conectividad a `ApiConfig.BaseUrl`.
-  - Revisar que el backend esté operativo.
-- Incompatibilidad de versión de Unity:
-  - Instalar la versión exacta indicada en `ProjectVersion.txt` vía Unity Hub.
+  - Revisar que el backend est  operativo:
+  - Puede acceder al Swagger de la API y ejecutar el endpoint /health. Response esperada: "OK": "https://educadron-api-jfk-bkfcf9ckdqbjfngd.francecentral-01.azurewebsites.net/swagger/index.html"
 
-## 11. Licencias de terceros
+## 12. Autor a y contacto
 
-- DOTween © Demigiant — ver `Assets/Plugins/Demigiant/DOTween/readme.txt` y su licencia.
-- Rain Maker © Digital Ruby — ver `Assets/RainMaker/Readme.txt`.
+- Equipo de desarrollo:
+  - Kniazev, Juan.
+  - Nande, Serrana.
+  - Sosa, JoaquÃ­n.
 
-## 12. Autoría y contacto
-
-- Equipo de desarrollo: EducaDron.
-- Contacto: indicar correo o canal oficial del equipo si procede.
+- Contacto: educadronUDE@gmail.com
