@@ -73,6 +73,7 @@ desktop.ini
 # Builds específicos por plataforma
 BuildWebGL/
 BuildItch/
+BuildWindows/
 
 *.apk
 *.aab

@@ -88,7 +88,25 @@ public class MainMenu : MonoBehaviour
             dm.currentLvl = 0;
             dm.ResetPoints();
         }
+
         Debug.Log("Player Has Quit The Game");
+
+        // Cerrar la aplicación solo en builds de escritorio (Windows). En editor, detener Play.
+        ExitApplication();
+        yield break;
+    }
+
+    /// <summary>
+    /// Cierra la aplicación según la plataforma.
+    /// </summary>
+    private void ExitApplication()
+    {
+#if UNITY_STANDALONE_WIN
+        Application.Quit();
+#elif UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        // En WebGL u otras plataformas, no se hace nada (no se puede cerrar la ventana desde runtime).
     }
 
     /// <summary>
