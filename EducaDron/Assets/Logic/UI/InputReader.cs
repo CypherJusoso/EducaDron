@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+
 public class InputReader : MonoBehaviour
 {
     public RegisterApi registerApi;
@@ -10,8 +10,11 @@ public class InputReader : MonoBehaviour
     [SerializeField] TMP_InputField emailInput;
     [SerializeField] TMP_InputField passwordInput;
     [SerializeField] TMP_InputField confirmPasswordInput;
-    [SerializeField] TextMeshProUGUI errorText;
 
+    /// <summary>
+    /// Recibe los datos ingresados por el usuario y se los manda a RegisterApi,
+    /// donde se realizan todas las validaciones y el manejo del ErrorPanel.
+    /// </summary>
     public void ReadInputField()
     {
         string name = nameInput.text;
@@ -21,35 +24,24 @@ public class InputReader : MonoBehaviour
 
         ReadStringInput(name, email, password, confirmPassword);
     }
-      public void ReadStringInput(string name, string email, string password, string confirmPassword)
-      {
 
-
-        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
-        {
-            Debug.Log("Error activado: " + errorText.text);
-            errorText.text = "Error: Todos los campos deben estar completos";
-            errorText.gameObject.SetActive(true);
-            return;
-        }
-        if (password != confirmPassword)
-        {
-        Debug.LogError("Error activado: " + errorText.text);
-        errorText.text = "Error: Las contraseñas no coinciden";
-        errorText.gameObject.SetActive(true);
-        return;
-        }
-
-        errorText.gameObject.SetActive(false);
+    public void ReadStringInput(string name, string email, string password, string confirmPassword)
+    {
+        // Centralizamos validaciones y errores en RegisterApi
         registerApi.SendDto(name, email, password, confirmPassword);
     }
 
-public void GoToLogin()
+    /// <summary>
+    /// Dirige al usuario al login
+    /// </summary>
+    public void GoToLogin()
     {
-        //Ir a la siguiente escena
         SceneManager.LoadScene("LoginScene");
     }
 
+    /// <summary>
+    /// Volver al menu principal
+    /// </summary>
     public void GoBack()
     {
         SceneManager.LoadScene("MainMenu");

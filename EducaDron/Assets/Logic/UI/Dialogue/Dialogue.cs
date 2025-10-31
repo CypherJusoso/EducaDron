@@ -1,77 +1,73 @@
-using System.Collections;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour
 {
     [SerializeField] PlayerMover3 playerMover;
-    [SerializeField] TextMeshProUGUI textComponent;
-    [SerializeField] string[] lines;
-    [SerializeField] float textSpeed;
     [SerializeField] ThirdPersonLook thirdPersonLook;
     [SerializeField] CinemachineInputAxisController inputProvider;
     [SerializeField] InputHandler inputHandler;
     [SerializeField] Timer timer;
 
-    int index;
+    [SerializeField] TextMeshProUGUI textComponent;
+    [SerializeField] Transform imagesContainer;
+    [SerializeField] Button buttonNext;
+    [SerializeField] Button buttonPrevious;
+
+    [SerializeField] TutorialPage[] pages;
 
     public static bool isDialoguePlaying = false;
 
+    int currentPage = 0;
+
+
     void Start()
     {
-        Cursor.lockState = CursorLockMode.None;
-        textComponent.text = string.Empty;
+        isDialoguePlaying=true;
         inputHandler.DisableInputs();
         thirdPersonLook.controlsEnabled = false;
         inputProvider.enabled = false;
-        StartDialogue();
-    }
+        Cursor.lockState = CursorLockMode.None;
 
-    void Update()
+        ShowPage(0);
+
+        buttonNext.onClick.AddListener(NextPage);
+        buttonPrevious.onClick.AddListener(PrevPage);
+    }
+    /// <summary>
+    /// Muestra una pagina especifica del tutorial, cambiando el texto y las imagenes
+    /// segun el indice recibido
+    /// </summary>
+    void ShowPage(int pageIndex)
     {
-        if (Input.GetMouseButtonDown(0))
+        currentPage = pageIndex;
+        textComponent.text = pages[pageIndex].text;
+
+        foreach(Transform child in imagesContainer)
         {
-            //Si el texto termino de escribirse vas a NextLine()
-            if (textComponent.text == lines[index])
-            {
-                NextLine();
-            }
-            //Si no escribo todo el texto de una
-            else
-            {
-                StopAllCoroutines();
-                textComponent.text = lines[index];
-            }
+            child.gameObject.SetActive(false);
         }
-    }
 
-    void StartDialogue()
-    {
-        isDialoguePlaying = true;
-        index = 0;
-        StartCoroutine(TypeLine());
-    }
-
-    //Escribe las letras 1 por 1 con el foreach
-    IEnumerator TypeLine()
-    {
-        foreach (char c in lines[index].ToCharArray())
+        foreach(var img in pages[pageIndex].images)
         {
-            textComponent.text += c;
-            yield return new WaitForSeconds(textSpeed);
+            img.SetActive(true);
         }
-    }
 
-    void NextLine()
+        buttonPrevious.gameObject.SetActive(pageIndex > 0);
+        buttonNext.GetComponentInChildren<TextMeshProUGUI>().text =
+            (pageIndex == pages.Length - 1) ? "Comenzar" : "Siguiente";
+    }
+    /// <summary>
+    /// Avanza a la siguiente pagina del tutorial, al llegar
+    /// al final reactiva los controles del jugador y comienza el desafio
+    /// </summary>
+    void NextPage()
     {
-        //El if else decide si el dialogo sigue o ya hay que devolver control al jugador
-        if (index < lines.Length - 1)
+        if (currentPage < pages.Length - 1)
         {
-            index++;
-            textComponent.text = string.Empty;
-            StartCoroutine(TypeLine());
+            ShowPage(currentPage + 1);
         }
         else
         {
@@ -79,10 +75,28 @@ public class Dialogue : MonoBehaviour
             inputHandler.EnableInputs();
             thirdPersonLook.controlsEnabled = true;
             inputProvider.enabled = true;
-            gameObject.SetActive(false);
-            Cursor.lockState = CursorLockMode.Locked;
             timer.StartTimer();
 
+            gameObject.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
+    /// <summary>
+    /// Retrocede a la pagina anterior del tutorial si existe
+    /// </summary>
+    void PrevPage()
+    {
+        if (currentPage > 0)
+        {
+            ShowPage(currentPage - 1);
+        }
+    }
+}
+
+[System.Serializable]
+public class TutorialPage
+{
+    [TextArea(2, 4)]
+    public string text;
+    public GameObject[] images;
 }

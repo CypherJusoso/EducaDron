@@ -1,3 +1,4 @@
+using Assets.Logic.API;
 using System.Collections;
 using System.Text;
 using UnityEngine;
@@ -24,18 +25,23 @@ public class GetProgressApi : MonoBehaviour
 
 
     string userId;
-    string URL = "http://localhost:5062/api/progress/?userId=";
+    string URL;
 
     private void Start()
     {
         userId = DataManager.instance.userId;
+
+        URL = ApiConfig.BuildWithQuery(ApiRoutes.Progress.Base, ("userId", userId));
+
         StartCoroutine(FetchProgress());
     }
 
+    /// <summary>
+    /// Solicitud GET a la API para conseguir el progreso de un usuario.
+    /// </summary>
     IEnumerator FetchProgress()
     {
-        string fullURL = URL + userId;
-        UnityWebRequest req = UnityWebRequest.Get(fullURL);
+        UnityWebRequest req = UnityWebRequest.Get(URL);
 
         yield return req.SendWebRequest();
 
@@ -60,8 +66,10 @@ public class GetProgressApi : MonoBehaviour
         }
     }
 
-   
 
+    /// <summary>
+    /// Actualiza los botones de elegir nivel dependiendo de el progeso del usuario
+    /// </summary>
     void UpdateButtons(LevelProgress[] progress)
     {
         foreach (var prog in progress)
@@ -113,12 +121,15 @@ public class GetProgressApi : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Metodo usado para cargar el nivel seleccionado por el usuario.
+    /// </summary>
     public void LoadLevel(int levelNumber)
     {
-        DataManager.instance.currentLvl = levelNumber;
-        Debug.LogWarning("Nivel Setteado:" + DataManager.instance.currentLvl);
+        //DataManager.instance.currentLvl = levelNumber;
+        //Debug.LogWarning("Nivel Setteado:" + DataManager.instance.currentLvl);
 
-        SceneManager.LoadScene("Informacion");
+        SceneManager.LoadScene("Level"+ levelNumber);
         //SceneManager.LoadScene("Level" + levelNumber);
     }
 

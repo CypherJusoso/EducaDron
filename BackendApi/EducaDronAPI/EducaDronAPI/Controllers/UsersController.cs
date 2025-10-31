@@ -24,12 +24,17 @@ namespace EducaDronAPI.Controllers
             this.userManager = userManager;
         }
 
+        /// <summary>
+        /// Devuelve a todos los usuarios registrados en una lista
+        /// </summary>
         [HttpGet]
         public List<Users> GetUsers()
         {
             return _context.Users.OrderByDescending(c => c.Id).ToList();
         }
-
+        /// <summary>
+        /// Devuelve un usuario por ID
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult GetUser(string id)
         {
@@ -40,7 +45,11 @@ namespace EducaDronAPI.Controllers
             }
             return Ok(user);
         }
-
+        /// <summary>
+        /// Registra un usuario en la base de datos.
+        /// Crea registros iniciales de progress y level point para
+        /// cada nivel
+        /// </summary>
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto model)
         {
@@ -98,7 +107,9 @@ namespace EducaDronAPI.Controllers
             }
             return BadRequest(model);
         }
-
+        /// <summary>
+        /// Inicia sesion verificando el nombre de usuario y la contraseña
+        /// </summary>
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto model)
         {
@@ -120,20 +131,28 @@ namespace EducaDronAPI.Controllers
                 {
                     return BadRequest( new
                     {
-                        errors = new[] { "El email o la contraseña son incorrectos." }
+                        errors = new[] { "El nombre de usuario o la contraseña son incorrectos." }
                     });
                 }
             }
             return BadRequest(model);
         }
-
+        /// <summary>
+        /// Cierra la sesion del usuario
+        /// </summary>
         [HttpPost("logout")] 
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             return Ok(new { mensaje = "Has cerrado sesion." });
         }
-
+        /// <summary>
+        /// Actualiza los puntos del usuario en un nivel especifico.
+        /// Controla que solo se actualicen los puntos si superan a
+        /// los anteriores
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPut("points/update-points")]
         public async Task<IActionResult> UpdateLevelPoint(LevelPointDto dto)
         {
@@ -159,7 +178,10 @@ namespace EducaDronAPI.Controllers
                 levelToUpdatePoints.Points
             });
         }
-
+        /// <summary>
+        /// Obtiene los puntos del usuario, separados por nivel
+        /// y el total
+        /// </summary>
         [HttpGet("points/{userId}")]
         public async Task<IActionResult> GetUserPoints(string userId)
         {
@@ -179,7 +201,9 @@ namespace EducaDronAPI.Controllers
                 Total = totalPoints
             });
         }
-
+        /// <summary>
+        /// Obtiene el ranking de usuarios ordenado por puntos totales
+        /// </summary>
         [HttpGet("points/ranking")]
         public async Task<IActionResult> GetRanking()
         {

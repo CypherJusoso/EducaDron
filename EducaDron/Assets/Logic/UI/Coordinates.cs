@@ -7,7 +7,9 @@ public class Coordinates : MonoBehaviour
     [SerializeField] TextMeshProUGUI coordinates;
     [SerializeField] GameObject playeDrone;
 
-    // Update is called once per frame
+    /// <summary>
+    /// Actualiza el texto en pantalla con las coordenadas actuales del dron
+    /// </summary>
     void Update()
     {
         if (playeDrone != null && coordinates != null) 

@@ -10,7 +10,6 @@ public class MissionManager2 : MonoBehaviour
     public int WateredPlants => wateredPlants;
 
     [SerializeField] GameObject landingZone;
-    [SerializeField] Riego riegoScript;
 
     void Awake()
     {
@@ -26,21 +25,11 @@ public class MissionManager2 : MonoBehaviour
         landingZone.SetActive(false);
 
         totalPlants = FindObjectsByType<OnCropWatering2>(FindObjectsSortMode.None).Length;
-
-        if (totalPlants == 0)
-        {
-            Debug.LogError("No PlantColour scripts found in the scene! Check that your plants have the script attached.");
-        }
-        else
-        {
-            Debug.Log("Total Plants to water: " + totalPlants);
-        }
     }
 
-    void Start()
-    {
-    }
-
+    ///<summary>
+    ///Detecta cuando un cultivo es regado y actualiza el estado de la mision
+    ///</summary>
     public void PlantWatered()
     {
         wateredPlants++;
@@ -54,16 +43,11 @@ public class MissionManager2 : MonoBehaviour
             PlayerWins();
         }
     }
-
+    ///<summary>
+    ///Este metodo activa la zona de aterrizaje cuando el jugador completa el desafio
+    ///</summary>
     void PlayerWins()
     {
-        Debug.Log("🎉 YOU WIN! All plants are watered! 🎉");
         landingZone.SetActive(true);
-
-        if (riegoScript != null) 
-        {
-            riegoScript.particulasRiego.Stop();
-            riegoScript.enabled = false;
-        }
     }
 }

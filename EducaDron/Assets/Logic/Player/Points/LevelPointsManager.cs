@@ -6,7 +6,6 @@ public class LevelPointsManager : MonoBehaviour
     [SerializeField] DroneStatusAndCollision droneLife;
     [SerializeField] Timer timer;
     [SerializeField] PhotoCapture photoCapture;
-    [SerializeField] Riego riego;
     [SerializeField] Watering watering;
 
     int points = 70;
@@ -22,7 +21,9 @@ public class LevelPointsManager : MonoBehaviour
             Debug.LogWarning("DataManager no encontrado.");
         }
     }
-
+    /// <summary>
+    /// Calcula los puntos para el nivel 1 basandose en la vida y el tiempo restante del usuario
+    /// </summary>
     public void CalculatePointsLevel1()
     {
         int penalizacionHp = CalculateHp();
@@ -36,7 +37,9 @@ public class LevelPointsManager : MonoBehaviour
         Debug.Log($"Puntos finales nivel 1: {points} (Vida: -{penalizacionHp}, Tiempo: -{penalizacionTiempo})");
         DataManager.instance.currentLvl = 1;
     }
-
+    /// <summary>
+    /// Calcula los puntos para el nivel 2 basandose en la vida, el agua y el tiempo restante del usuario
+    /// </summary>
     public void CalculatePointsLevel2() 
     {
         int penalizacionHp = CalculateHp();
@@ -45,22 +48,29 @@ public class LevelPointsManager : MonoBehaviour
 
         if (DataManager.instance != null)
         {
+
+            // REFACTORIZAR ESTE METODO. UTILIZAR LAS LINEAS COMENTADAS. INSTANCIAR EL DM EN UNA VARIABLE Y MANEJARLO DESDE AHI.
+            //DataManager ctx = DataManager.instance;
+            //ctx.currentLvl = 2;
+            //ctx.levelPoints = points;
             DataManager.instance.currentLvl = 2;
             DataManager.instance.levelPoints = points;
-            DataManager.instance.currentLvl = 3;
+            //DataManager.instance.currentLvl = 3;
         }
         else
         {
             Debug.LogWarning("DataManager no instanciado.");
         }
-        Debug.Log($"Puntos finales nivel 3: {points} (Vida: -{penalizacionHp}, Tiempo: -{penalizacionTiempo}, Riego: - {penalizacionAgua})");
+        Debug.Log($"Puntos finales nivel {DataManager.instance.currentLvl}: {points} (Vida: -{penalizacionHp}, Tiempo: -{penalizacionTiempo}, Riego: - {penalizacionAgua})");
     }
-
+    /// <summary>
+    /// Calcula los puntos para el nivel 3 basandose en la vida, el pesticida y el tiempo restante del usuario
+    /// </summary>
     public void CalculatePointsLevel3()
     {
         int penalizacionHp = CalculateHp();
         int penalizacionTiempo = CalculateTimer();
-        int penalizacionAgua = CalculateWater();
+        int penalizacionAgua = CalculatePesticide();
 
         if (points < 0) { points = 0; }
 
@@ -68,7 +78,9 @@ public class LevelPointsManager : MonoBehaviour
         Debug.Log($"Puntos finales nivel 3: {points} (Vida: -{penalizacionHp}, Tiempo: -{penalizacionTiempo}, Riego: - {penalizacionAgua})");
         DataManager.instance.currentLvl = 3;
     }
-
+    /// <summary>
+    /// Calcula cuantos puntos pierde el usuario dependiendo de su vida restante
+    /// </summary>
     int CalculateHp()
     {
         int vidaPerdida = (int)(100 - droneLife.droneLife);
@@ -90,6 +102,9 @@ public class LevelPointsManager : MonoBehaviour
         points -= penalizacionHp;
         return penalizacionHp;
     }
+    /// <summary>
+    /// Calcula cuantos puntos pierde el usuario dependiendo del tiempo restante
+    /// </summary>
     int CalculateTimer()
     {
         float tiempoRestante = timer.timerDuration;
@@ -112,10 +127,12 @@ public class LevelPointsManager : MonoBehaviour
         points -= penalizacionTimer;
         return penalizacionTimer;
     }
-
-    int CalculateWater()
+    /// <summary>
+    /// Calcula cuantos puntos pierde el usuario dependiendo del pesticida restante en el nivel 3
+    /// </summary>
+    int CalculatePesticide()
     {
-        int aguaUsada = (int)(300 - riego.aguaActual);
+        int aguaUsada = (int)(300 - watering.aguaActual);
         int excesoAgua = aguaUsada - 150;
         int penalizacionAgua = 0;
         if (excesoAgua > 0)
@@ -132,7 +149,9 @@ public class LevelPointsManager : MonoBehaviour
 
         return penalizacionAgua;
     }
-
+    /// <summary>
+    /// Calcula cuantos puntos pierde el usuario dependiendo del agua restante en el nivel 2
+    /// </summary>
     int CalculateWaterLevel2()
     {
         int aguaUsada = (int)(1000 - watering.aguaActual);
@@ -151,6 +170,9 @@ public class LevelPointsManager : MonoBehaviour
         }
         return penalizacionAgua;
     }
+    /// <summary>
+    /// Calcula cuantos puntos pierde el usuario dependiendo de cuantas fotos haya tomado
+    /// </summary>
     void CalculatePhotos()
     {
         if (photoCapture.actualPhotos > 5)

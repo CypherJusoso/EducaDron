@@ -1,3 +1,4 @@
+using Assets.Logic.API;
 using System.Collections;
 using System.Text;
 using UnityEngine;
@@ -7,19 +8,27 @@ using UnityEngine.SceneManagement;
 public class ProgressUpdateApi : MonoBehaviour
 {
 
-    string URLPut = "http://localhost:5062/api/progress/";
+    string URL = ApiConfig.Build(ApiRoutes.Progress.Base);
+
+    /// <summary>
+    /// Metodo usado para actualizar el progreso del usuario llamando a <see cref="UpdateProgress"/>.
+    /// </summary>
     public void SendUpdate(string userId, int levelNumber, string newStatus)
     {
         StartCoroutine(UpdateProgress(userId, levelNumber, newStatus));
 
     }
+
+    /// <summary>
+    /// Solicitud PUT a la API para actualizar el progreso del usuario.
+    /// </summary>
     IEnumerator UpdateProgress(string userId, int levelNumber, string newStatus)
     {
         string jsonBody = JsonUtility.ToJson(new UpdateProgressDto(userId, levelNumber, newStatus));
-        Debug.Log($"URL: {URLPut}");
+        Debug.Log($"URL: {URL}");
         Debug.Log($"BODY: {jsonBody}");
 
-        UnityWebRequest req = new UnityWebRequest(URLPut, "PUT");
+        UnityWebRequest req = new UnityWebRequest(URL, "PUT");
 
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
 

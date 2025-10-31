@@ -1,3 +1,4 @@
+using Assets.Logic.API;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,15 @@ using UnityEngine.Networking;
 
 public class GetRanking : MonoBehaviour
 {
-    string URLGet = "http://localhost:5062/api/users/points/ranking";
+    string URL = ApiConfig.Build(ApiRoutes.Users.PointsRanking);
 
+
+    /// <summary>
+    /// Solicitud GET a la API para conseguir los puntos de todos los usuarios.
+    /// </summary>
     public IEnumerator GetRankingData(System.Action<List<RankingData>> onSuccess)
     {
-        UnityWebRequest req = UnityWebRequest.Get(URLGet);
+        UnityWebRequest req = UnityWebRequest.Get(URL);
 
         yield return req.SendWebRequest();
 

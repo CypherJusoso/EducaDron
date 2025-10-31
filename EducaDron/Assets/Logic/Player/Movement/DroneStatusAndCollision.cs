@@ -1,5 +1,6 @@
 using Microlight.MicroBar;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,7 +17,9 @@ public class DroneStatusAndCollision : MonoBehaviour
     [SerializeField] GameObject smallSmokeVFX;
     [SerializeField] GameObject largeSmokeVFX;
     [SerializeField] MicroBar punch_MicroBar;
-
+    [SerializeField] GameObject gameOverCanvas;
+    [SerializeField] GameObject alertUi;
+    [SerializeField] AudioClip[] damageSoundClips;
 
     PlayerMover3 playerMover;
 
@@ -32,6 +35,17 @@ public class DroneStatusAndCollision : MonoBehaviour
         if (punch_MicroBar != null) punch_MicroBar.Initialize(MAX_HP);
 
     }
+    /// <summary>
+    /// Maneja un cooldown para que el dron no se choque constantemente
+    /// </summary>
+    private void Update()
+    {
+        //Mientras el timer sea mayor a 0 sigo restando, si esta en 0 puede recibir daño
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (timer > 0) { return; }
@@ -39,14 +53,11 @@ public class DroneStatusAndCollision : MonoBehaviour
         //Reinicio el timer
         timer = cooldownSeconds;
     }
-    private void Update()
-    {
-        //Mientras el timer sea mayor a 0 sigo restando, si esta en 0 puede recibir daño
-        if(timer > 0)
-        {
-            timer -= Time.deltaTime;
-        }
-    }
+   
+    ///<summary>
+    ///Detecta cuando el dron colisiona con un objeto, ajusta la vida restante del dron, su velocidad, muestra
+    ///efectos visuales y detecta si perdio el desafio por falta de vida
+    ///</summary>
     private void TakeDamage(Collision collision)
     {
         float crashVelocity = collision.relativeVelocity.magnitude;
@@ -59,6 +70,10 @@ public class DroneStatusAndCollision : MonoBehaviour
         Debug.Log($"Dron sufre {damage} de daño, vida = {droneLife}");
         if (damage >0 && damage < 10)
         {
+            if (AudioManager.instance != null)
+            {
+                AudioManager.instance.PlayRandomSoundFXClip(damageSoundClips, transform, 1f);
+            }
             isCollided = true;
 
             if (punch_MicroBar != null) 
@@ -70,6 +85,10 @@ public class DroneStatusAndCollision : MonoBehaviour
         }
         else if (damage >= 10) 
         {
+            if (AudioManager.instance != null)
+            {
+                AudioManager.instance.PlayRandomSoundFXClip(damageSoundClips, transform, 1f);
+            }
             isCollided = true;
             if (punch_MicroBar != null)
             {
@@ -85,17 +104,30 @@ public class DroneStatusAndCollision : MonoBehaviour
         }
     }
 
+    ///<summary>
+    ///Metodo que llama a <see cref="GameOverEnumerator"/> cuando el usuario pierde el desafio
+    ///</summary>
     private void GameOver()
+    {
+       StartCoroutine(GameOverEnumerator());
+    }
+    ///<summary>
+    ///Controla la secuencia de Game Over, mostrando efectos visuales y la opcion para que el usuario vuelva al menu principal
+    ///</summary>
+    IEnumerator GameOverEnumerator()
     {
         droneLife = 0;
         playerMover.isOn = false;
-        gameSceneManager.GameOver();
         Instantiate(largeSmokeVFX, transform.position, Quaternion.identity);
-        Debug.Log("Game Over");
-    }
+        if (alertUi != null) { alertUi.gameObject.SetActive(false); }
+        
+        yield return new WaitForSeconds(1f);
+        
+        Cursor.lockState = CursorLockMode.None;
 
-    void OnCollisionExit(Collision collisionInfo)
-    {
-        print("Collision Out: " + gameObject.name);
+        GameOverManager.instance.ActivateGameOver();
+
+        gameOverCanvas.SetActive(true);
+        Debug.Log("Game Over");
     }
 }

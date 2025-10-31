@@ -1,3 +1,4 @@
+using Assets.Logic.API;
 using System.Collections;
 using System.Text;
 using UnityEngine;
@@ -6,14 +7,16 @@ using UnityEngine.Networking;
 public class SendPointsApi : MonoBehaviour
 {
 
+    string URL = ApiConfig.Build(ApiRoutes.Users.UpdatePoints);
 
-    string URLPut = "http://localhost:5062/api/users/points/update-points";
-
+    /// <summary>
+    /// Solicitud PUT a la API para actualizar los puntos de un usuario 
+    /// </summary>
     public IEnumerator UpdatePoints(string userId, int levelNumber, int points)
     {
         string jsonBody = JsonUtility.ToJson(new UpdatePointsDto(userId, points, levelNumber));
 
-        UnityWebRequest req = new UnityWebRequest(URLPut, "PUT");
+        UnityWebRequest req = new UnityWebRequest(URL, "PUT");
 
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
 

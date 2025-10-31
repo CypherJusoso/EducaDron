@@ -70,6 +70,11 @@ desktop.ini
 # ARCHIVOS DE BUILD POR PLATAFORMA       #
 ###########################################
 
+# Builds específicos por plataforma
+BuildWebGL/
+BuildItch/
+BuildWindows/
+
 *.apk
 *.aab
 *.ipa

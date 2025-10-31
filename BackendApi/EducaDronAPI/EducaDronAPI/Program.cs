@@ -1,29 +1,51 @@
 using EducaDronAPI.Data;
 using EducaDronAPI.Models;
+using EducaDronAPI.Localization; // <-- añadir
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
-                                 .AllowAnyHeader()
-                                 .AllowAnyMethod();
-                      });
+    options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+    {
+        policy
+            .SetIsOriginAllowed(origin =>
+            {
+                if (!Uri.TryCreate(origin, UriKind.Absolute, out var uri)) return false;
+                var host = uri.IdnHost.ToLowerInvariant();
+
+                // dev local
+                if (host == "localhost" || host == "127.0.0.1") return true;
+
+                // itch.io
+                if (host == "itch.io" || host.EndsWith(".itch.io")) return true;
+
+                // itch.zone
+                if (host == "itch.zone" || host.EndsWith(".itch.zone")) return true;
+
+                // CDNs de itch
+                if (host == "v6p9d9t4.ssl.hwcdn.net" || host == "w3g3a5v6.ssl.hwcdn.net") return true;
+
+                return false;
+            })
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+
+    });
 });
 
-// Add services to the container.
+// Add services al container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<Users, IdentityRole>(options =>
 {
@@ -36,29 +58,32 @@ builder.Services.AddIdentity<Users, IdentityRole>(options =>
     options.SignIn.RequireConfirmedAccount = false;
 })
     .AddEntityFrameworkStores<AppDbContext>()
+    .AddErrorDescriber<SpanishIdentityErrorDescriber>()
     .AddDefaultTokenProviders();
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseCors(MyAllowSpecificOrigins);
+// HTTPS en Azure
+app.UseHttpsRedirection();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-// app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
+// CORS ANTES de auth
+app.UseCors(MyAllowSpecificOrigins);
+
+// Identity / Auth
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapGet("/health", () => Results.Ok("OK"));
 
 app.Run();

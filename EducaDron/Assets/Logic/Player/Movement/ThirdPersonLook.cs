@@ -32,18 +32,17 @@ public class ThirdPersonLook : MonoBehaviour
         targetZoom = currentZoom = orbital.Radius;
     }
 
-    private void HandleMouseScroll(InputAction.CallbackContext context)
-    {
-        scrollDelta = context.ReadValue<Vector2>();
-    }
-
+    /// <summary>
+    /// Actualiza la distancia de la camara respecto al dron.
+    /// Hace una transición suave entre el zoom actual y el zoom objetivo
+    /// </summary>
     void Update()
     {
         if (!controlsEnabled) { return; }
 
-        if (scrollDelta.y != 0) 
+        if (scrollDelta.y != 0)
         {
-            if (orbital != null) 
+            if (orbital != null)
             {
                 targetZoom = Mathf.Clamp(orbital.Radius - scrollDelta.y * zoomSpeed, minDistance, maxDistance);
                 scrollDelta = Vector2.zero;
@@ -59,4 +58,13 @@ public class ThirdPersonLook : MonoBehaviour
         currentZoom = Mathf.Lerp(currentZoom, targetZoom, Time.deltaTime * zoomLerpSpeed);
         orbital.Radius = currentZoom;
     }
+
+    /// <summary>
+    /// Captura el valor de la rueda del mouse para ajustar el zoom
+    /// </summary>
+    private void HandleMouseScroll(InputAction.CallbackContext context)
+    {
+        scrollDelta = context.ReadValue<Vector2>();
+    }
+
 }

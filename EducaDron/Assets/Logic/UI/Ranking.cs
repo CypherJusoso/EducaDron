@@ -15,23 +15,20 @@ public class Ranking : MonoBehaviour
     [SerializeField] Sprite silverMedal;
     [SerializeField] Sprite bronzeMedal;
 
+   /// <summary>
+   /// Llama a la API para obtener los datos del ranking y 
+   /// carga los resultados
+   /// </summary>
     void Start()
     {
-        /*
-        List<(string name, int points)> boceto = new()
-        {
-            ("Alex", 540),
-            ("Elise", 410),
-            ("Dorian", 385),
-            ("Tanwen", 200),
-            ("Kael", 190),
-        };
-        LoadRanking(boceto);
-        */
-
         StartCoroutine(rankingApi.GetRankingData(LoadRanking));
     }
-
+    /// <summary>
+    /// Se crean las posiciones del ranking en la interfaz
+    /// con los datos recibidos por la API.
+    /// Asigna nombre, posicion, puntos y medallas para los 3 primeros
+    /// </summary>
+    /// <param name="rankingData"></param>
     void LoadRanking(List<RankingData> rankingData)
     {
         foreach (Transform child in contentParent)

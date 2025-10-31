@@ -5,33 +5,33 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour
+{
     #region Variables
 
-    private             Question[]          _questions              = null;
-    public              Question[]          Questions               { get { return _questions; } }
+    private Question[] _questions = null;
+    public Question[] Questions { get { return _questions; } }
 
-    [SerializeField]    GameEvents          events                  = null;
+    [SerializeField] GameEvents events = null;
 
-    [SerializeField]    SendPointsApi       pointsApi;
+    [SerializeField] SendPointsApi pointsApi;
 
-    [SerializeField]    Animator            timerAnimtor            = null;
-    [SerializeField]    TextMeshProUGUI     timerText               = null;
-    [SerializeField]    Color               timerHalfWayOutColor    = Color.yellow;
-    [SerializeField]    Color               timerAlmostOutColor     = Color.red;
-    private             Color               timerDefaultColor       = Color.white;
+    [SerializeField] Animator timerAnimtor = null;
+    [SerializeField] TextMeshProUGUI timerText = null;
+    [SerializeField] Color timerHalfWayOutColor = Color.yellow;
+    [SerializeField] Color timerAlmostOutColor = Color.red;
+    private Color timerDefaultColor = Color.white;
 
-    private             List<AnswerData>    PickedAnswers           = new List<AnswerData>();
-    private             List<int>           FinishedQuestions       = new List<int>();
-    private             int                 currentQuestion         = 0;
+    private List<AnswerData> PickedAnswers = new List<AnswerData>();
+    private List<int> FinishedQuestions = new List<int>();
+    private int currentQuestion = 0;
 
-    private             int                 timerStateParaHash      = 0;
+    private int timerStateParaHash = 0;
 
-    private             IEnumerator         IE_WaitTillNextRound    = null;
-    private             IEnumerator         IE_StartTimer           = null;
+    private IEnumerator IE_WaitTillNextRound = null;
+    private IEnumerator IE_StartTimer = null;
 
-    private             bool                IsFinished
+    private bool IsFinished
     {
         get
         {
@@ -43,38 +43,25 @@ public class GameManager : MonoBehaviour {
 
     #region Default Unity methods
 
-    /// <summary>
-    /// Function that is called when the object becomes enabled and active
-    /// </summary>
     void OnEnable()
     {
         events.UpdateQuestionAnswer += UpdateAnswers;
     }
-    /// <summary>
-    /// Function that is called when the behaviour becomes disabled
-    /// </summary>
+
     void OnDisable()
     {
         events.UpdateQuestionAnswer -= UpdateAnswers;
     }
 
-    /// <summary>
-    /// Function that is called on the frame when a script is enabled just before any of the Update methods are called the first time.
-    /// </summary>
     void Awake()
     {
         events.CurrentFinalScore = 0;
     }
-    /// <summary>
-    /// Function that is called when the script instance is being loaded.
-    /// </summary>
+
     void Start()
     {
-        events.StartupHighscore = PlayerPrefs.GetInt(GameUtility.SavePrefKey);
-
         timerDefaultColor = timerText.color;
         LoadQuestions();
-        
 
         timerStateParaHash = Animator.StringToHash("TimerState");
 
@@ -87,7 +74,7 @@ public class GameManager : MonoBehaviour {
     #endregion
 
     /// <summary>
-    /// Function that is called to update new selected answer.
+    /// Actualiza la lista de respuestas seleccionadas segun el tipo de pregunta
     /// </summary>
     public void UpdateAnswers(AnswerData newAnswer)
     {
@@ -116,17 +103,15 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
-
     /// <summary>
-    /// Function that is called to clear PickedAnswers list.
+    /// Limpia la lista de respuestas seleccionadas
     /// </summary>
     public void EraseAnswers()
     {
         PickedAnswers = new List<AnswerData>();
     }
-
     /// <summary>
-    /// Function that is called to display new question.
+    /// Carga una nueva pregunta aleatoria
     /// </summary>
     void Display()
     {
@@ -136,7 +121,8 @@ public class GameManager : MonoBehaviour {
         if (events.UpdateQuestionUI != null)
         {
             events.UpdateQuestionUI(question);
-        } else { Debug.LogWarning("Ups! Something went wrong while trying to display new Question UI Data. GameEvents.UpdateQuestionUI is null. Issue occured in GameManager.Display() method."); }
+        }
+        else { Debug.LogWarning("Ups! Something went wrong while trying to display new Question UI Data. GameEvents.UpdateQuestionUI is null. Issue occured in GameManager.Display() method."); }
 
         if (question.UseTimer)
         {
@@ -145,7 +131,7 @@ public class GameManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// Function that is called to accept picked answers and check/display the result.
+    /// Lee la respuesta del jugador, actualiza la puntuacion y muestra el resultado en pantalla
     /// </summary>
     public void Accept()
     {
@@ -155,22 +141,16 @@ public class GameManager : MonoBehaviour {
 
         UpdateScore((isCorrect) ? Questions[currentQuestion].AddScore : -Questions[currentQuestion].AddScore);
 
-        if (IsFinished)
-        {
-            SetHighscore();
-        }
-
-        var type 
-            = (IsFinished) 
-            ? UIManager.ResolutionScreenType.Finish 
-            : (isCorrect) ? UIManager.ResolutionScreenType.Correct 
+        var type
+            = (IsFinished)
+            ? UIManager.ResolutionScreenType.Finish
+            : (isCorrect) ? UIManager.ResolutionScreenType.Correct
             : UIManager.ResolutionScreenType.Incorrect;
 
         if (events.DisplayResolutionScreen != null)
         {
             events.DisplayResolutionScreen(type, Questions[currentQuestion].AddScore);
         }
-
 
         if (type != UIManager.ResolutionScreenType.Finish)
         {
@@ -184,7 +164,9 @@ public class GameManager : MonoBehaviour {
     }
 
     #region Timer Methods
-
+    /// <summary>
+    /// Activa o detiene el temporizador
+    /// </summary>
     void UpdateTimer(bool state)
     {
         switch (state)
@@ -205,6 +187,10 @@ public class GameManager : MonoBehaviour {
                 break;
         }
     }
+    /// <summary>
+    /// Inicia el temporizador para la pregunta actual, actualiza su color conforme pasa el tiempo
+    /// </summary>
+    /// <returns></returns>
     IEnumerator StartTimer()
     {
         var totalTime = Questions[currentQuestion].Timer;
@@ -229,6 +215,9 @@ public class GameManager : MonoBehaviour {
         }
         Accept();
     }
+    /// <summary>
+    /// Espera unos segundos antes de cargar la siguiente pregunta
+    /// </summary>
     IEnumerator WaitTillNextRound()
     {
         yield return new WaitForSeconds(GameUtility.ResolutionDelayTime);
@@ -236,10 +225,10 @@ public class GameManager : MonoBehaviour {
     }
 
     #endregion
-
     /// <summary>
-    /// Function that is called to check currently picked answers and return the result.
+    /// Verifica si las respuestas seleccionadas son correctas
     /// </summary>
+    /// <returns></returns>
     bool CheckAnswers()
     {
         if (!CompareAnswers())
@@ -249,7 +238,7 @@ public class GameManager : MonoBehaviour {
         return true;
     }
     /// <summary>
-    /// Function that is called to compare picked answers with question correct answers.
+    /// Compara las respuestas seleccionadas con las correctas para determinar si coinciden
     /// </summary>
     bool CompareAnswers()
     {
@@ -265,9 +254,8 @@ public class GameManager : MonoBehaviour {
         }
         return false;
     }
-
     /// <summary>
-    /// Function that is called to load all questions from the Resource folder.
+    /// Carga las preguntas del nivel actual desde la carpeta Resources/Questions y las filtra por nivel
     /// </summary>
     void LoadQuestions()
     {
@@ -294,57 +282,87 @@ public class GameManager : MonoBehaviour {
             }
         }
 
-        _questions = filtered.ToArray();
+        // Si hay más de 6, barajamos y tomamos 6
+        int takeCount = Mathf.Min(6, filtered.Count);
+
+        if (filtered.Count > 1)
+        {
+            // Fisher-Yates shuffle para aleatorizar la lista
+            for (int i = filtered.Count - 1; i > 0; i--)
+            {
+                int j = UnityEngine.Random.Range(0, i + 1);
+                var temp = filtered[i];
+                filtered[i] = filtered[j];
+                filtered[j] = temp;
+            }
+        }
+
+        _questions = filtered.Take(takeCount).ToArray();
 
         if (_questions.Length == 0)
         {
             Debug.LogWarning($"No se encontraron Questions para el nivel {currentLevel}. Revisa el campo _levelQuestion en tus assets Question.");
         }
+        else if (filtered.Count < 6)
+        {
+            Debug.LogWarning($"Solo se encontraron {filtered.Count} preguntas para el nivel {currentLevel}. Se usarán todas las disponibles.");
+        }
     }
-
     /// <summary>
-    /// Function that is called restart the game.
+    /// Reinicia el quiz y la puntacion del usuario
     /// </summary>
     public void RestartGame()
     {
         DataManager.instance.quizPoints = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-    public void NextLevel()
+    /// <summary>
+    /// Llama a <see cref="NextLevel"/> para enviar los
+    /// puntos del usuario y cargar el siguiente nivel
+    /// </summary>
+    public void CallNextLevel()
     {
-        SceneManager.LoadScene("Informacion");
+        StartCoroutine(NextLevel());
     }
 
     /// <summary>
-    /// Function that is called to go back to MainMenu.
+    /// Envia los puntos a la API y carga el siguiente nivel
+    /// </summary>
+    IEnumerator NextLevel()
+    {
+        int level = DataManager.instance.currentLvl;
+        int currentLvl = DataManager.instance.currentLvl;
+        int points = DataManager.instance.TotalPoints;
+        string id = DataManager.instance.userId;
+        yield return pointsApi.UpdatePoints(id, currentLvl, points);
+
+        int nextLevel = DataManager.instance.currentLvl + 1;
+        SceneManager.LoadScene("Level" + nextLevel);
+    }
+    /// <summary>
+    /// Llama a <see cref="QuitWhenApiCallEnds"/> para guardar los 
+    /// puntos en la api y volver al menu principal
     /// </summary>
     public void QuitGame()
     {
         StartCoroutine(QuitWhenApiCallEnds());
     }
+
+    /// <summary>
+    /// Envia los puntos antes de cerrar la partida y carga el menu princiapl
+    /// </summary>
     IEnumerator QuitWhenApiCallEnds()
     {
         Debug.Log("Max Points " + DataManager.instance.TotalPoints);
         string id = DataManager.instance.userId;
         int currentLvl = DataManager.instance.currentLvl;
         int points = DataManager.instance.TotalPoints;
-       yield return pointsApi.UpdatePoints(id, currentLvl, points);
+        yield return pointsApi.UpdatePoints(id, currentLvl, points);
         SceneManager.LoadScene("MainMenu");
     }
+
     /// <summary>
-    /// Function that is called to set new highscore if game score is higher.
-    /// </summary>
-    private void SetHighscore()
-    {
-        var highscore = PlayerPrefs.GetInt(GameUtility.SavePrefKey);
-        if (highscore < events.CurrentFinalScore)
-        {
-            PlayerPrefs.SetInt(GameUtility.SavePrefKey, events.CurrentFinalScore);
-        }
-    }
-    /// <summary>
-    /// Function that is called update the score and update the UI.
+    /// Actualiza la puntacion actual del quiz
     /// </summary>
     private void UpdateScore(int add)
     {
@@ -367,6 +385,9 @@ public class GameManager : MonoBehaviour {
 
     #region Getters
 
+    /// <summary>
+    /// Obtiene una pregunta aleatoria que no haya sido usada
+    /// </summary>
     Question GetRandomQuestion()
     {
         var randomIndex = GetRandomQuestionIndex();
@@ -374,6 +395,10 @@ public class GameManager : MonoBehaviour {
 
         return Questions[currentQuestion];
     }
+
+    /// <summary>
+    /// Devuelve un indice aleatorio que le corresponde a una pregunta no respondida
+    /// </summary>
     int GetRandomQuestionIndex()
     {
         var random = 0;

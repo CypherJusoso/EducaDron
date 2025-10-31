@@ -20,6 +20,7 @@ public struct UIManagerParameters
     [SerializeField] Color finalBGColor;
     public Color FinalBGColor { get { return finalBGColor; } }
 }
+
 [Serializable()]
 public struct UIElements
 {
@@ -48,63 +49,57 @@ public struct UIElements
 
     [Space]
 
-    [SerializeField] TextMeshProUGUI highScoreText;
-    public TextMeshProUGUI HighScoreText { get { return highScoreText; } }
-
     [SerializeField] CanvasGroup mainCanvasGroup;
     public CanvasGroup MainCanvasGroup { get { return mainCanvasGroup; } }
 
     [SerializeField] RectTransform finishUIElements;
     public RectTransform FinishUIElements { get { return finishUIElements; } }
-}
-public class UIManager : MonoBehaviour {
 
+    // Referencia directa al botón "Next Level"
+    [SerializeField] Button nextLevelButton;
+    public Button NextLevelButton { get { return nextLevelButton; } }
+}
+
+public class UIManager : MonoBehaviour
+{
     #region Variables
 
-    public enum         ResolutionScreenType   { Correct, Incorrect, Finish }
+    public enum ResolutionScreenType { Correct, Incorrect, Finish }
 
     [Header("References")]
-    [SerializeField]    GameEvents             events                       = null;
+    [SerializeField] GameEvents events = null;
 
     [Header("UI Elements (Prefabs)")]
-    [SerializeField]    AnswerData             answerPrefab                 = null;
+    [SerializeField] AnswerData answerPrefab = null;
 
-    [SerializeField]    UIElements             uIElements                   = new UIElements();
+    [SerializeField] UIElements uIElements = new UIElements();
 
     [Space]
-    [SerializeField]    UIManagerParameters    parameters                   = new UIManagerParameters();
+    [SerializeField] UIManagerParameters parameters = new UIManagerParameters();
 
-    private             List<AnswerData>       currentAnswers               = new List<AnswerData>();
-    private             int                    resStateParaHash             = 0;
+    private List<AnswerData> currentAnswers = new List<AnswerData>();
+    private int resStateParaHash = 0;
 
-    private             IEnumerator            IE_DisplayTimedResolution    = null;
+    private IEnumerator IE_DisplayTimedResolution = null;
 
     #endregion
 
     #region Default Unity methods
 
-    /// <summary>
-    /// Function that is called when the object becomes enabled and active
-    /// </summary>
     void OnEnable()
     {
-        events.UpdateQuestionUI         += UpdateQuestionUI;
-        events.DisplayResolutionScreen  += DisplayResolution;
-        events.ScoreUpdated             += UpdateScoreUI;
-    }
-    /// <summary>
-    /// Function that is called when the behaviour becomes disabled
-    /// </summary>
-    void OnDisable()
-    {
-        events.UpdateQuestionUI         -= UpdateQuestionUI;
-        events.DisplayResolutionScreen  -= DisplayResolution;
-        events.ScoreUpdated             -= UpdateScoreUI;
+        events.UpdateQuestionUI += UpdateQuestionUI;
+        events.DisplayResolutionScreen += DisplayResolution;
+        events.ScoreUpdated += UpdateScoreUI;
     }
 
-    /// <summary>
-    /// Function that is called when the script instance is being loaded.
-    /// </summary>
+    void OnDisable()
+    {
+        events.UpdateQuestionUI -= UpdateQuestionUI;
+        events.DisplayResolutionScreen -= DisplayResolution;
+        events.ScoreUpdated -= UpdateScoreUI;
+    }
+
     void Start()
     {
         UpdateScoreUI();
@@ -114,15 +109,16 @@ public class UIManager : MonoBehaviour {
     #endregion
 
     /// <summary>
-    /// Function that is used to update new question UI information.
+    /// Actualiza la interfaz con su nueva pregunta
     /// </summary>
+    /// <param name="question"></param>
     void UpdateQuestionUI(Question question)
     {
         uIElements.QuestionInfoTextObject.text = question.Info;
         CreateAnswers(question);
     }
     /// <summary>
-    /// Function that is used to display resolution screen.
+    /// Muestra la pantalla de resolucion segun el resultado del jugador
     /// </summary>
     void DisplayResolution(ResolutionScreenType type, int score)
     {
@@ -140,46 +136,50 @@ public class UIManager : MonoBehaviour {
             StartCoroutine(IE_DisplayTimedResolution);
         }
     }
+    /// <summary>
+    /// Espera unos segundos y cierra la pantalla de resolucion
+    /// </summary>
     IEnumerator DisplayTimedResolution()
     {
         yield return new WaitForSeconds(GameUtility.ResolutionDelayTime);
         uIElements.ResolutionScreenAnimator.SetInteger(resStateParaHash, 1);
         uIElements.MainCanvasGroup.blocksRaycasts = true;
     }
-
     /// <summary>
-    /// Function that is used to display resolution UI information.
+    /// Actualiza los textos y colores de la pantalla de resolucion dependiendo del resultado
     /// </summary>
     void UpdateResUI(ResolutionScreenType type, int score)
     {
-        var highscore = PlayerPrefs.GetInt(GameUtility.SavePrefKey);
-
         switch (type)
         {
             case ResolutionScreenType.Correct:
                 uIElements.ResolutionBG.color = parameters.CorrectBGColor;
-                uIElements.ResolutionStateInfoText.text = "CORRECT!";
+                uIElements.ResolutionStateInfoText.text = "CORRECTO!";
                 uIElements.ResolutionScoreText.text = "+" + score;
                 break;
             case ResolutionScreenType.Incorrect:
                 uIElements.ResolutionBG.color = parameters.IncorrectBGColor;
-                uIElements.ResolutionStateInfoText.text = "WRONG!";
+                uIElements.ResolutionStateInfoText.text = "INCORRECTO!";
                 uIElements.ResolutionScoreText.text = "-" + score;
                 break;
             case ResolutionScreenType.Finish:
                 uIElements.ResolutionBG.color = parameters.FinalBGColor;
-                uIElements.ResolutionStateInfoText.text = "FINAL SCORE";
+                uIElements.ResolutionStateInfoText.text = "RESULTADO FINAL";
 
                 StartCoroutine(CalculateScore());
                 uIElements.FinishUIElements.gameObject.SetActive(true);
-                uIElements.HighScoreText.gameObject.SetActive(true);
-                uIElements.HighScoreText.text = ((highscore > events.StartupHighscore) ? "<color=yellow>new </color>" : string.Empty) + "Highscore: " + highscore;
+
+                var dm = DataManager.instance;
+                bool isLastLevel = dm != null && dm.currentLvl == 3;
+                if (uIElements.NextLevelButton != null)
+                {
+                    uIElements.NextLevelButton.gameObject.SetActive(!isLastLevel);
+                }
                 break;
         }
     }
-
     /// <summary>
-    /// Function that is used to calculate and display the score.
+    /// Anima progresivamente el puntaje final hasta alcanzar el valor real obtenido por el usuario
     /// </summary>
     IEnumerator CalculateScore()
     {
@@ -188,13 +188,11 @@ public class UIManager : MonoBehaviour {
         {
             scoreValue++;
             uIElements.ResolutionScoreText.text = scoreValue.ToString();
-
             yield return null;
         }
     }
-
     /// <summary>
-    /// Function that is used to create new question answers.
+    /// Crea las opciones de respuesta en la interfaz a partir de los datos de la pregunta actual
     /// </summary>
     void CreateAnswers(Question question)
     {
@@ -215,7 +213,7 @@ public class UIManager : MonoBehaviour {
         }
     }
     /// <summary>
-    /// Function that is used to erase current created answers.
+    /// Elimina las respuestas anteriores de la interfaz antes de mostrar una nueva pregunta
     /// </summary>
     void EraseAnswers()
     {
@@ -225,9 +223,8 @@ public class UIManager : MonoBehaviour {
         }
         currentAnswers.Clear();
     }
-
     /// <summary>
-    /// Function that is used to update score text UI.
+    /// Actualiza el texto del marcador con la puntacion actual del usuario
     /// </summary>
     void UpdateScoreUI()
     {

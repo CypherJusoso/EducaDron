@@ -4,17 +4,17 @@ using UnityEngine;
 public class Watering : MonoBehaviour
 {
     [Header("Tanque de Agua")]
-    public const float WATER_CAPACITY = 1000f;
+    [SerializeField] float waterCapacity = 1000f;
     public float aguaActual = 1000f;
     public float velocidadRiego = 10f; // Litros por segundo
 
-
     [Header("Riego")]
-    [SerializeField] float wateringRadius = 3f;
+    [SerializeField] float wateringRadius = 5f;
     [SerializeField] LayerMask plantLayerMask;
     [SerializeField] int waterPerSecond = 5;
     [SerializeField] ParticleSystem waterParticles;
-
+    [SerializeField] AudioClip waterClip;
+    [SerializeField] Transform soundOrigin;
 
     [Header("UI")]
     [SerializeField] MicroBar waterMicroBar;
@@ -26,11 +26,20 @@ public class Watering : MonoBehaviour
 
 
     bool isWatering = false;
+    bool isGameOverTriggered;
     private void Start()
     {
         StopWatering();
-        if (waterMicroBar != null) waterMicroBar.Initialize(WATER_CAPACITY);
+
+        aguaActual = waterCapacity;
+        isGameOverTriggered = false;
+        if (waterMicroBar != null) waterMicroBar.Initialize(waterCapacity);
+        
     }
+    /// <summary>
+    /// Maneja el empezar a regar y detener el riego, 
+    /// la reduccion de agua y si se agota el agua
+    /// </summary>
     void Update()
     {
         if (Dialogue.isDialoguePlaying) { return; }
@@ -51,10 +60,11 @@ public class Watering : MonoBehaviour
             aguaActual -= velocidadRiego * Time.deltaTime;
             aguaActual = Mathf.Max(aguaActual, 0f);
 
-            if (aguaActual <= 0 && isWatering)
+            if (aguaActual <= 0 && isWatering && !isGameOverTriggered)
             {
                 StopWatering();
                 GameOver();
+                isGameOverTriggered=true;
             }
         }
 
@@ -64,6 +74,9 @@ public class Watering : MonoBehaviour
         }      
     }
 
+    /// <summary>
+    /// Muestra las particulas de riego y activa el sonido
+    /// </summary>
     void StartWatering()
     {
         isWatering = true;
@@ -71,42 +84,68 @@ public class Watering : MonoBehaviour
         {
             waterParticles.Play();
         }
-    }
 
+        if (waterClip != null && AudioManager.instance != null)
+        {
+            AudioManager.instance.PlayLoopingSFX(waterClip, soundOrigin, 1f);
+        }
+    }
+    /// <summary>
+    /// Cuando se suelta la tecla "R" deja de mostrar las particulas de riego y desactiva el sonido
+    /// </summary>
     void StopWatering()
     {
         isWatering = false;
         if (waterParticles != null && waterParticles.isPlaying)
         {
             waterParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            if (waterClip != null)
+            {
+                if (AudioManager.instance != null)
+                {
+                    AudioManager.instance.StopLoopingSFX();
+                }
+            }
         }
     }
-
+    /// <summary>
+    /// Detecta a los cultivos dentro del rango y aplica agua gradualmente
+    /// a los que no hayan sido regados
+    /// </summary>
     void WaterPlantsInRange()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, wateringRadius, plantLayerMask);
 
         foreach (Collider col in hits)
         {
-            OnCropWatering2 onCropWatering = col.GetComponent<OnCropWatering2>();
-            if (onCropWatering != null && !onCropWatering.isWatered)
+            IWaterable plant = col.GetComponent<IWaterable>();  
+
+            if (plant != null && !plant.IsWatered)
             {
                 int waterInFrame = Mathf.CeilToInt(waterPerSecond * Time.deltaTime);
                 for(int i = 0; i < waterInFrame; i++)
                 {
-                    onCropWatering.ProcessWatering();
+                    plant.ProcessWatering();
                 }
             }
         }
     }
+
+    /// <summary>
+    /// Se llama cuando el jugador gasto toda el agua, 
+    /// muestra el panel de fallo para volver al menu principal
+    /// </summary>
     void GameOver()
     {
 
-        playerMover.isOn = false;
+        GameOverManager.instance.ActivateGameOver();
         Cursor.lockState = CursorLockMode.None;
         failurePanel.SetActive(true);
 
     }
+    /// <summary>
+    /// Dibuja una esfera en el editor para ver el rango de riego
+    /// </summary>
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;

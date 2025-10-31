@@ -1,21 +1,27 @@
 using Microlight.MicroBar;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
 
     public float timerDuration = 300.0f;
     [SerializeField] MicroBar timer_MicroBar;
-
+    [SerializeField] Image batteryImage;
+    [SerializeField] Sprite[] batterySprites;
     [SerializeField] PlayerMover3 playerMover;
-    [SerializeField] GameSceneManager gameSceneManager;
+    [SerializeField] GameObject timerLosePanel;
 
     bool isRunning = false;
 
     const float MAX_TIME = 300f;
     void Start()
     {
-        if (timer_MicroBar != null) timer_MicroBar.Initialize(MAX_TIME);
+        if (timer_MicroBar != null)
+        {
+            timer_MicroBar.Initialize(MAX_TIME);
+        }
+        UpdateBatteryIcon(1f);
     }
 
     // Update is called once per frame
@@ -24,7 +30,10 @@ public class Timer : MonoBehaviour
        
         TimerReduction();
     }
-
+    /// <summary>
+    /// Reduce el tiempo por cada frame que pasa y actualiza el icono
+    /// de la bateria dependiendo del porcentaje restante
+    /// </summary>
     private void TimerReduction()
     {
         if (isRunning)
@@ -40,6 +49,9 @@ public class Timer : MonoBehaviour
             {
                 timer_MicroBar.UpdateBar(timerDuration, false, UpdateAnim.Damage);
             }
+
+            float percentage = timerDuration / MAX_TIME;
+            UpdateBatteryIcon(percentage);
         }
     }
 
@@ -47,11 +59,39 @@ public class Timer : MonoBehaviour
     {
         isRunning = true;
     }
-
+    /// <summary>
+    /// Muestra la pantalla de Game Over si se acaba el tiempo
+    /// </summary>
     void TimerEnd()
     {
-        playerMover.isOn = false;
-        gameSceneManager.GameOver();
+        GameOverManager.instance.ActivateGameOver();
+        timerLosePanel.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
         Debug.Log("Time Out");
+    }
+    /// <summary>
+    /// Actualiza el icono de la bateria dependiendo del
+    /// tiempo restante
+    /// </summary>
+    void UpdateBatteryIcon(float percentage)
+    {
+        if (batterySprites.Length < 4 || batteryImage == null) { return; }
+    
+        if (percentage > 0.75f)
+        {
+            batteryImage.sprite = batterySprites[0];
+        }
+        else if (percentage > 0.5f)
+        {
+            batteryImage.sprite = batterySprites[1];
+        }
+        else if (percentage > 0.25f)
+        {
+            batteryImage.sprite = batterySprites[2];
+        }
+        else
+        {
+            batteryImage.sprite = batterySprites[3];
+        }
     }
 }
